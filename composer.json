@@ -1,5 +1,5 @@
 {
     "require": {
-        "php-activerecord/php-activerecord": "dev-master",
+        "php-activerecord/php-activerecord": "dev-master"
     }
 }
