@@ -15,17 +15,18 @@ defined('EXT') or define('EXT', '.php');
  */
 defined('ROOT') or define('ROOT', realpath(__DIR__). DS);
 defined('APPPATH') or define('APPPATH', ROOT . 'application' . DS);
-defined('PACKAGESPATH') or define('PACKAGESPATH', ROOT . 'packages' . DS);
-defined('SYSCOREPATH') or define('SYSCOREPATH', PACKAGESPATH . 'Fonto' . DS . 'Core' . DS);
-defined('WEBPATH') or define('WEBPATH', ROOT . 'public' . DS);
+defined('VENDORPATH') or define('VENDORPATH', ROOT . 'vendor' . DS);
+defined('SYSCOREPATH') or define('SYSCOREPATH', VENDORPATH . 'fonto' . DS . 'src' . DS . 'Fonto' . DS . 'Core' . DS);
+defined('WEBPATH') or define('WEBPATH', ROOT . 'web' . DS);
 defined('CONTROLLERSPATH') or define('CONTROLLERSPATH', APPPATH . 'controllers' . DS);
 defined('MODELSPATH') or define('MODELSPATH', APPPATH . 'models' . DS);
 defined('VIEWPATH') or define('VIEWPATH', APPPATH . 'views' . DS);
 
 $paths = array(
-	'app'  => APPPATH,
-	'core' => SYSCOREPATH,
-	'web'  => WEBPATH
+	'app'    => APPPATH,
+	'core'   => SYSCOREPATH,
+	'web'    => WEBPATH,
+	'vendor' => VENDORPATH
 );
 
 /**
