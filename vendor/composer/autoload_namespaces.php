@@ -7,4 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'ActiveRecord' => $vendorDir . '/php-activerecord/php-activerecord/lib/',
+    'Fonto' => $vendorDir . '/fonto/src/',
 );
