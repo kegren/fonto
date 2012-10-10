@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Controllers;
+namespace Controllers;
 
 use \Fonto\Core\IController,
 	\Fonto\Core\View;
