@@ -27,8 +27,7 @@ set_exception_handler(array('\Fonto\Core\FontoException', 'handle'));
 /**
  * Register autoloading
  */
-$autoloader = new Autoloader();
-$autoloader->register();
+include $paths['vendor'] . 'autoload' . EXT;
 
 /**
  * Timezone
