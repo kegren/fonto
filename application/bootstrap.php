@@ -14,8 +14,7 @@ use Fonto\Core\Request as Request,
 	Fonto\Core\Router as Router,
 	Fonto\Core\Route as Route,
 	Fonto\Core\Config as Config,
-	Fonto\Core\FontoException as FontoException,
-	Fonto\Core\Autoloader as Autoloader;
+	Fonto\Core\FontoException as FontoException;
 
 
 /**
@@ -27,7 +26,8 @@ set_exception_handler(array('\Fonto\Core\FontoException', 'handle'));
 /**
  * Register autoloading
  */
-include $paths['vendor'] . 'autoload' . EXT;
+$loader = include $paths['vendor'] . 'autoload' . EXT;
+$loader->add('Web', APPPATH . 'src');
 
 /**
  * Timezone
