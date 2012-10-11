@@ -1,5 +1,9 @@
 {
     "require": {
-        "php-activerecord/php-activerecord": "dev-master"
+        "php-activerecord/php-activerecord": "dev-master",
+        "twig/twig": "1.*"
+    },
+    "autoload": {
+    	"psr-0": {"Fonto": "vendor/fonto/src/"}
     }
 }
