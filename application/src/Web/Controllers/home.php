@@ -2,10 +2,9 @@
 
 namespace Web\Controllers;
 
-use \Fonto\Core\IController,
-	\Fonto\Core\View;
+use Fonto\Core\Controller;
 
-class Home implements IController
+class Home extends Controller
 {
 	public function indexAction()
 	{
@@ -13,6 +12,6 @@ class Home implements IController
 			'test' => '568t'
 		);
 
-		return View::show('home/index', $data);
+		return $this->view('home/index', $data);
 	}
 }
