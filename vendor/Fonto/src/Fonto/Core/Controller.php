@@ -7,7 +7,14 @@
 
 namespace Fonto\Core;
 
-interface IController
+use Fonto\Core\View;
+
+abstract class Controller
 {
-	public function indexAction();
+	abstract public function indexAction();
+
+	public function view($file, $data = null)
+	{
+		return new View($file, $data);
+	}
 }

@@ -10,23 +10,17 @@ namespace Fonto\Core;
 class Request
 {
 	/**
-	 * HTTP Request method, default GET
-	 *
-	 * @var string
+	 * @var string Request method
 	 */
 	private $method = 'GET';
 
 	/**
-	 * Requested Uri
-	 *
-	 * @var string
+	 * @var string Requested Uri
 	 */
-	private $requestUri;
+	private $requestedUri;
 
 	/**
-	 * Path for the current script
-	 *
-	 * @var string
+	 * @var string Path for the current script
 	 */
 	private $scriptName;
 
@@ -36,7 +30,7 @@ class Request
 			$this->method = $_SERVER['REQUEST_METHOD'];
 		}
 		if (isset($_SERVER['REQUEST_URI'])) {
-			$this->requestUri = $_SERVER['REQUEST_URI'];
+			$this->requestedUri = $_SERVER['REQUEST_URI'];
 		}
 		if (isset($_SERVER['SCRIPT_NAME'])) {
 			$this->scriptName = $_SERVER['SCRIPT_NAME'];
@@ -73,21 +67,4 @@ class Request
 	{
 		return $this->scriptName;
 	}
-
-	/**
-	 * Remove dirname from uri if needed
-	 *
-	 * @return array uri
-	 */
-	private function parseRequestUri()
-	{
-		$uri = $this->requestUri;
-
-		if (strpos($uri, dirname($this->scriptName)) === 0) {
-			$uri = substr($uri, strlen(dirname($this->scriptName)));
-		}
-
-		return ($uri = explode('/', ltrim($uri, '/')));
-	}
-
 }

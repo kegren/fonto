@@ -6,6 +6,7 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Twig_' => $vendorDir . '/twig/twig/lib/',
+    'Fonto' => $baseDir . '/vendor/fonto/src/',
     'ActiveRecord' => $vendorDir . '/php-activerecord/php-activerecord/lib/',
-    'Fonto' => $vendorDir . '/fonto/src/',
 );

@@ -6,12 +6,15 @@ class Application
 {
 	const VERSION = '0.2';
 
-	public $app;
+	protected $app;
 
 	public function __construct()
 	{}
 
 	public function run()
+	{}
+
+	public function getApplicationMode()
 	{}
 
 }

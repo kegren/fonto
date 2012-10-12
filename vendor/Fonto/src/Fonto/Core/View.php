@@ -7,23 +7,66 @@
 
 namespace Fonto\Core;
 
-use Fonto\Core\Error;
+use Fonto\Core\FontoException;
 
 class View
 {
-	const DEFAULT_EXT = '.php';
+	/**
+	 * Default files
+	 *
+	 * @var string
+	 */
+	private $defaultFileEnding = '.php';
 
 	/**
-	 * Render view file with data
+	 * Containing output data for the view
 	 *
-	 * @param  string $view
-	 * @param  array $data
-	 * @return file
+	 * @var array
 	 */
-	public static function show($view, array $data = array())
-	{
-		extract($data);
+	private $data = array();
 
-		include VIEWPATH . $view . View::DEFAULT_EXT;
+	/**
+	 * The view to show
+	 *
+	 * @var [type]
+	 */
+	private $view;
+
+	/**
+	 * Set the view file and the data
+	 *
+	 * @param string $file
+	 * @param array  $data
+	 */
+	public function __construct($file, $data = null)
+	{
+		if (!file_exists(VIEWPATH . $file . $this->defaultFileEnding)) {
+			throw new FontoException("View $file does not exists");
+		}
+
+		if (!is_null($data) and !is_array($data)) {
+			throw new FontoException("The $data most be an array");
+		} else {
+			$this->data = $data;
+		}
+
+		if (is_null($data)) {
+			$this->data = array();
+		}
+
+		$this->view = $file;
+
+		echo $this->get();
+	}
+
+	public function get()
+	{
+		extract($this->data);
+
+		ob_start();
+
+		require VIEWPATH . $this->view . $this->defaultFileEnding;
+
+		return ob_get_clean();
 	}
 }

@@ -13,46 +13,29 @@ class Route implements IRoute
 {
 
 	/**
-	 * Store all routes
-	 *
-	 * @var array
+	 * @var string Current route
 	 */
-	private $routes = array();
+	protected $route;
 
 	/**
-	 * Current route
-	 *
-	 * @var string
+	 * @var string Controller for current route
 	 */
-	public $route;
+	protected $controller;
 
 	/**
-	 * Controller for current route
-	 *
-	 * @var string
+	 * @var string Action for current route
 	 */
-	public $controller;
+	protected $action;
 
 	/**
-	 * Action for current route
-	 *
-	 * @var string
+	 * @var string Parameters for current route
 	 */
-	public $action;
+	protected $params;
 
 	/**
-	 * Parameters for current route
-	 *
-	 * @var string
+	 * @var boolean Load all actions automatically default false
 	 */
-	public $params;
-
-	/**
-	 * Load all actions automatically default false
-	 *
-	 * @var boolean
-	 */
-	public $all = false;
+	protected $all = false;
 
 	public function __construct()
 	{

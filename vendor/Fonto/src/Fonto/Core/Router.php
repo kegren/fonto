@@ -15,7 +15,7 @@ use Fonto\Core\Request,
 class Router Implements IRouter
 {
     const ACTION_PREFIX        = 'Action';
-    const CONTROLLER_NAMESPACE = 'Application\Controllers';
+    const CONTROLLER_NAMESPACE = 'Web\\Controllers';
 
     /**
      * Request object

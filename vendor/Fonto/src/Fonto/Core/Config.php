@@ -11,8 +11,8 @@ use Fonto\Core\FontoException;
 
 class Config
 {
-	const DEFAULT_DIR = "config/";
-	const DEFAULT_EXT = '.ini';
+	const DEFAULT_DIR = "Config/";
+	const DEFAULT_EXT = '.php';
 
 	/**
 	 * Read config file by name and key optional
@@ -24,13 +24,14 @@ class Config
 	public static function read($file, $key = null)
 	{
 		if ($config = self::exists($file)) {
-			$content = parse_ini_file($config);
 
-			if (is_null($key))
-				return $content;
+			if (is_null($key)) {
+				return $config;
+			}
 
-			if (isset($content[$key]))
-				return $content[$key];
+			if (isset($config[$key])) {
+				return $config[$key];
+			}
 		}
 
 		return false;
@@ -44,7 +45,7 @@ class Config
 	 */
 	private static function exists($file)
 	{
-		$file = APPPATH . self::DEFAULT_DIR . $file . self::DEFAULT_EXT;
+		$file = APPWEBPATH . self::DEFAULT_DIR . $file . self::DEFAULT_EXT;
 
 		if (!file_exists($file) or !is_readable($file)) {
 			throw new FontoException("The file $file does not exist or is not readable");
