@@ -1,6 +1,6 @@
 <?php
 /**
- * Application specific settings
+ * Application 'specific' settings
  */
 
  return array(
@@ -24,4 +24,9 @@
  	 * Using twig as template language
  	 */
  	'twig' => false,
+
+ 	/**
+ 	 * Application mode, development enables all error reporting
+ 	 */
+ 	'mode' => 'development',
  );
