@@ -1,9 +1,27 @@
-;database connection settings
-type     =   mysql;
-host     =   localhost;
-username =   root;
-password =   asdf;
-name     =   fonto;
+<?php
+/**
+ * Application specific settings
+ */
 
-;application
-timezone = Europe/Stockholm;
+ return array(
+ 	/**
+ 	 * Default timezone
+ 	 */
+ 	'timezone' => 'Europe/Stockholm',
+
+ 	/**
+ 	 * Database settings
+ 	 */
+ 	'database' => array(
+ 		'type' => 'mysql',
+ 		'host' => 'localhost',
+ 		'user' => 'root',
+ 		'pass' => '',
+ 		'name' => 'fonto',
+ 	),
+
+ 	/**
+ 	 * Using twig as template language
+ 	 */
+ 	'twig' => false,
+ );
