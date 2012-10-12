@@ -1,12 +1,14 @@
 <?php
 /**
- * Routes
+ * Routes config file
  *
- * @todo  Fix routing
+ * Set routing for the application.
  */
 
-use Fonto\Core\Route;
-
+/**
+ *
+ * 'all' = load all methods automatic in the controller
+ */
 return array(
 	'/' => array(
 		'controller' => 'home',
