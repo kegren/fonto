@@ -49,4 +49,9 @@ $request = new Request();
 $router = new Router($request, $route);
 $router->route();
 
+/**
+ * $app = new Application();
+ * $app->run();
+ */
+
 unset($paths);
