@@ -29,6 +29,7 @@ set_exception_handler(array('\Fonto\Core\FontoException', 'handle'));
 $loader = include $paths['vendor'] . 'autoload' . EXT;
 $loader->add('Web', APPPATH . 'src');
 
+
 /**
  * Timezone
  */
