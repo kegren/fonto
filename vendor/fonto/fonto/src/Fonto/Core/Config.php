@@ -21,9 +21,9 @@ class Config
 	 * @param  string $key
 	 * @return mixed
 	 */
-	public static function read($file, $key = null)
+	public function read($file, $key = null)
 	{
-		if ($config = self::exists($file)) {
+		if ($config = $this->exists($file)) {
 
 			if (is_null($key)) {
 				return $config;
@@ -43,7 +43,7 @@ class Config
 	 * @param  string $file
 	 * @return file
 	 */
-	private static function exists($file)
+	private function exists($file)
 	{
 		$file = APPWEBPATH . self::DEFAULT_DIR . $file . self::DEFAULT_EXT;
 
