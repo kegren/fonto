@@ -12,7 +12,7 @@ use Fonto\Core\Request,
     Fonto\Core\Config,
     Fonto\Core\FontoException;
 
-class Router Implements IRouter
+class Router
 {
     const ACTION_PREFIX        = 'Action';
     const CONTROLLER_NAMESPACE = 'Web\\Controllers';
