@@ -10,12 +10,14 @@
  * 'all' = load all methods automatic in the controller
  */
 return array(
+
 	'/' => array(
 		'controller' => 'home',
-		'action'     => 'index',
-		'all'        => false
+		'action'     => 'index'
 	),
-	'test' => array(
+	'testkul' => array(
+		'controller' => 'lek',
 		'all' => true,
 	),
+
 );
