@@ -1,4 +1,9 @@
 <?php
+/**
+ * Fonto Framework
+ *
+ * @author Kenny Damgren <kenny.damgren@gmail.com>
+ */
 
 namespace Fonto\Core;
 
