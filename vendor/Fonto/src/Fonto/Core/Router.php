@@ -16,27 +16,48 @@ class Router Implements IRouter
 {
     const ACTION_PREFIX        = 'Action';
     const CONTROLLER_NAMESPACE = 'Web\\Controllers';
+    const DEFAULT_ROUTE        = '/';
+
+    // protected $patterns = array(
+    //     '(#all)' => '([0-9a-zA-Z])'
+    // );
+    //
 
     /**
-     * Request object
-     *
-     * @var object
+     * @var array All routes
      */
-    private $request = null;
+    protected $routes = array();
 
     /**
-     * Route object
-     *
-     * @var object
+     * @var array The uri for the route
      */
-    private $route = null;
+    protected $uriForRoutes = array();
 
     /**
-     * Array containing uri parts
-     *
-     * @var array
+     * @var object Request object
      */
-    private $parts = array();
+    protected $requestUri;
+
+
+    /**
+     * @var boolean Did we found a matching route?
+     */
+    protected $routeMatch = false;
+
+    /**
+     * @var string Controller
+     */
+    protected $controller;
+
+    /**
+     * @var string Action
+     */
+    protected $action;
+
+    /**
+     * @var string Parameters
+     */
+    protected $params;
 
     /**
      * Set objects
@@ -44,12 +65,9 @@ class Router Implements IRouter
      * @param Request $request
      * @param Route   $route
      */
-    public function __construct(Request $request, Route $route)
+    public function __construct(Request $request)
     {
-        $this->request = $request;
-        $this->route   = $route;
-
-        $this->getPartsFromUri();
+        $this->setRequestUri($request->getRequestUri());
     }
 
 
@@ -58,92 +76,81 @@ class Router Implements IRouter
      *
      * @return mixed
      */
+    public function dispatch()
+    {
+        $class = Router::CONTROLLER_NAMESPACE . DS . $this->controller;
+        $file  = CONTROLLERPATH . $this->controller . EXT;
+
+        if (!file_exists($file) or (!is_readable($file))) {
+            throw new FontoException("The file $file was found");
+        }
+
+        if (!class_exists($class)) {
+            throw new FontoException("The class $class was found in the $file");
+        }
+
+        $cls = new $class();
+
+        if (method_exists($cls, $this->action)) {
+
+            if (isset($this->params)) {
+                call_user_func_array(array($cls, $this->action), $this->params);
+            } else {
+                call_user_func(array($cls, $this->action));
+            }
+
+        } else {
+            throw new FontoException("Class: $class does not contain action: $this->action", 404);
+        }
+    }
+
+    public function map($routes = array())
+    {
+        $uriForRoute = array_keys($routes);
+        $this->setUriForRoutes($uriForRoute);
+        $this->routes = $routes;
+    }
+
+    public function setUriForRoutes($uri)
+    {
+        $this->uriForRoutes = $uri;
+    }
+
+    public function setRequestUri($uri)
+    {
+        $this->requestUri = $uri;
+    }
+
     public function route()
     {
-        if ($this->match($this->parts['route'])) {
+        if (isset($this->routes[$this->requestUri])) {
 
-            if ($this->route->all) {
+            $route = $this->routes[$this->requestUri];
 
-                $namespacedClass = Router::CONTROLLER_NAMESPACE . DS . $this->parts['controller'];
-
-                if (!class_exists($namespacedClass)) {
-                    throw new FontoException("No class with name $namespacedClass was found", 404);
+            $uri = explode('/', $this->requestUri);
+            foreach ($uri as $key => $value) {
+                if (strlen($value) == 0) {
+                    unset($uri[$key]);
                 }
-
-                $controller = $this->parts['controller'];
-                $action     = $this->parts['action'];
-                $params     = $this->parts['params'];
-
-                $inspekt = new \ReflectionClass($namespacedClass);
-                if ($inspekt->hasMethod($action))
-                {
-                    $c = new $namespacedClass();
-                    call_user_func_array(array($c, $action), $params);
-                } else {
-                    throw new FontoException("Class: $namespacedClass does not contain action: $action", 404);
-                }
-
-            } else {
-                $controller      = $this->route->controller;
-                $action          = $this->route->action;
-                $params          = $this->parts['params'];
-                $namespacedClass = Router::CONTROLLER_NAMESPACE . DS . $controller;
-
-                if (!class_exists($namespacedClass)) {
-                    throw new FontoException("No class with name $namespacedClass was found", 404);
-                }
-
-                $inspekt = new \ReflectionClass($namespacedClass);
-                if ($inspekt->hasMethod($action))
-                {
-                    $c = new $namespacedClass();
-                    call_user_func_array(array($c, $action), $params);
-                } else {
-                    throw new FontoException("Class: $namespacedClass does not contain action: $action", 404);
-                }
-
             }
-        } else {
-            throw new FontoException("No route was found!", 404);
+
+            $this->all        = isset($route['all']) ? $route['all'] : false;
+            $this->controller = $route['controller'];
+            $this->params     = array_slice($uri, 2);
+
+            if ($this->all === true) {
+                $this->action = isset($uri[1]) ? $uri[1] : '';
+            } else {
+                $this->action = $route['action'];
+            }
+
+            $this->action .= Router::ACTION_PREFIX;
+            $this->controller = $route['controller'];
+
+            $this->dispatch();
+            return;
         }
-    }
 
-    /**
-     * Match requested uri against routes
-     *
-     * @param  string $route
-     * @return boolean
-     */
-    public function match($route)
-    {
-        $setRoute = $this->route->create($route);
-
-        if ($setRoute) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Create routes from uri.
-     *
-     * @return void
-     */
-    private function getPartsFromUri()
-    {
-        $uri = $this->request->getRequestUri();
-
-        $iRoute      = !empty($uri[0]) ? $uri[0] : '/';
-        $iController = !empty($uri[0]) ? $uri[0] : '';
-        $iAction     = !empty($uri[1]) ? $uri[1].Router::ACTION_PREFIX : 'indexAction';
-        $iParams     = array_slice($uri, 2);
-
-        $this->parts = array(
-            'route'      => $iRoute,
-            'controller' => $iController,
-            'action'     => $iAction,
-            'params'     => $iParams
-        );
+        throw new FontoException("No route was found!", 404);
     }
 }

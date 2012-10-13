@@ -17,7 +17,7 @@ class Request
 	/**
 	 * @var string Requested Uri
 	 */
-	private $requestedUri;
+	private $requestUri;
 
 	/**
 	 * @var string Path for the current script
@@ -30,7 +30,7 @@ class Request
 			$this->method = $_SERVER['REQUEST_METHOD'];
 		}
 		if (isset($_SERVER['REQUEST_URI'])) {
-			$this->requestedUri = $_SERVER['REQUEST_URI'];
+			$this->requestUri = $_SERVER['REQUEST_URI'];
 		}
 		if (isset($_SERVER['SCRIPT_NAME'])) {
 			$this->scriptName = $_SERVER['SCRIPT_NAME'];
@@ -55,7 +55,7 @@ class Request
 	public function getRequestUri()
 	{
 		$uri = $this->parseRequestUri();
-		return (array) $uri;
+		return $uri;
 	}
 
 	/**
@@ -66,5 +66,21 @@ class Request
 	public function getScriptName()
 	{
 		return $this->scriptName;
+	}
+
+	/**
+	 * Remove dirname from uri if needed
+	 *
+	 * @return array uri
+	 */
+	private function parseRequestUri()
+	{
+		$uri = $this->requestUri;
+
+		if (strpos($uri, dirname($this->scriptName)) === 0) {
+			$uri = substr($uri, strlen(dirname($this->scriptName)));
+		}
+
+		return $uri;
 	}
 }
