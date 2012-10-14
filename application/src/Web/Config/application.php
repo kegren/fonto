@@ -26,7 +26,12 @@
  	'twig' => false,
 
  	/**
- 	 * Application mode, development enables all error reporting
+ 	 * Application environment, development enables all error reporting
  	 */
- 	'mode' => 'development',
+ 	'environment' => 'development',
+
+ 	/**
+ 	 * Autoload classes in libraries
+ 	 */
+ 	'autoload' => false
  );
