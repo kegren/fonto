@@ -4,6 +4,6 @@
         "twig/twig": "1.*"
     },
     "autoload": {
-    	"psr-0": {"Fonto": "vendor/fonto/src/"}
+    	"psr-0": {"Fonto": "vendor/fonto/fonto/src/"}
     }
 }
