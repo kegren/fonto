@@ -21,7 +21,7 @@ class Config
 	 * @param  string $key
 	 * @return mixed
 	 */
-	public function read($file, $key = null)
+	public function get($file, $key = null)
 	{
 		if ($config = $this->exists($file)) {
 
@@ -51,6 +51,6 @@ class Config
 			throw new FontoException("The file $file does not exist or is not readable");
 		}
 
-		return $file;
+		return include $file;
 	}
 }
