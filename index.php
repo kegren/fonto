@@ -1,9 +1,5 @@
 <?php
 
-// Error reporting
-error_reporting(-1);
-
-
 /**
  * Define custom constants
  */
@@ -19,12 +15,12 @@ defined('APPWEBPATH') or define('APPWEBPATH', APPPATH . 'src' . DS . 'Web' . DS)
 defined('CONTROLLERPATH') or define('CONTROLLERPATH', APPPATH . 'src' . DS . 'Web' . DS . 'Controllers' . DS);
 defined('VIEWPATH') or define('VIEWPATH', APPPATH . 'src' . DS . 'Web' . DS . 'Views' . DS);
 defined('VENDORPATH') or define('VENDORPATH', ROOT . 'vendor' . DS);
-defined('SYSCOREPATH') or define('SYSCOREPATH', VENDORPATH . 'fonto' . DS . 'src' . DS . 'Fonto' . DS . 'Core' . DS);
+defined('FONTOCOREPATH') or define('FONTOCOREPATH', VENDORPATH . 'fonto' . DS . 'fonto' . DS . 'src' . DS . 'Fonto' . DS . 'Core' . DS);
 defined('WEBPATH') or define('WEBPATH', ROOT . 'web' . DS);
 
 $paths = array(
 	'app'    => APPPATH,
-	'core'   => SYSCOREPATH,
+	'core'   => FONTOCOREPATH,
 	'web'    => WEBPATH,
 	'appweb' => APPWEBPATH,
 	'vendor' => VENDORPATH
