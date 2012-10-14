@@ -65,9 +65,9 @@ class Router
      * @param Request $request
      * @param Route   $route
      */
-    public function __construct(Request $request)
+    public function __construct()
     {
-        $this->setRequestUri($request->getRequestUri());
+        ;
     }
 
 
@@ -109,16 +109,6 @@ class Router
         $uriForRoute = array_keys($routes);
         $this->setUriForRoutes($uriForRoute);
         $this->routes = $routes;
-    }
-
-    public function setUriForRoutes($uri)
-    {
-        $this->uriForRoutes = $uri;
-    }
-
-    public function setRequestUri($uri)
-    {
-        $this->requestUri = $uri;
     }
 
     public function route()
