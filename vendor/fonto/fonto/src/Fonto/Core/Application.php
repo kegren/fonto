@@ -26,19 +26,23 @@ class Application
 
 	protected $request;
 
+	protected $loader;
+
 	public function __construct()
 	{
 		//Setup application
 		$app = $this;
 
+		$this->registerAutoload();
+
 		$this->config  = new Config();
 		$this->request = new Request();
 		$this->router  = new Router();
 
-		$env = $this->config->get('application', 'environment');
+		$env = $this->getConfig()->get('application', 'environment');
 		$this->setEnvironment($env);
 
-		$timezone = $this->config->get('application', 'timezone');
+		$timezone = $this->getConfig()->get('application', 'timezone');
 		$this->setTimeZone($timezone);
 
 		$this->setExceptionHandler(array(__NAMESPACE__.'\FontoException', 'handle'));
@@ -47,7 +51,16 @@ class Application
 	public function run()
 	{
 		//Run application
+		$routes = $this->getConfig()->get('routes');
+		$uri    = $this->getRequest()->getRequestUri();
+		$this->getRouter()->match($uri, $routes);
 		$this->getRouter()->dispatch();
+	}
+
+	protected function registerAutoload()
+	{
+		$this->loader = include VENDORPATH . 'autoload' . EXT;
+		$this->loader->add('Web', APPPATH . 'src');
 	}
 
 	protected function setErrorReporting()
