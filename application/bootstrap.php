@@ -7,9 +7,11 @@ include $paths['app'] . 'helpers' . EXT;
 include $paths['core'] . 'Application' . EXT;
 
 /**
- * Namespace shortcuts
+ * Namespace alias
  */
 use Fonto\Core\Application as App;
+
+echo strlen("Add application object and remove unneeded stuff");die;
 
 /**
  * Run application
