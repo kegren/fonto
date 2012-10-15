@@ -19,12 +19,13 @@ class Router
     const DEFAULT_ROUTE        = '/';
 
     protected $patterns = array(
-        '(#all)' => '([0-9a-zA-Z])',
+        '(:all)' => '([0-9a-zA-Z])',
         '(*)' => '(\(\*\))'
     );
 
-
     protected $wildcard = '(\(\*\))';
+
+    protected $routeRegex = '(\([\:|\*|\#]([^\>]+)\))';
 
     /**
      * @var array All routes
@@ -37,15 +38,9 @@ class Router
     protected $route = array();
 
     /**
-     * @var array The uri for the route
-     */
-    protected $uriForRoutes = array();
-
-    /**
      * @var object Request object
      */
     protected $uri;
-
 
     /**
      * @var boolean Did we found a matching route?
@@ -67,9 +62,7 @@ class Router
      */
     protected $params;
 
-    protected $options;
 
-    protected $routeName;
 
     /**
      * Set objects
@@ -90,28 +83,15 @@ class Router
      */
     public function dispatch()
     {
-        $this->all        = isset($this->route['all']) ? $this->route['all'] : false;
-        $this->controller = $this->route['controller'];
-        $this->params     = array_slice($this->uri, 2);
-
-        if ($this->all === true) {
-            $this->action = isset($this->uri[1]) ? $this->uri[1] : 'index';
-        } else {
-            $this->action = $this->route['action'];
-        }
-
-        $this->action .= self::ACTION_PREFIX;
-        $this->controller = $this->route['controller'];
-
-        $class = Router::CONTROLLER_NAMESPACE . DS . $this->controller;
+        $class = self::CONTROLLER_NAMESPACE . DS . $this->controller;
         $file  = CONTROLLERPATH . $this->controller . EXT;
 
         if (!file_exists($file) or (!is_readable($file))) {
-            throw new FontoException("The file $file was found");
+            throw new FontoException("The file $file was not found");
         }
 
         if (!class_exists($class)) {
-            throw new FontoException("The class $class was found in the $file");
+            throw new FontoException("The class $class does not exist");
         }
 
         $cls = new $class();
@@ -129,10 +109,9 @@ class Router
         }
     }
 
-    public function add($namedRoute, $route, $uses = array())
+    public function add($route, $uses = array())
     {
-        $this->routes[$namedRoute]  = $route;
-        $this->options[$namedRoute] = $uses;
+        $this->routes[$route]  = $uses;
 
         return $this;
     }
@@ -156,14 +135,32 @@ class Router
 
     public function match()
     {
-        $uri = $this->getRequest();
-        // $isAction = strpos($uri, '/') ?: false;
+        $uriString = $this->getRequest();
+        $uri = ltrim($uriString, '/');
+        $uri = explode('/', $uri);
 
+        /**
+         * Start by checking if we can find a match in
+         * routing array
+         */
         foreach (array_keys($this->routes) as $route) {
-            echo $route;
-            if ($route == $uri) {
+            if ($route == $uriString) {
+                $this->route = $this->routes[$uriString];
+                $this->set($route, $uri);
                 $this->routeMatch = true;
                 break;
+            }
+
+            if (preg_match($this->routeRegex, $route)) {
+                echo 5;die;
+                $r = str_replace('(*)', $uri[1] , $route);
+                $modUri = '/' . $uri[0] . '/' . $uri[1];
+                if ($modUri == $r) {
+                    $this->route = $this->routes[$route];
+                    $this->set($route, $uri);
+                    $this->routeMatch = true;
+                    break;
+                }
             }
         }
 
@@ -172,16 +169,22 @@ class Router
             return;
         }
 
-        $this->uri = explode('/', $uri);
-        foreach ($this->uri as $key => $value) {
-            if (strlen($value) == 0) {
-                unset($this->uri[$key]);
-            }
-        }
-
-        $uri = empty($uri) ? '/' : $uri;
-        $this->route = $this->routes[$uri];
-
         return $this;
     }
+
+    protected function set($route, $uri)
+    {
+        if (is_array($uri)) {
+            $this->controller = $this->route['controller'];
+            $this->action  = isset($this->route['action']) ? $this->route['action'] : 'index';
+            $this->action .= self::ACTION_PREFIX;
+            $this->params = array_slice($uri, 2);
+        } else {
+            $this->controller = $this->route['controller'];
+            $this->action = !empty($uri[1]) ? $uri[1] : 'index';
+            $this->action .= self::ACTION_PREFIX;
+            $this->params = array_slice($uri, 2);
+        }
+    }
+
 }
