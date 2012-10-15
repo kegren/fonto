@@ -18,15 +18,23 @@ class Router
     const CONTROLLER_NAMESPACE = 'Web\\Controllers';
     const DEFAULT_ROUTE        = '/';
 
-    // protected $patterns = array(
-    //     '(#all)' => '([0-9a-zA-Z])'
-    // );
-    //
+    protected $patterns = array(
+        '(#all)' => '([0-9a-zA-Z])',
+        '(*)' => '(\(\*\))'
+    );
+
+
+    protected $wildcard = '(\(\*\))';
 
     /**
      * @var array All routes
      */
     protected $routes = array();
+
+    /**
+     * @var array
+     */
+    protected $route = array();
 
     /**
      * @var array The uri for the route
@@ -36,7 +44,7 @@ class Router
     /**
      * @var object Request object
      */
-    protected $requestUri;
+    protected $uri;
 
 
     /**
@@ -59,6 +67,10 @@ class Router
      */
     protected $params;
 
+    protected $options;
+
+    protected $routeName;
+
     /**
      * Set objects
      *
@@ -67,7 +79,7 @@ class Router
      */
     public function __construct()
     {
-        ;
+        $this->options = array();
     }
 
 
@@ -78,6 +90,19 @@ class Router
      */
     public function dispatch()
     {
+        $this->all        = isset($this->route['all']) ? $this->route['all'] : false;
+        $this->controller = $this->route['controller'];
+        $this->params     = array_slice($this->uri, 2);
+
+        if ($this->all === true) {
+            $this->action = isset($this->uri[1]) ? $this->uri[1] : 'index';
+        } else {
+            $this->action = $this->route['action'];
+        }
+
+        $this->action .= self::ACTION_PREFIX;
+        $this->controller = $this->route['controller'];
+
         $class = Router::CONTROLLER_NAMESPACE . DS . $this->controller;
         $file  = CONTROLLERPATH . $this->controller . EXT;
 
@@ -104,43 +129,59 @@ class Router
         }
     }
 
-    public function map($routes = array())
+    public function add($namedRoute, $route, $uses = array())
     {
-        $uriForRoute = array_keys($routes);
-        $this->setUriForRoutes($uriForRoute);
-        $this->routes = $routes;
+        $this->routes[$namedRoute]  = $route;
+        $this->options[$namedRoute] = $uses;
+
+        return $this;
     }
 
-    public function route()
+    public function getRoutes()
     {
-        if (isset($this->routes[$this->requestUri])) {
+        return $this->routes;
+    }
 
-            $route = $this->routes[$this->requestUri];
+    public function setRequest($request)
+    {
+        $this->uri = $request;
 
-            $uri = explode('/', $this->requestUri);
-            foreach ($uri as $key => $value) {
-                if (strlen($value) == 0) {
-                    unset($uri[$key]);
-                }
+        return $this;
+    }
+
+    public function getRequest()
+    {
+        return $this->uri;
+    }
+
+    public function match()
+    {
+        $uri = $this->getRequest();
+        // $isAction = strpos($uri, '/') ?: false;
+
+        foreach (array_keys($this->routes) as $route) {
+            echo $route;
+            if ($route == $uri) {
+                $this->routeMatch = true;
+                break;
             }
+        }
 
-            $this->all        = isset($route['all']) ? $route['all'] : false;
-            $this->controller = $route['controller'];
-            $this->params     = array_slice($uri, 2);
-
-            if ($this->all === true) {
-                $this->action = isset($uri[1]) ? $uri[1] : '';
-            } else {
-                $this->action = $route['action'];
-            }
-
-            $this->action .= Router::ACTION_PREFIX;
-            $this->controller = $route['controller'];
-
-            $this->dispatch();
+        if (false === $this->routeMatch) {
+            throw new FontoException("No route was found for that request");
             return;
         }
 
-        throw new FontoException("No route was found!", 404);
+        $this->uri = explode('/', $uri);
+        foreach ($this->uri as $key => $value) {
+            if (strlen($value) == 0) {
+                unset($this->uri[$key]);
+            }
+        }
+
+        $uri = empty($uri) ? '/' : $uri;
+        $this->route = $this->routes[$uri];
+
+        return $this;
     }
 }
