@@ -1,3 +1,3 @@
-#Fonto Framework
+#Fonto PHP Framework
 
-## A small PHP MVC framework
+## A lightweight PHP framework
