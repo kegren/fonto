@@ -29,10 +29,10 @@ class Container implements ContainerInterface
 			throw new FontoException("No service is registrerd with name $name");
 		}
 
-		if (is_callable($this->service[$name])) {
-			return $this->service[$name]();
+		if (is_callable($this->services[$name])) {
+			return $this->services[$name]();
 		} else {
-			return $this->service[$name];
+			return $this->services[$name];
 		}
 	}
 
