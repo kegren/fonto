@@ -1,0 +1,13 @@
+/**
+ * Part of Fonto Framework
+ */
+
+.fontoContainer {
+	margin: 0 auto;
+	width: 960px;
+	border-radius: 4px;
+}
+
+.fontoContainer header {
+	border-bottom: 1px solid #ddd;
+}
