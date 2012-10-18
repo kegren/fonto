@@ -1,7 +1,6 @@
 <?php
 /**
  * Homepage controller
- *
  */
 
 namespace Web\Controllers;
@@ -13,8 +12,8 @@ class Home extends Controller
 	public function indexAction()
 	{
 		$data = array(
-			'title' => 'Title',
-			'text' => 'Some text'
+			'title' => 'Fonto PHP Framework',
+			'text'  => 'Under development!'
 		);
 
 		return $this->view('home/index', $data);
