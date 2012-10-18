@@ -3,6 +3,8 @@
  * Fonto Framework
  *
  * @author Kenny Damgren <kenny.damgren@gmail.com>
+ * @package Fonto
+ * @link https://github.com/kenren/Fonto
  */
 
 namespace Fonto\Core;
@@ -11,8 +13,18 @@ use Fonto\Core\FontoException;
 
 class Config
 {
-	const DEFAULT_DIR = "Config/";
-	const DEFAULT_EXT = '.php';
+	/**
+	 * Path for config directory
+	 *
+	 * @var string
+	 */
+	private $path;
+
+
+	public function __construct($path)
+	{
+		$this->path = $path;
+	}
 
 	/**
 	 * Read config file by name and key optional
@@ -38,14 +50,14 @@ class Config
 	}
 
 	/**
-	 * Check if config file exists
+	 * Check if given config file exists
 	 *
 	 * @param  string $file
 	 * @return file
 	 */
 	private function exists($file)
 	{
-		$file = APPWEBPATH . self::DEFAULT_DIR . $file . self::DEFAULT_EXT;
+		$file = $this->path . $file . EXT;
 
 		if (!file_exists($file) or !is_readable($file)) {
 			throw new FontoException("The file $file does not exist or is not readable");
