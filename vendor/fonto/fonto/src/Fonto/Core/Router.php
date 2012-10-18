@@ -9,7 +9,8 @@
 
 namespace Fonto\Core;
 
-use Fonto\Core\FontoException;
+use Fonto\Core\FontoException,
+    Fonto\Core\Request;
 
 class Router
 {
@@ -61,15 +62,18 @@ class Router
 
     private $matched;
 
+    private $request;
+
     /**
      * Inject registered routes
      * from application
      *
      * @param array $routes
      */
-    public function __construct(array $routes = array())
+    public function __construct(array $routes = array(), Request $request)
     {
         $this->routes = $routes;
+        $this->request = $request;
     }
 
     /**
@@ -110,7 +114,7 @@ class Router
      *
      * @return $this
      */
-    public function match($httpRequest)
+    public function match()
     {
         list($num, $action, $controller) = array_keys($this->patterns);
         list($rNum, $rAction, $rController) = array_values($this->patterns);
@@ -127,7 +131,7 @@ class Router
                 $rController
             ), $route);
 
-            if (preg_match('@^' . $route . '$@', $httpRequest, $return)) {
+            if (preg_match('@^' . $route . '$@', $this->request->getRequestUri(), $return)) {
                 $this->setup($uses."#".end($return));
                 return $this;
                 break;
