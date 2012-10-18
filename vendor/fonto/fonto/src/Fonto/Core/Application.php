@@ -16,79 +16,103 @@ use Fonto\Core\Config,
 
 class Application
 {
-	const VERSION = '0.2-DEV';
+	/**
+	 * Current version
+	 */
+	const VERSION = '0.3-DEV';
+
+	/**
+	 * Default timezone
+	 */
 	const DEFAULT_TIMEZONE = 'Europe/Stockholm';
 
+	/**
+	 * @var object
+	 */
 	public $app;
 
 	private $container;
 
+	protected $name;
+
 	protected $environment;
 
-	protected $router;
-
+	/**
+	 * \Fonto\Core\Request
+	 *
+	 * @var object
+	 */
 	protected $request;
 
-	protected $loader;
-
+	/**
+	 * Storage for all routes
+	 *
+	 * @var array
+	 */
 	protected $routes = array();
 
-	protected $controllers;
-
-	public function __construct()
+	public function __construct($name = '')
 	{
 		//Setup application
 		$app = $this;
+		$this->name = $name;
 
-		$this->registerAutoload();
+		$app->registerAutoload();
 
-		$this->container = new Container;
-		$this->container->add('router', function() use ($app) {
-			return new Router($app->routes(), $this->container->get('request'));
+		$app->container = new Container;
+		$app->container->add('router', function() use ($app) {
+			return new Router($app->routes(), $app->request());
 		});
 
-		$this->container->add('config', function() {
+		$app->container->add('config', function() {
 			return new Config(CONFIGPATH);
 		});
 
-		$this->container->add('request', function() {
-			return new Request();
-		});
+		$app->loadActiveRecord();
 
 		require APPPATH . 'routes' . EXT; /*doh*/
 
-		$env = $this->container->get('config')->get('application', 'environment');
-		$this->setEnvironment($env);
+		$env = $app->container->get('config')->get('application', 'environment');
+		$app->setEnvironment($env);
 
-		$timezone = $this->container->get('config')->get('application', 'timezone');
-		$this->setTimeZone($timezone);
+		$timezone = $app->container->get('config')->get('application', 'timezone');
+		$app->setTimeZone($timezone);
 
-		$this->setExceptionHandler(array(__NAMESPACE__.'\FontoException', 'handle'));
+		$app->setExceptionHandler(array(__NAMESPACE__.'\FontoException', 'handle'));
 	}
 
+	/**
+	 * Run application!
+	 *
+	 */
 	public function run()
 	{
-		try {
+		$matched = $this->container->get('router')->match();
 
-			$matched = $this->container->get('router')->match();
-
-			if ($matched === false) {
-				throw new FontoException("No route was found");
-			}
-
-			$route = $matched->run();
-
-		} catch(\Exception $e) {
-			echo $e;die(1);
+		if ($matched === false) {
+			throw new FontoException("No route was found");
 		}
 
+		$route = $matched->run();
 	}
 
+	/**
+	 * Current version
+	 *
+	 * @return string
+	 */
 	public function version()
 	{
 		return self::VERSION;
 	}
 
+	/**
+	 * Add routes
+	 *
+	 * @param  string $route
+	 * @param  string $uses
+	 * @return object
+	 */
 	public function route($route, $uses)
     {
         $this->routes[$route]  = $uses;
@@ -96,12 +120,42 @@ class Application
         return $this;
     }
 
+    private function request()
+    {
+    	return new Request();
+    }
+
+    /**
+     * Load ActiveRecords and set directory for models
+     *
+     * @todo   fix dynamic model dir and settings for db....
+     * @return void
+     */
+    private function loadActiveRecord()
+    {
+    	\ActiveRecord\Config::initialize(function($cfg)
+		{
+     		$cfg->set_model_directory(MODELPATH);
+	    	$cfg->set_connections(array(
+	        'development' => 'mysql://root:@localhost/fontomvc'));
+ 		});
+    }
+
+    /**
+     * Register composers autoloader and add
+     * namespace for application
+     *
+     * @return void
+     */
 	private function registerAutoload()
 	{
-		$this->loader = include VENDORPATH . 'autoload' . EXT;
-		$this->loader->add('Web', APPPATH . 'src');
+		$loader = include VENDORPATH . 'autoload' . EXT;
+		$loader->add('Web', APPPATH . 'src');
 	}
 
+	/**
+	 * Set error_reporting
+	 */
 	private function setErrorReporting()
 	{
 		$env = $this->getEnvironment();
@@ -121,11 +175,21 @@ class Application
 		}
 	}
 
+	/**
+	 * Get environment
+	 *
+	 * @return string
+	 */
 	private function getEnvironment()
 	{
 		return $this->environment;
 	}
 
+	/**
+	 * Set environment for application
+	 *
+	 * @param string $env
+	 */
 	private function setEnvironment($env = null)
 	{
 		if (null === $env) {
@@ -136,11 +200,21 @@ class Application
 		return $this;
 	}
 
+	/**
+	 * Setting custom exception handler
+	 *
+	 * @param array $options
+	 */
 	private function setExceptionHandler(array $options = array())
 	{
 		set_exception_handler($options);
 	}
 
+	/**
+	 * Set default timezone
+	 *
+	 * @param string $value
+	 */
 	private function setTimeZone($value = null)
 	{
 		if (null === $value) {
@@ -151,9 +225,14 @@ class Application
 		return $this;
 	}
 
+	/**
+	 * Get all registered routes
+	 *
+	 * @return array
+	 */
     private function routes()
     {
-    	return $this->routes;
+    	return (array) $this->routes;
     }
 
 }
