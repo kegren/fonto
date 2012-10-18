@@ -1,4 +1,5 @@
 {
+	"name": "kenren/Fonto",
     "require": {
         "php-activerecord/php-activerecord": "dev-master",
         "twig/twig": "1.*"
