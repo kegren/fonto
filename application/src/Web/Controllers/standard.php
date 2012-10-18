@@ -1,13 +1,18 @@
 <?php
 
-namespace Application\Controllers;
+namespace Web\Controllers;
 
-use \Fonto\Core\IController;
+use Fonto\Core\Controller;
 
-class Test implements IController
+class Standard extends Controller
 {
 	public function indexAction()
 	{
 		echo 'Test';
+	}
+
+	public function updateAction($name = 10)
+	{
+		echo $name;
 	}
 }
