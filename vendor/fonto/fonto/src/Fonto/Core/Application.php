@@ -87,13 +87,18 @@ class Application
 	 */
 	public function run()
 	{
-		$matched = $this->container->get('router')->match();
+		try {
+			$matched = $this->container->get('router')->match();
 
-		if ($matched === false) {
-			throw new FontoException("No route was found");
+			if ($matched === false) {
+				throw new FontoException("No route was found");
+			}
+
+			$route = $matched->run();
+
+		} catch (FontoException $e) {
+			throw $e;
 		}
-
-		$route = $matched->run();
 	}
 
 	/**
