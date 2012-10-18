@@ -3,20 +3,23 @@
  * Fonto Framework
  *
  * @author Kenny Damgren <kenny.damgren@gmail.com>
+ * @package Fonto
+ * @link https://github.com/kenren/Fonto
  */
 
 namespace Fonto\Core;
 
-use Fonto\Core\FontoException;
+use Fonto\Core\FontoException,
+	Fonto\Core\DI\Container;
 
 class View
 {
 	/**
-	 * Default files
+	 * File ending
 	 *
 	 * @var string
 	 */
-	private $defaultFileEnding = '.php';
+	private $defaultFileEnding = '.html.twig';
 
 	/**
 	 * Containing output data for the view
@@ -26,14 +29,14 @@ class View
 	private $data = array();
 
 	/**
-	 * The view to show
+	 * Viewfile
 	 *
-	 * @var [type]
+	 * @var string
 	 */
 	private $view;
 
 	/**
-	 * Set the view file and the data
+	 * Adding view and data for the output.
 	 *
 	 * @param string $file
 	 * @param array  $data
@@ -54,19 +57,31 @@ class View
 			$this->data = array();
 		}
 
-		$this->view = $file;
+		$this->view = $file . $this->defaultFileEnding;
 
-		echo $this->get();
+		try {
+			$container = new Container;
+			$container->add('twig', function () {
+				$loader = new \Twig_Loader_Filesystem(VIEWPATH);
+      			$twig = new \Twig_Environment($loader);
+
+      			return $twig;
+			});
+
+			echo $container->get('twig')->render($this->view, $this->data());
+
+		} catch (\Exception $e) {
+			throw $e;
+		}
 	}
 
-	public function get()
+	/**
+	 * Returns data for the view
+	 *
+	 * @return array
+	 */
+	private function data()
 	{
-		extract($this->data);
-
-		ob_start();
-
-		require VIEWPATH . $this->view . $this->defaultFileEnding;
-
-		return ob_get_clean();
+		return (array) $this->data;
 	}
 }
