@@ -3,88 +3,84 @@
  * Fonto Framework
  *
  * @author Kenny Damgren <kenny.damgren@gmail.com>
+ * @package Fonto
+ * @link https://github.com/kenren/Fonto
  */
 
 namespace Fonto\Core;
 
-use Fonto\Core\Request,
-    Fonto\Core\Route,
-    Fonto\Core\Config,
-    Fonto\Core\FontoException;
+use Fonto\Core\FontoException;
 
 class Router
 {
     const ACTION_PREFIX        = 'Action';
     const CONTROLLER_NAMESPACE = 'Web\\Controllers';
     const DEFAULT_ROUTE        = '/';
-
-    protected $patterns = array(
-        '(:all)' => '([0-9a-zA-Z])',
-        '(*)' => '(\(\*\))'
-    );
-
-    protected $wildcard = '(\(\*\))';
-
-    protected $routeRegex = '(\([\:|\*|\#]([^\>]+)\))';
+    const ROUTE_DELIMITER      = '#';
+    const DEFAULT_CONTROLLER   = 'home';
+    const DEFAULT_ACTION       = 'indexAction';
 
     /**
-     * @var array All routes
-     */
-    protected $routes = array();
-
-    /**
+     * Patterns for routes
+     *
      * @var array
      */
-    protected $route = array();
+    private $patterns = array(
+        '(:num)' => '(\d+)',
+        '(:action)' => '([\w\_\-\%]+)',
+        '<:controller>' => '([\w\_\-\%]+)'
+    );
 
     /**
-     * @var object Request object
-     */
-    protected $uri;
-
-    /**
-     * @var boolean Did we found a matching route?
-     */
-    protected $routeMatch = false;
-
-    /**
-     * @var string Controller
-     */
-    protected $controller;
-
-    /**
-     * @var string Action
-     */
-    protected $action;
-
-    /**
-     * @var string Parameters
-     */
-    protected $params;
-
-
-
-    /**
-     * Set objects
+     * Registered routes
      *
-     * @param Request $request
-     * @param Route   $route
+     * var array
      */
-    public function __construct()
-    {
-        $this->options = array();
-    }
+    private $routes;
 
+    /**
+     * Controller
+     *
+     * @var string
+     */
+    private $controller;
+
+    /**
+     * Action
+     *
+     * @var string
+     */
+    private $action;
+
+    /**
+     * Parameters
+     *
+     * @var string
+     */
+    private $parameters;
+
+    private $matched;
+
+    /**
+     * Inject registered routes
+     * from application
+     *
+     * @param array $routes
+     */
+    public function __construct(array $routes = array())
+    {
+        $this->routes = $routes;
+    }
 
     /**
      * Routes current request
      *
      * @return mixed
      */
-    public function dispatch()
+    public function run()
     {
-        $class = self::CONTROLLER_NAMESPACE . DS . $this->controller;
-        $file  = CONTROLLERPATH . $this->controller . EXT;
+        $class = self::CONTROLLER_NAMESPACE . DS . $this->controller();
+        $file  = CONTROLLERPATH . $this->controller() . EXT;
 
         if (!file_exists($file) or (!is_readable($file))) {
             throw new FontoException("The file $file was not found");
@@ -109,82 +105,81 @@ class Router
         }
     }
 
-    public function add($route, $uses = array())
+    /**
+     * Match current request with routes
+     *
+     * @return $this
+     */
+    public function match($httpRequest)
     {
-        $this->routes[$route]  = $uses;
+        list($num, $action, $controller) = array_keys($this->patterns);
+        list($rNum, $rAction, $rController) = array_values($this->patterns);
 
-        return $this;
-    }
+        foreach ($this->routes as $route => $uses) {
 
-    public function getRoutes()
-    {
-        return $this->routes;
-    }
+           $route = str_replace(array(
+                $num,
+                $action,
+                $controller
+            ), array(
+                $rNum,
+                $rAction,
+                $rController
+            ), $route);
 
-    public function setRequest($request)
-    {
-        $this->uri = $request;
-
-        return $this;
-    }
-
-    public function getRequest()
-    {
-        return $this->uri;
-    }
-
-    public function match()
-    {
-        $uriString = $this->getRequest();
-        $uri = ltrim($uriString, '/');
-        $uri = explode('/', $uri);
-
-        /**
-         * Start by checking if we can find a match in
-         * routing array
-         */
-        foreach (array_keys($this->routes) as $route) {
-            if ($route == $uriString) {
-                $this->route = $this->routes[$uriString];
-                $this->set($route, $uri);
-                $this->routeMatch = true;
+            if (preg_match('@^' . $route . '$@', $httpRequest, $return)) {
+                $this->setup($uses."#".end($return));
+                return $this;
                 break;
             }
-
-            if (preg_match($this->routeRegex, $route)) {
-                echo 5;die;
-                $r = str_replace('(*)', $uri[1] , $route);
-                $modUri = '/' . $uri[0] . '/' . $uri[1];
-                if ($modUri == $r) {
-                    $this->route = $this->routes[$route];
-                    $this->set($route, $uri);
-                    $this->routeMatch = true;
-                    break;
-                }
-            }
         }
-
-        if (false === $this->routeMatch) {
-            throw new FontoException("No route was found for that request");
-            return;
-        }
-
-        return $this;
+        return false;
     }
 
-    protected function set($route, $uri)
+    public function controller($controller = null)
     {
-        if (is_array($uri)) {
-            $this->controller = $this->route['controller'];
-            $this->action  = isset($this->route['action']) ? $this->route['action'] : 'index';
-            $this->action .= self::ACTION_PREFIX;
-            $this->params = array_slice($uri, 2);
-        } else {
-            $this->controller = $this->route['controller'];
-            $this->action = !empty($uri[1]) ? $uri[1] : 'index';
-            $this->action .= self::ACTION_PREFIX;
-            $this->params = array_slice($uri, 2);
+        if (is_null($controller)) {
+            return $this->controller;
         }
+
+        $this->controller = (string) $controller;
+    }
+
+    public function action($action = null)
+    {
+        if (is_null($action)) {
+            return $this->action;
+        }
+
+        $this->action = (string) $action . self::ACTION_PREFIX;
+    }
+
+    public function parameters($parameters = null)
+    {
+        if (is_null($parameters)) {
+            return $this->parameters;
+        }
+
+        $this->parameters = (array) $parameters;
+    }
+
+    private function setup($route)
+    {
+        $route = explode('#', $route);
+
+        // if (empty($route) !== true) {
+        //     $route = '/';
+        // }
+
+        $controller = !empty($route[0]) ? $route[0] : self::DEFAULT_CONTROLLER;
+        $action = !empty($route[1]) ? $route[1] : self::DEFAULT_ACTION;
+        unset($route[0]);
+        unset($route[1]);
+        $parameters = !empty($route) ? $route : array();
+
+        $this->controller($controller);
+        $this->action($action);
+        $this->parameters($parameters);
     }
 
 }
