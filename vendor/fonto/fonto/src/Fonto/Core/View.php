@@ -19,7 +19,7 @@ class View
 	 *
 	 * @var string
 	 */
-	private $defaultFileEnding = '.twig.php';
+	private $defaultFileEnding = '.html.twig';
 
 	/**
 	 * Containing output data for the view
