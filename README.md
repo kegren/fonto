@@ -1,4 +1,3 @@
-Fonto
-=====
+#Fonto Framework
 
-A micro PHP MVC framework
+## A small PHP MVC framework
