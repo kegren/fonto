@@ -23,19 +23,10 @@ defined('CONTROLLERPATH') or define('CONTROLLERPATH', APPPATH . 'src' . DS . 'We
 defined('VIEWPATH') or define('VIEWPATH', APPPATH . 'src' . DS . 'Web' . DS . 'Views' . DS);
 defined('MODELPATH') or define('MODELPATH', APPPATH . 'src' . DS . 'Web' . DS . 'Models' . DS);
 defined('VENDORPATH') or define('VENDORPATH', ROOT . 'vendor' . DS);
-defined('FONTOCOREPATH') or define('FONTOCOREPATH', VENDORPATH . 'fonto' . DS . 'fonto' . DS . 'src' . DS . 'Fonto' . DS . 'Core' . DS);
+defined('SYSCOREPATH') or define('SYSCOREPATH', VENDORPATH . 'fonto' . DS . 'fonto' . DS . 'src' . DS . 'Fonto' . DS . 'Core' . DS);
 defined('WEBPATH') or define('WEBPATH', ROOT . 'web' . DS);
-
-$paths = array(
-	'app'    => APPPATH,
-	'core'   => FONTOCOREPATH,
-	'web'    => WEBPATH,
-	'appweb' => APPWEBPATH,
-	'vendor' => VENDORPATH,
-	'config' => CONFIGPATH
-);
 
 /**
  * Launch bootstrap
  */
-include $paths['app'] . 'bootstrap' . EXT;
+include APPPATH . 'bootstrap' . EXT;
