@@ -3,6 +3,8 @@
  * Fonto Framework
  *
  * @author Kenny Damgren <kenny.damgren@gmail.com>
+ * @package Fonto
+ * @link https://github.com/kenren/Fonto
  */
 
 namespace Fonto\Core;
@@ -23,15 +25,13 @@ class Application
 
 	protected $environment;
 
-	protected $config;
-
 	protected $router;
 
 	protected $request;
 
 	protected $loader;
 
-	protected $routes;
+	protected $routes = array();
 
 	protected $controllers;
 
@@ -41,21 +41,26 @@ class Application
 		$app = $this;
 
 		$this->registerAutoload();
-		$this->routes = array();
 
 		$this->container = new Container;
 		$this->container->add('router', function() use ($app) {
-			return new Router($app->routes());
+			return new Router($app->routes(), $this->container->get('request'));
 		});
 
-		$this->config = new Config();
+		$this->container->add('config', function() {
+			return new Config(CONFIGPATH);
+		});
+
+		$this->container->add('request', function() {
+			return new Request();
+		});
 
 		require APPPATH . 'routes' . EXT; /*doh*/
 
-		$env = $this->config()->get('application', 'environment');
+		$env = $this->container->get('config')->get('application', 'environment');
 		$this->setEnvironment($env);
 
-		$timezone = $this->config()->get('application', 'timezone');
+		$timezone = $this->container->get('config')->get('application', 'timezone');
 		$this->setTimeZone($timezone);
 
 		$this->setExceptionHandler(array(__NAMESPACE__.'\FontoException', 'handle'));
@@ -63,29 +68,18 @@ class Application
 
 	public function run()
 	{
-		//Run application
-		$uri = $this->request()->getRequestUri();
 		try {
 
-			$matched = $this->container->get('router')->match($uri);
-
-			// $matched = $this->router($this->routes())->match($uri);
-
-			// $twig_loader = new \Twig_Loader_Filesystem('');
-
-			$loader = new \Twig_Loader_Filesystem(VIEWPATH . 'home' . DS);
-			$twig = new \Twig_Environment($loader);
-			$template = $twig->loadTemplate('index.php');
-			echo $template->render(array('the' => 'variables', 'go' => 'here'));
+			$matched = $this->container->get('router')->match();
 
 			if ($matched === false) {
 				throw new FontoException("No route was found");
 			}
 
-
 			$route = $matched->run();
-		} catch(\Exception $e) {
 
+		} catch(\Exception $e) {
+			echo $e;die(1);
 		}
 
 	}
@@ -145,21 +139,6 @@ class Application
 	private function setExceptionHandler(array $options = array())
 	{
 		set_exception_handler($options);
-	}
-
-	private function config()
-	{
-		return $this->config;
-	}
-
-	private function request()
-	{
-		return new Request();
-	}
-
-	private function router($routes)
-	{
-		return new Router($routes);
 	}
 
 	private function setTimeZone($value = null)
