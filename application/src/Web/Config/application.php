@@ -2,7 +2,7 @@
 /**
  * Part of Fonto Framework
  *
- * Application 'specific' settings
+ * Application settings
  */
 
  return array(
@@ -23,17 +23,7 @@
  	),
 
  	/**
- 	 * Using twig as template language
- 	 */
- 	'twig' => true,
-
- 	/**
  	 * Application environment, development enables error_reporting
  	 */
  	'environment' => 'development',
-
- 	/**
- 	 * Autoload classes in libraries
- 	 */
- 	'autoload' => false
  );
