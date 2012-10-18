@@ -3,7 +3,8 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Fonto</title>
-	<link rel="stylesheet" href="">
+	<link rel="stylesheet" href="web/css/normalize.css">
+	<link rel="stylesheet" href="web/css/style.css">
 
 	<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
