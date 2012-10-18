@@ -9,8 +9,8 @@
 /**
  * Include files
  */
-include $paths['app'] . 'helpers' . EXT;
-include $paths['core'] . 'Application' . EXT;
+include APPPATH . 'helpers' . EXT;
+include SYSCOREPATH . 'Application' . EXT;
 
 /**
  * Namespace alias
@@ -22,5 +22,3 @@ use Fonto\Core\Application as App;
  */
 $app = new App();
 $app->run();
-
-unset($paths);
