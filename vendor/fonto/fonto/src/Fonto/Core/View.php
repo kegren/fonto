@@ -19,7 +19,7 @@ class View
 	 *
 	 * @var string
 	 */
-	private $defaultFileEnding = '.html.twig';
+	private $defaultFileEnding = '.twig.php';
 
 	/**
 	 * Containing output data for the view
@@ -70,7 +70,7 @@ class View
 
 			echo $container->get('twig')->render($this->view, $this->data());
 
-		} catch (\Exception $e) {
+		} catch (FontoException $e) {
 			throw $e;
 		}
 	}
