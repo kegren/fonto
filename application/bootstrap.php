@@ -1,4 +1,10 @@
 <?php
+/**
+ * Part of Fonto Framework
+ *
+ * Creates a new application
+ */
+
 
 /**
  * Include files
