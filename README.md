@@ -1,3 +1,3 @@
 #Fonto PHP Framework
 
-A lightweight PHP framework under development
+A small PHP framework under development
