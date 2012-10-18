@@ -19,11 +19,11 @@
  		'host' => 'localhost',
  		'user' => 'root',
  		'pass' => '',
- 		'name' => 'fonto',
+ 		'name' => 'fonto'
  	),
 
  	/**
- 	 * Application environment, development enables error_reporting
+ 	 * Application environment, development enables error_reporting(-1)
  	 */
  	'environment' => 'development',
  );
