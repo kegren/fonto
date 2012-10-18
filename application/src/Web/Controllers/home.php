@@ -1,4 +1,8 @@
 <?php
+/**
+ * Homepage controller
+ *
+ */
 
 namespace Web\Controllers;
 
@@ -9,7 +13,8 @@ class Home extends Controller
 	public function indexAction()
 	{
 		$data = array(
-			'test' => '568t'
+			'title' => 'Title',
+			'text' => 'Some text'
 		);
 
 		return $this->view('home/index', $data);
