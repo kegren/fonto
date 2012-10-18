@@ -3,6 +3,8 @@
  * Fonto Framework
  *
  * @author Kenny Damgren <kenny.damgren@gmail.com>
+ * @package Fonto
+ * @link https://github.com/kenren/Fonto
  */
 
 namespace Fonto\Core;
@@ -10,8 +12,7 @@ namespace Fonto\Core;
 class FontoException extends \Exception
 {
 	/**
-	 * Take care of an thrown exception and displays it
-	 *
+	 * @todo  fix horrible method
 	 * @param Exception $e
 	 */
 	public static function handle(\Exception $e)
