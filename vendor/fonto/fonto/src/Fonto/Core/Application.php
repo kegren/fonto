@@ -33,8 +33,6 @@ class Application
 
 	private $container;
 
-	protected $name;
-
 	protected $environment;
 
 	/**
@@ -51,11 +49,10 @@ class Application
 	 */
 	protected $routes = array();
 
-	public function __construct($name = '')
+	public function __construct()
 	{
 		//Setup application
 		$app = $this;
-		$this->name = $name;
 
 		$app->registerAutoload();
 
@@ -68,7 +65,7 @@ class Application
 			return new Config(CONFIGPATH);
 		});
 
-		$app->loadActiveRecord();
+		$app->loadActiveRecord($app->container->get('config')->get('application'));
 
 		require APPPATH . 'routes' . EXT; /*doh*/
 
@@ -88,7 +85,7 @@ class Application
 	public function run()
 	{
 		try {
-			$matched = $this->container->get('router')->match();
+			$matched = $this->container()->get('router')->match();
 
 			if ($matched === false) {
 				throw new FontoException("No route was found");
@@ -133,16 +130,21 @@ class Application
     /**
      * Load ActiveRecords and set directory for models
      *
-     * @todo   fix dynamic model dir and settings for db....
      * @return void
      */
-    private function loadActiveRecord()
+    private function loadActiveRecord($config)
     {
-    	\ActiveRecord\Config::initialize(function($cfg)
+     	\ActiveRecord\Config::initialize(function($cfg)
 		{
+			$config = $this->container()->get('config')->get('application');
+			$type = $config['database']['type'];
+	    	$host = $config['database']['host'];
+	    	$user = $config['database']['user'];
+	    	$pass = $config['database']['pass'];
+	    	$name = $config['database']['name'];
      		$cfg->set_model_directory(MODELPATH);
 	    	$cfg->set_connections(array(
-	        'development' => 'mysql://root:@localhost/fontomvc'));
+	    	'development' => "$type://$user:$pass@$host/$name"));
  		});
     }
 
@@ -156,6 +158,16 @@ class Application
 	{
 		$loader = include VENDORPATH . 'autoload' . EXT;
 		$loader->add('Web', APPPATH . 'src');
+	}
+
+	/**
+	 * Get container
+	 *
+	 * @return object
+	 */
+	private function container()
+	{
+		return $this->container;
 	}
 
 	/**
