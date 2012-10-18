@@ -1,5 +1,7 @@
 <?php
 /**
+ * Part of Fonto Framework
+ *
  * Application 'specific' settings
  */
 
@@ -23,10 +25,10 @@
  	/**
  	 * Using twig as template language
  	 */
- 	'twig' => false,
+ 	'twig' => true,
 
  	/**
- 	 * Application environment, development enables all error reporting
+ 	 * Application environment, development enables error_reporting
  	 */
  	'environment' => 'development',
 
