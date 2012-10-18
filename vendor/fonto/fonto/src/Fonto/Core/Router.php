@@ -60,16 +60,14 @@ class Router
      */
     private $parameters;
 
-    private $matched;
-
+    /**
+     * Fonto\Core\Request object
+     *
+     * @var object
+     */
     private $request;
 
-    /**
-     * Inject registered routes
-     * from application
-     *
-     * @param array $routes
-     */
+
     public function __construct(array $routes = array(), Request $request)
     {
         $this->routes = $routes;
@@ -77,7 +75,7 @@ class Router
     }
 
     /**
-     * Routes current request
+     * Route current request
      *
      * @return mixed
      */
@@ -105,14 +103,14 @@ class Router
             }
 
         } else {
-            throw new FontoException("Class: $class does not contain action: $this->action", 404);
+            throw new FontoException("Class: $class does not contain action: $this->action");
         }
     }
 
     /**
-     * Match current request with routes
+     * Match current request with registered routes
      *
-     * @return $this
+     * @return mixed
      */
     public function match()
     {
@@ -170,10 +168,6 @@ class Router
     private function setup($route)
     {
         $route = explode('#', $route);
-
-        // if (empty($route) !== true) {
-        //     $route = '/';
-        // }
 
         $controller = !empty($route[0]) ? $route[0] : self::DEFAULT_CONTROLLER;
         $action = !empty($route[1]) ? $route[1] : self::DEFAULT_ACTION;
