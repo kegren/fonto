@@ -15,7 +15,7 @@ use Fonto\Core\FontoException,
 class Router
 {
     const ACTION_PREFIX        = 'Action';
-    const CONTROLLER_NAMESPACE = 'Web\\Controllers';
+    const CONTROLLER_NAMESPACE = 'Web\Controllers';
     const DEFAULT_ROUTE        = '/';
     const ROUTE_DELIMITER      = '#';
     const DEFAULT_CONTROLLER   = 'home';
