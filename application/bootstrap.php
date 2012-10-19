@@ -21,4 +21,5 @@ use Fonto\Core\Application as App;
  * Run application
  */
 $app = new App();
+$app->loadActiveRecord();
 $app->run();
