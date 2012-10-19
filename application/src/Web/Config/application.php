@@ -26,4 +26,9 @@
  	 * Application environment, development enables error_reporting(-1)
  	 */
  	'environment' => 'development',
+
+ 	/**
+ 	 * Set baseUrl for application
+ 	 */
+ 	'baseUrl' => '',
  );
