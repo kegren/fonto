@@ -65,8 +65,6 @@ class Application
 			return new Config(CONFIGPATH);
 		});
 
-		$app->loadActiveRecord($app->container->get('config')->get('application'));
-
 		require APPPATH . 'routes' . EXT; /*doh*/
 
 		$env = $app->container->get('config')->get('application', 'environment');
@@ -122,17 +120,12 @@ class Application
         return $this;
     }
 
-    private function request()
-    {
-    	return new Request();
-    }
-
     /**
      * Load ActiveRecords and set directory for models
      *
      * @return void
      */
-    private function loadActiveRecord($config)
+    public function loadActiveRecord()
     {
      	\ActiveRecord\Config::initialize(function($cfg)
 		{
@@ -146,6 +139,11 @@ class Application
 	    	$cfg->set_connections(array(
 	    	'development' => "$type://$user:$pass@$host/$name"));
  		});
+    }
+
+    private function request()
+    {
+    	return new Request();
     }
 
     /**
