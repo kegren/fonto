@@ -52,28 +52,28 @@ class Application
 	public function __construct()
 	{
 		//Setup application
-		$app = $this;
+		$app = $this; // Reference for closure
 
-		$app->registerAutoload();
+		$this->registerAutoload();
 
-		$app->container = new Container;
-		$app->container->add('router', function() use ($app) {
+		$this->container = new Container;
+		$this->container->add('router', function() use ($app) {
 			return new Router($app->routes(), $app->request());
 		});
 
-		$app->container->add('config', function() {
+		$this->container->add('config', function() {
 			return new Config(CONFIGPATH);
 		});
 
-		require APPPATH . 'routes' . EXT; /*doh*/
+		require APPPATH . 'routes' . EXT;
 
-		$env = $app->container->get('config')->get('application', 'environment');
-		$app->setEnvironment($env);
+		$env = $this->container->get('config')->get('application', 'environment');
+		$this->setEnvironment($env);
 
-		$timezone = $app->container->get('config')->get('application', 'timezone');
-		$app->setTimeZone($timezone);
+		$timezone = $this->container->get('config')->get('application', 'timezone');
+		$this->setTimeZone($timezone);
 
-		$app->setExceptionHandler(array(__NAMESPACE__.'\FontoException', 'handle'));
+		$this->setExceptionHandler(array(__NAMESPACE__.'\FontoException', 'handle'));
 	}
 
 	/**
@@ -123,27 +123,37 @@ class Application
     /**
      * Load ActiveRecords and set directory for models
      *
+     * @todo   Fix hardcoded database settings (cant use $this ref?)
      * @return void
      */
     public function loadActiveRecord()
     {
      	\ActiveRecord\Config::initialize(function($cfg)
 		{
-			$config = $this->container()->get('config')->get('application');
-			$type = $config['database']['type'];
-	    	$host = $config['database']['host'];
-	    	$user = $config['database']['user'];
-	    	$pass = $config['database']['pass'];
-	    	$name = $config['database']['name'];
+			$type = 'mysql';
+	    	$host = 'localhost';
+	    	$user = 'root';
+	    	$pass = '';
+	    	$name = 'fonto';
      		$cfg->set_model_directory(MODELPATH);
 	    	$cfg->set_connections(array(
 	    	'development' => "$type://$user:$pass@$host/$name"));
  		});
     }
 
-    private function request()
+    public function request()
     {
     	return new Request();
+    }
+
+    /**
+	 * Get all registered routes
+	 *
+	 * @return array
+	 */
+    public function routes()
+    {
+    	return (array) $this->routes;
     }
 
     /**
@@ -239,15 +249,4 @@ class Application
 		}
 		return $this;
 	}
-
-	/**
-	 * Get all registered routes
-	 *
-	 * @return array
-	 */
-    private function routes()
-    {
-    	return (array) $this->routes;
-    }
-
 }
