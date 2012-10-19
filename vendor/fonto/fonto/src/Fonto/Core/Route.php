@@ -4,7 +4,11 @@
  *
  * @author Kenny Damgren <kenny.damgren@gmail.com>
  * @package Fonto
- * @link https://github.com/kenren/Fonto
+ * @link https://github.com/kenren/fonto
+ */
+
+/**
+ * Currently not in use!
  */
 
 namespace Fonto\Core;

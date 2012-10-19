@@ -4,7 +4,7 @@
  *
  * @author Kenny Damgren <kenny.damgren@gmail.com>
  * @package Fonto
- * @link https://github.com/kenren/Fonto
+ * @link https://github.com/kenren/fonto
  */
 
 namespace Fonto\Core;
@@ -31,23 +31,33 @@ class Application
 	 */
 	public $app;
 
-	private $container;
+	/**
+	 * \Fonto\Core\DI\Container
+	 *
+	 * @var object
+	 */
+	protected $container;
 
-	protected $environment;
+	/**
+	 * Environment for the application
+	 *
+	 * @var string
+	 */
+	private $environment;
 
 	/**
 	 * \Fonto\Core\Request
 	 *
 	 * @var object
 	 */
-	protected $request;
+	private $request;
 
 	/**
 	 * Storage for all routes
 	 *
 	 * @var array
 	 */
-	protected $routes = array();
+	private $routes = array();
 
 	public function __construct()
 	{
@@ -56,7 +66,7 @@ class Application
 
 		$this->registerAutoload();
 
-		$this->container = new Container;
+		$this->container = new Container();
 		$this->container->add('router', function() use ($app) {
 			return new Router($app->routes(), $app->request());
 		});
@@ -77,8 +87,7 @@ class Application
 	}
 
 	/**
-	 * Run application!
-	 *
+	 * Run app
 	 */
 	public function run()
 	{
@@ -128,16 +137,22 @@ class Application
      */
     public function loadActiveRecord()
     {
-     	\ActiveRecord\Config::initialize(function($cfg)
+    	$config = $this->container()->get('config')->get('application', 'database');
+    	if ($config === false) {
+    		throw new Exception("Missing database settings from application config file");
+    	}
+    	$type = $config['type'];
+    	$host = $config['host'];
+    	$user = $config['user'];
+    	$pass = $config['pass'];
+    	$name = $config['name'];
+
+    	$dsn = "$type://$user:$pass@$host/$name";
+     	\ActiveRecord\Config::initialize(function($cfg) use($dsn)
 		{
-			$type = 'mysql';
-	    	$host = 'localhost';
-	    	$user = 'root';
-	    	$pass = '';
-	    	$name = 'fonto';
      		$cfg->set_model_directory(MODELPATH);
 	    	$cfg->set_connections(array(
-	    	'development' => "$type://$user:$pass@$host/$name"));
+	    	'development' => $dsn));
  		});
     }
 
