@@ -7,11 +7,11 @@
  * @link https://github.com/kenren/fonto
  */
 
-namespace Fonto\Core;
+namespace Fonto\Core\Config;
 
 use Fonto\Core\FontoException;
 
-class Config
+class Loader
 {
 	/**
 	 * Path for config directory
