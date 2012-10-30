@@ -7,14 +7,14 @@
  * @link https://github.com/kenren/fonto
  */
 
-namespace Fonto\Core;
+namespace Fonto\Core\Application;
 
 use Fonto\Core\Config,
 	Fonto\Core\Router,
 	Fonto\Core\Request,
 	Fonto\Core\DI\Container;
 
-class Application
+class App
 {
 	/**
 	 * Current version
