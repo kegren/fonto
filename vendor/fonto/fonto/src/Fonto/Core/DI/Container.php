@@ -15,7 +15,7 @@ class Container implements ContainerInterface
 {
 	protected $services = array();
 
-	public function add($name, $value)
+	public function set($name, $value)
 	{
 		if (isset($this->services[$name])) {
 			throw new FontoException("There is already an service with $name registered in the container");
@@ -29,12 +29,13 @@ class Container implements ContainerInterface
 			throw new FontoException("No service is registrerd with name $name");
 		}
 
-		if (is_callable($this->services[$name])) {
-			return $this->services[$name]();
-		} else {
+		if ( ! $name instanceOf \Closure) {
 			return $this->services[$name];
+		} else {
+			return $this->services[$name]();
 		}
 	}
 
-
+	public function call($class)
+	{}
 }
