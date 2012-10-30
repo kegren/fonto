@@ -11,7 +11,7 @@ namespace Fonto\Core\DI;
 
 interface ContainerInterface
 {
-	public function add($name, $value);
+	public function set($name, $value);
 
 	public function get($name);
 }
