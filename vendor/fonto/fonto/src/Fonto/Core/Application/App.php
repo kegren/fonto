@@ -36,7 +36,7 @@ class App
 	 *
 	 * @var object
 	 */
-	protected $container;
+	private $container;
 
 	/**
 	 * Environment for the application
@@ -81,9 +81,9 @@ class App
 		$this->setEnvironment($env);
 
 		$timezone = $this->container->get('config')->get('application', 'timezone');
-		$this->setTimeZone($timezone);
+		$this->setTimezone($timezone);
 
-		$this->setExceptionHandler(array(__NAMESPACE__.'\FontoException', 'handle'));
+		$this->setExceptionHandler(array('Fonto\Core\FontoException', 'handle'));
 	}
 
 	/**
@@ -122,7 +122,7 @@ class App
 	 * @param  string $uses
 	 * @return object
 	 */
-	public function route($route, $uses)
+	public function addRoute($route, $uses)
     {
         $this->routes[$route]  = $uses;
 
@@ -188,7 +188,7 @@ class App
 	 *
 	 * @return object
 	 */
-	private function container()
+	private function getContainer()
 	{
 		return $this->container;
 	}
@@ -255,7 +255,7 @@ class App
 	 *
 	 * @param string $value
 	 */
-	private function setTimeZone($value = null)
+	private function setTimezone($value = null)
 	{
 		if (null === $value) {
 			date_default_timezone_set(self::DEFAULT_TIMEZONE);
