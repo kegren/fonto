@@ -16,7 +16,7 @@ defined('EXT') or define('EXT', '.php');
  * Define paths
  */
 defined('ROOT') or define('ROOT', realpath(__DIR__). DS);
-defined('APPPATH') or define('APPPATH', ROOT . 'application' . DS);
+defined('APPPATH') or define('APPPATH', ROOT . 'app' . DS);
 defined('APPWEBPATH') or define('APPWEBPATH', APPPATH . 'src' . DS . 'Web' . DS);
 defined('CONFIGPATH') or define('CONFIGPATH', APPPATH . 'src' . DS . 'Web' . DS . 'Config' . DS);
 defined('CONTROLLERPATH') or define('CONTROLLERPATH', APPPATH . 'src' . DS . 'Web' . DS . 'Controllers' . DS);
@@ -24,6 +24,7 @@ defined('VIEWPATH') or define('VIEWPATH', APPPATH . 'src' . DS . 'Web' . DS . 'V
 defined('MODELPATH') or define('MODELPATH', APPPATH . 'src' . DS . 'Web' . DS . 'Models' . DS);
 defined('VENDORPATH') or define('VENDORPATH', ROOT . 'vendor' . DS);
 defined('SYSCOREPATH') or define('SYSCOREPATH', VENDORPATH . 'fonto' . DS . 'fonto' . DS . 'src' . DS . 'Fonto' . DS . 'Core' . DS);
+defined('SYSCOREAPPPATH') or define('SYSCOREAPPPATH', VENDORPATH . 'fonto' . DS . 'fonto' . DS . 'src' . DS . 'Fonto' . DS . 'Core' . DS . 'Application' . DS);
 defined('WEBPATH') or define('WEBPATH', ROOT . 'web' . DS);
 
 /**
