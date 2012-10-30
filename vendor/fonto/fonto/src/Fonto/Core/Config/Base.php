@@ -11,19 +11,22 @@ namespace Fonto\Core\Config;
 
 use Fonto\Core\FontoException;
 
-class Loader
+class Base
 {
 	/**
 	 * Path for config directory
 	 *
 	 * @var string
 	 */
-	private $path;
+	private $path = array();
+
+	protected $app;
 
 
-	public function __construct($path)
+	public function __construct(\Fonto\Core\Application\App $app, array $path)
 	{
-		$this->path = $path;
+		$this->app = $app;
+		$this->path[] = $path;
 	}
 
 	/**
