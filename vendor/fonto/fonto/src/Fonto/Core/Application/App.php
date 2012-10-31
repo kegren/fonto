@@ -9,10 +9,10 @@
 
 namespace Fonto\Core\Application;
 
-use Fonto\Core\Config,
-	Fonto\Core\Router,
-	Fonto\Core\Request,
-	Fonto\Core\DI\Container;
+use Fonto\Core\Router;
+use	Fonto\Core\Request;
+use	Fonto\Core\DI\Container;
+use Fonto\Core\Config;
 
 class App
 {
@@ -27,6 +27,8 @@ class App
 	const DEFAULT_TIMEZONE = 'Europe/Stockholm';
 
 	/**
+	 * \Fonto\Core\Application\App
+	 *
 	 * @var object
 	 */
 	public $app;
@@ -39,18 +41,18 @@ class App
 	private $container;
 
 	/**
-	 * Environment for the application
-	 *
-	 * @var string
-	 */
-	private $environment;
-
-	/**
 	 * \Fonto\Core\Request
 	 *
 	 * @var object
 	 */
 	private $request;
+
+	/**
+	 * \Fonto\Core\Controller
+	 *
+	 * @var object
+	 */
+	private $controller;
 
 	/**
 	 * Storage for all routes
@@ -59,32 +61,50 @@ class App
 	 */
 	private $routes = array();
 
+	/**
+	 * Environment for the application
+	 *
+	 * @var string
+	 */
+	private $environment;
+
+	protected $name = 'Web';
+
 	public function __construct()
 	{
 		//Setup application
-		$app = $this; // Reference for closure
+		$app = $this;
 
 		$this->registerAutoload();
 
 		$this->container = new Container();
-		$this->container->add('router', function() use ($app) {
-			return new Router($app->routes(), $app->request());
-		});
+		$this->container['router'] = function() use ($app) {
+			return new Router($app->getRoutes(), $app->getRequest());
+		};
 
-		$this->container->add('config', function() {
-			return new Config(CONFIGPATH);
-		});
+		$this->container['config'] = function() use ($app){
+			return new Config\Base($app, array(CONFIGPATH, APPPATH));
+		};
+	}
 
-		require APPPATH . 'routes' . EXT;
+	public function setup()
+	{
+		$config = $this->container['config'];
+		$config->load('routes', 'routes');
 
-		$env = $this->container->get('config')->get('application', 'environment');
+		$env = $config->load('app', 'environment');
 		$this->setEnvironment($env);
 
-		$timezone = $this->container->get('config')->get('application', 'timezone');
+		$timezone = $config->load('app', 'timezone');
 		$this->setTimezone($timezone);
 
+		// $this->container->build('\Fonto\Core\Config\Base', $app, array('1'))->load('aik');
+
 		$this->setExceptionHandler(array('Fonto\Core\FontoException', 'handle'));
+		return $this;
 	}
+
+
 
 	/**
 	 * Run app
@@ -92,10 +112,10 @@ class App
 	public function run()
 	{
 		try {
-			$matched = $this->container()->get('router')->match();
+			$matched = $this->container['router']->match();
 
-			if ($matched === false) {
-				throw new FontoException("No route was found");
+			if (false === $matched) {
+				throw new \Fonto\Core\FontoException("No route was found");
 			}
 
 			$route = $matched->run();
@@ -135,9 +155,13 @@ class App
      * @todo   Fix hardcoded database settings (cant use $this ref?)
      * @return void
      */
-    public function loadActiveRecord()
+    public function setActiveRecord($active = true)
     {
-    	$config = $this->container()->get('config')->get('application', 'database');
+    	if (false === $active) {
+    		return;
+    	}
+
+    	$config = $this->container->get('config')->load('app', 'database');
     	if ($config === false) {
     		throw new Exception("Missing database settings from application config file");
     	}
@@ -154,9 +178,20 @@ class App
 	    	$cfg->set_connections(array(
 	    	'development' => $dsn));
  		});
+
+ 		return $this;
     }
 
-    public function request()
+    public function setTwig($active = true)
+    {
+    	if (false === $active) {
+    		return;
+    	}
+
+    	return $this;
+    }
+
+    public function getRequest()
     {
     	return new Request();
     }
@@ -166,7 +201,7 @@ class App
 	 *
 	 * @return array
 	 */
-    public function routes()
+    public function getRoutes()
     {
     	return (array) $this->routes;
     }
@@ -177,10 +212,27 @@ class App
      *
      * @return void
      */
-	private function registerAutoload()
+	private function registerAutoload($ns = null)
 	{
 		$loader = include VENDORPATH . 'autoload' . EXT;
-		$loader->add('Web', APPPATH . 'src');
+		if (null === $ns) {
+			$loader->add($this->name, APPPATH . 'src');
+		} else {
+			$loader->add($ns, APPPATH . 'src');
+		}
+
+		return $this;
+	}
+
+	public function setAppName($name = null)
+	{
+		if (null === $name) {
+			$this->name = 'Web';
+		} else {
+			$this->name = $name;
+		}
+
+		return $this;
 	}
 
 	/**
