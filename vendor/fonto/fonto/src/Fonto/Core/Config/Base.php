@@ -10,6 +10,7 @@
 namespace Fonto\Core\Config;
 
 use Fonto\Core\FontoException;
+use Fonto\Core\Application\App;
 
 class Base
 {
@@ -18,15 +19,15 @@ class Base
 	 *
 	 * @var string
 	 */
-	private $path = array();
+	private $paths = array();
 
 	protected $app;
 
 
-	public function __construct(\Fonto\Core\Application\App $app, array $path)
+	public function __construct(App $app, array $paths)
 	{
 		$this->app = $app;
-		$this->path[] = $path;
+		$this->paths = $paths;
 	}
 
 	/**
@@ -36,20 +37,21 @@ class Base
 	 * @param  string $key
 	 * @return mixed
 	 */
-	public function get($file, $key = null)
+	public function load($file, $key = null)
 	{
-		if ($config = $this->exists($file)) {
+		if ($config = $this->findFile($file)) {
 
-			if (is_null($key)) {
-				return $config;
+			if (is_callable($config[$key])) {
+				return $config[$key]($this->app);
 			}
 
 			if (isset($config[$key])) {
 				return $config[$key];
 			}
+
 		}
 
-		return false;
+		throw new FontoException("No file with name $file was found");
 	}
 
 	/**
@@ -58,14 +60,14 @@ class Base
 	 * @param  string $file
 	 * @return file
 	 */
-	private function exists($file)
+	private function findFile($file)
 	{
-		$file = $this->path . $file . EXT;
+		foreach ($this->paths as $path) {
+			$config = $path . $file . EXT;
 
-		if (!file_exists($file) or !is_readable($file)) {
-			throw new FontoException("The file $file does not exist or is not readable");
+			if (file_exists($config)) {
+				return require $config;
+			}
 		}
-
-		return include $file;
 	}
 }
