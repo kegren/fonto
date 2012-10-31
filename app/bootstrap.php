@@ -21,5 +21,8 @@ use Fonto\Core\Application\App as App;
  * Run application
  */
 $app = new App();
-$app->loadActiveRecord();
-$app->run();
+$app->setAppName('demo')
+	->setActiveRecord(true)
+	->setTwig(true)
+	->setup()
+	->run();
