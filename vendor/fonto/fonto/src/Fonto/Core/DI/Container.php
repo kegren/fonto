@@ -10,17 +10,14 @@
 namespace Fonto\Core\DI;
 
 use Fonto\Core\FontoException;
+use \ArrayAccess;
 
-class Container implements ContainerInterface
+class Container implements ArrayAccess
 {
 	protected $services = array();
 
-	protected $name;
-
-	public function __construct($name)
-	{
-		$this->name = $name;
-	}
+	public function __construct($channel = null)
+	{}
 
 	public function set($name, $value)
 	{
@@ -52,5 +49,37 @@ class Container implements ContainerInterface
 		$instance   = $args ? $reflection->newInstanceArgs($args) : $reflection->newInstance();
 
 		return $instance;
+	}
+
+	public function offsetSet($offset, $value)
+	{
+		if (isset($this->services[$offset])) {
+			throw new FontoException("There is already an service with $offset registered in the container");
+		}
+
+		$this->services[$offset] = $value;
+	}
+
+	public function offsetExists($offset)
+	{
+		//
+	}
+
+	public function offsetUnset($offset)
+	{
+		//
+	}
+
+	public function offsetGet($offset)
+	{
+		if (!isset($this->services[$offset])) {
+			throw new FontoException("No service is registered with name $offset");
+		}
+
+		if (is_callable($this->services[$offset])) {
+			return $this->services[$offset]($this);
+		} else {
+			return $this->services[$offset];
+		}
 	}
 }
