@@ -26,4 +26,21 @@
  *
  */
 
-$app->route('/', 'home#index');
+return array(
+
+	'routes' => function(Fonto\Core\Application\App $app) {
+
+		$app->addRoute('/', 'home#index');
+		$app->addRoute('/test/index', 'test#index');
+
+	},
+
+	'controllers' => function(Fonto\Core\Application\App $app) {
+		$app->addControllers(array(
+			'admin',
+			'auth'
+		));
+	},
+
+
+);
