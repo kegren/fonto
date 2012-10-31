@@ -9,8 +9,8 @@
 
 namespace Fonto\Core;
 
-use Fonto\Core\FontoException,
-	Fonto\Core\DI\Container;
+use Fonto\Core\FontoException;
+use	Fonto\Core\DI\Container;
 
 class View
 {
@@ -61,7 +61,7 @@ class View
 
 		try {
 			$container = new Container;
-			$container->add('twig', function () {
+			$container->set('twig', function () {
 				$loader = new \Twig_Loader_Filesystem(VIEWPATH);
       			$twig = new \Twig_Environment($loader);
 
