@@ -13,6 +13,10 @@ use Fonto\Core\Router;
 use	Fonto\Core\Request;
 use	Fonto\Core\DI\Container;
 use Fonto\Core\Config;
+use Fonto\Core\FontoException;
+use Fonto\Core\Controller;
+use Fonto\Core\Url;
+use Fonto\Core\View;
 
 class App
 {
@@ -27,28 +31,21 @@ class App
 	const DEFAULT_TIMEZONE = 'Europe/Stockholm';
 
 	/**
-	 * \Fonto\Core\Application\App
+	 * Fonto\Core\Application\App
 	 *
 	 * @var object
 	 */
 	public $app;
 
 	/**
-	 * \Fonto\Core\DI\Container
+	 * Fonto\Core\DI\Container
 	 *
 	 * @var object
 	 */
-	private $container;
+	public $container;
 
 	/**
-	 * \Fonto\Core\Request
-	 *
-	 * @var object
-	 */
-	private $request;
-
-	/**
-	 * \Fonto\Core\Controller
+	 * Fonto\Core\Controller
 	 *
 	 * @var object
 	 */
@@ -68,27 +65,78 @@ class App
 	 */
 	private $environment;
 
-	protected $name = 'Web';
+	/**
+	 *
+	 *
+	 * @var [type]
+	 */
+	private $twigEnabled;
 
-	public function __construct()
+
+	/**
+	 * Name for the app
+	 *
+	 * @var string
+	 */
+	protected $appName;
+
+	public function __construct($name = null)
 	{
-		//Setup application
-		$app = $this;
+		if (null === $name) {
+			$this->appName = 'demo';
+		} else {
+			$this->appName = $name;
+		}
 
 		$this->registerAutoload();
-
-		$this->container = new Container();
-		$this->container['router'] = function() use ($app) {
-			return new Router($app->getRoutes(), $app->getRequest());
-		};
-
-		$this->container['config'] = function() use ($app){
-			return new Config\Base($app, array(CONFIGPATH, APPPATH));
-		};
 	}
 
 	public function setup()
 	{
+		$app = $this;
+
+		$this->container = new Container($app);
+
+		$this->container['router'] = function() use ($app) {
+			$router = new Router();
+			$router->setApp($app);
+
+			return $router;
+		};
+
+		$this->container['controller'] = function() use ($app) {
+			$controller = new Controller();
+			$controller->setApp($app);
+
+			return $controller;
+		};
+
+		$this->container['request'] = function() {
+			return new Request();
+		};
+
+		$this->container['config'] = function() use ($app) {
+			return new Config\Base($app, array(CONFIGPATH, APPPATH));
+		};
+
+		$this->container['url'] = function() {
+			return new Url();
+		};
+
+		$this->container['view'] = function() use ($app) {
+			$view = new View();
+			$view->setApp($app);
+
+			return $view;
+		};
+
+		$this->container['twig'] = function() {
+			$loader = new \Twig_Loader_Filesystem(VIEWPATH);
+      		$twig = new \Twig_Environment($loader);
+
+      		return $twig;
+		};
+
 		$config = $this->container['config'];
 		$config->load('routes', 'routes');
 
@@ -98,13 +146,10 @@ class App
 		$timezone = $config->load('app', 'timezone');
 		$this->setTimezone($timezone);
 
-		// $this->container->build('\Fonto\Core\Config\Base', $app, array('1'))->load('aik');
-
 		$this->setExceptionHandler(array('Fonto\Core\FontoException', 'handle'));
+
 		return $this;
 	}
-
-
 
 	/**
 	 * Run app
@@ -112,10 +157,13 @@ class App
 	public function run()
 	{
 		try {
-			$matched = $this->container['router']->match();
+			$router = $this->container['router'];
+			$router->setRoutes($this->routes);
+
+			$matched = $router->match($this->routes);
 
 			if (false === $matched) {
-				throw new \Fonto\Core\FontoException("No route was found");
+				throw new FontoException("No route was found");
 			}
 
 			$route = $matched->run();
@@ -182,19 +230,18 @@ class App
  		return $this;
     }
 
-    public function setTwig($active = true)
+    public function useTwig($active)
     {
-    	if (false === $active) {
-    		return;
-    	}
+    	$this->twigEnabled = $active;
 
     	return $this;
     }
 
-    public function getRequest()
+    public function isTwig()
     {
-    	return new Request();
+    	return $this->twigEnabled;
     }
+
 
     /**
 	 * Get all registered routes
@@ -216,7 +263,7 @@ class App
 	{
 		$loader = include VENDORPATH . 'autoload' . EXT;
 		if (null === $ns) {
-			$loader->add($this->name, APPPATH . 'src');
+			$loader->add($this->appName, APPPATH . 'src');
 		} else {
 			$loader->add($ns, APPPATH . 'src');
 		}
@@ -227,12 +274,17 @@ class App
 	public function setAppName($name = null)
 	{
 		if (null === $name) {
-			$this->name = 'Web';
+			$this->name = 'demo';
 		} else {
 			$this->name = $name;
 		}
 
 		return $this;
+	}
+
+	public function getAppName()
+	{
+		return $this->appName;
 	}
 
 	/**
