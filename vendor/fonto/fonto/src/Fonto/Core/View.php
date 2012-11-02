@@ -20,7 +20,7 @@ class View
 	 *
 	 * @var string
 	 */
-	private $defaultFileEnding = '.html.twig';
+	private $extension;
 
 	/**
 	 * Containing output data for the view
@@ -36,6 +36,11 @@ class View
 	 */
 	private $view;
 
+	/**
+	 * Fonto\Core\Application\App
+	 *
+	 * @var object
+	 */
 	protected $app;
 
 	/**
@@ -44,38 +49,9 @@ class View
 	 * @param string $file
 	 * @param array  $data
 	 */
-	public function __construct($file, $data = null)
+	public function __construct()
 	{
-		if (!file_exists(VIEWPATH . $file . $this->defaultFileEnding)) {
-			throw new FontoException("View $file does not exists");
-		}
 
-		if (!is_null($data) and !is_array($data)) {
-			throw new FontoException("The $data most be an array");
-		} else {
-			$this->data = $data;
-		}
-
-		if (is_null($data)) {
-			$this->data = array();
-		}
-
-		$this->view = $file . $this->defaultFileEnding;
-
-		try {
-			$container = new Container;
-			$container->set('twig', function () {
-				$loader = new \Twig_Loader_Filesystem(VIEWPATH);
-      			$twig = new \Twig_Environment($loader);
-
-      			return $twig;
-			});
-
-			echo $container->get('twig')->render($this->view, $this->data());
-
-		} catch (FontoException $e) {
-			throw $e;
-		}
 	}
 
 	public function setApp(App $app)
@@ -100,5 +76,39 @@ class View
 	public function getData()
 	{
 		return $this->data;
+	}
+
+	public function render($view, $data = null)
+	{
+		$twig =	$this->app->isTwig();
+
+		if ($twig) {
+			$this->setExtension('twig');
+			$this->view = $view . $this->getExtension();
+
+			if (null === $data) {
+				echo $this->app->container['twig']->render($this->view, $this->getData());
+			} else {
+				echo $this->app->container['twig']->render($this->view, $data);
+			}
+		}
+	}
+
+	public function setExtension($type)
+	{
+		switch ($type) {
+			case 'twig':
+				$this->extension = '.html.twig';
+				break;
+
+			default:
+				$this->extension = '.php';
+				break;
+		}
+	}
+
+	public function getExtension()
+	{
+		return $this->extension;
 	}
 }
