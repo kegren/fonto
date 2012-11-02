@@ -19,7 +19,7 @@ defined('ROOT') or define('ROOT', realpath(__DIR__). DS);
 defined('APPPATH') or define('APPPATH', ROOT . 'app' . DS);
 defined('APPWEBPATH') or define('APPWEBPATH', APPPATH . 'src' . DS . 'Web' . DS);
 defined('CONFIGPATH') or define('CONFIGPATH', APPPATH . 'src' . DS . 'Web' . DS . 'Config' . DS);
-defined('CONTROLLERPATH') or define('CONTROLLERPATH', APPPATH . 'src' . DS . 'Web' . DS . 'Controllers' . DS);
+defined('CONTROLLERPATH') or define('CONTROLLERPATH', APPPATH . 'src' . DS . 'Demo' . DS . 'Controllers' . DS);
 defined('VIEWPATH') or define('VIEWPATH', APPPATH . 'src' . DS . 'Web' . DS . 'Views' . DS);
 defined('MODELPATH') or define('MODELPATH', APPPATH . 'src' . DS . 'Web' . DS . 'Models' . DS);
 defined('VENDORPATH') or define('VENDORPATH', ROOT . 'vendor' . DS);
