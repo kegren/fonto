@@ -183,6 +183,7 @@ class Router
                     $this->controller = $controller;
                     $this->action = !empty($uri[2]) ? $uri[2] : '';
                     $this->parameters = array_slice($uri, 2);
+                    return $this;
                     break;
                 }
             }
@@ -192,31 +193,40 @@ class Router
         return false;
     }
 
-    public function controller($controller = null)
+    public function setController($controller)
     {
-        if (is_null($controller)) {
-            return $this->controller;
-        }
+        $this->controller = $controller;
 
-        $this->controller = (string) $controller;
+        return $this;
     }
 
-    public function action($action = null)
+    public function getController()
     {
-        if (is_null($action)) {
-            return $this->action;
-        }
-
-        $this->action = (string) $action . self::ACTION_PREFIX;
+        return $this->controller;
     }
 
-    public function parameters($parameters = null)
+    public function setAction($action)
     {
-        if (is_null($parameters)) {
-            return $this->parameters;
-        }
+        $this->action = $action . self::ACTION_PREFIX;
 
-        $this->parameters = (array) $parameters;
+        return $this;
+    }
+
+    public function getAction()
+    {
+        return $this->action;
+    }
+
+    public function setParameters($parameters)
+    {
+        $this->parameters = $parameters;
+
+        return $this;
+    }
+
+    public function getParameters()
+    {
+        return $this->parameters;
     }
 
     private function setup($route)
