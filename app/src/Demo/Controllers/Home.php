@@ -3,16 +3,15 @@
  * Homepage controller
  */
 
-namespace Web\Controllers;
+namespace Demo\Controllers;
 
-use Fonto\Core\Controller,
-	Fonto\Core\Url;
+use Fonto\Core\Controller;
 
 class Home extends Controller
 {
 	public function indexAction()
 	{
-		$url = new Url();
+		$url = $this->app->container['url'];
 
 		$data = array(
 			'title'   => 'Fonto PHP Framework',
@@ -20,6 +19,7 @@ class Home extends Controller
 			'baseUrl' => $url->baseUrl()
 		);
 
-		return $this->view('home/index', $data);
+		$view = $this->app->container['view'];
+		$view->render('home/index', $data);
 	}
 }
