@@ -9,13 +9,14 @@
 
 namespace Fonto\Core;
 
-use Fonto\Core\FontoException,
-    Fonto\Core\Request;
+use Fonto\Core\FontoException;
+use Fonto\Core\Request;
+use Fonto\Core\Application\App;
 
 class Router
 {
     const ACTION_PREFIX        = 'Action';
-    const CONTROLLER_NAMESPACE = 'Web\Controllers';
+    const CONTROLLER_NAMESPACE = 'Demo\\Controllers';
     const DEFAULT_ROUTE        = '/';
     const ROUTE_DELIMITER      = '#';
     const DEFAULT_CONTROLLER   = 'home';
@@ -40,11 +41,18 @@ class Router
     private $routes;
 
     /**
+     * Registered controllers
+     *
+     * var array
+     */
+    private $controllers;
+
+    /**
      * Controller
      *
      * @var string
      */
-    private $controller;
+    public $controller;
 
     /**
      * Action
@@ -60,18 +68,28 @@ class Router
      */
     private $parameters;
 
-    /**
-     * Fonto\Core\Request object
-     *
-     * @var object
-     */
-    private $request;
+
+    protected $app;
 
 
-    public function __construct(array $routes = array(), Request $request)
+    public function __construct()
+    {
+        $this->routes = array();
+        $this->controllers = array();
+    }
+
+    public function setApp(App $app)
+    {
+        $this->app = $app;
+
+        return $this;
+    }
+
+    public function setRoutes($routes = array())
     {
         $this->routes = $routes;
-        $this->request = $request;
+
+        return $this;
     }
 
     /**
@@ -81,7 +99,8 @@ class Router
      */
     public function run()
     {
-        $class = self::CONTROLLER_NAMESPACE . '\\' . ucfirst($this->controller());
+        $ns = $this->app->getAppName() . '\\Controllers';
+        $class = $ns . '\\' . ucfirst($this->controller());
         $file  = CONTROLLERPATH . ucfirst($this->controller()) . EXT;
 
         if (!file_exists($file) or (!is_readable($file))) {
@@ -92,14 +111,21 @@ class Router
             throw new FontoException("The class $class does not exist");
         }
 
-        $cls = new $class();
+        // _vd($this->app->container['controller']);
+        // $cls = new $class();
 
-        if (method_exists($cls, $this->action)) {
+        $reflection = new \ReflectionClass($class);
+        $instance   = $reflection->newInstance();
+        $method     = "setApp";
+        $instance->{$method}($this->app);
+
+
+        if (method_exists($instance, $this->action)) {
 
             if (isset($this->params)) {
-                call_user_func_array(array($cls, $this->action), $this->params);
+                call_user_func_array(array($instance, $this->action), $this->params);
             } else {
-                call_user_func(array($cls, $this->action));
+                call_user_func(array($instance, $this->action));
             }
 
         } else {
@@ -114,6 +140,8 @@ class Router
      */
     public function match()
     {
+        $requestedUri = $this->app->container['request']->getRequestUri();
+
         list($num, $action, $controller) = array_keys($this->patterns);
         list($rNum, $rAction, $rController) = array_values($this->patterns);
 
@@ -129,7 +157,7 @@ class Router
                 $rController
             ), $route);
 
-            if (preg_match('@^' . $route . '$@', $this->request->getRequestUri(), $return)) {
+            if (preg_match('@^' . $route . '$@', $requestedUri, $return)) {
                 $this->setup($uses."#".end($return));
                 return $this;
                 break;
