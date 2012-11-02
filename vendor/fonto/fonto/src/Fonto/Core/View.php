@@ -11,6 +11,7 @@ namespace Fonto\Core;
 
 use Fonto\Core\FontoException;
 use	Fonto\Core\DI\Container;
+use Fonto\Core\Application\App;
 
 class View
 {
@@ -34,6 +35,8 @@ class View
 	 * @var string
 	 */
 	private $view;
+
+	protected $app;
 
 	/**
 	 * Adding view and data for the output.
@@ -75,13 +78,27 @@ class View
 		}
 	}
 
+	public function setApp(App $app)
+	{
+		$this->app = $app;
+
+		return $this;
+	}
+
+	public function setData(array $data = array())
+	{
+		$this->data = $data;
+
+		return $this;
+	}
+
 	/**
 	 * Returns data for the view
 	 *
 	 * @return array
 	 */
-	private function data()
+	public function getData()
 	{
-		return (array) $this->data;
+		return $this->data;
 	}
 }
