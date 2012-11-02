@@ -7,7 +7,7 @@
  * @link https://github.com/kenren/fonto
  */
 
-namespace Fonto\Core;
+namespace Fonto\Core\Routing;
 
 use Fonto\Core\FontoException;
 use Fonto\Core\Request;
@@ -92,6 +92,14 @@ class Router
         return $this;
     }
 
+    public function setControllers($controllers = array())
+    {
+        $this->controllers = $controllers;
+
+        return $this;
+    }
+
+
     /**
      * Route current request
      *
@@ -141,6 +149,7 @@ class Router
     public function match()
     {
         $requestedUri = $this->app->container['request']->getRequestUri();
+        $match = false;
 
         list($num, $action, $controller) = array_keys($this->patterns);
         list($rNum, $rAction, $rController) = array_values($this->patterns);
@@ -159,10 +168,27 @@ class Router
 
             if (preg_match('@^' . $route . '$@', $requestedUri, $return)) {
                 $this->setup($uses."#".end($return));
+                $match = true;
                 return $this;
                 break;
             }
         }
+
+        if (false === $match) {
+            $uri = explode('/', $requestedUri);
+            $uri = array_filter($uri); // Array 1
+
+            foreach ($this->controllers as $controller) {
+                if ($uri[1] === $controller) {
+                    $this->controller = $controller;
+                    $this->action = !empty($uri[2]) ? $uri[2] : '';
+                    $this->parameters = array_slice($uri, 2);
+                    break;
+                }
+            }
+
+        }
+
         return false;
     }
 
