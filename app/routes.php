@@ -5,6 +5,8 @@
  * Set routing for the application.
  */
 
+use Fonto\Core\Application\App;
+
 /**
  * Routing
  *
@@ -28,14 +30,14 @@
 
 return array(
 
-	'routes' => function(Fonto\Core\Application\App $app) {
+	'routes' => function(App $app) {
 
 		$app->addRoute('/', 'home#index');
 		$app->addRoute('/test/index', 'test#index');
 
 	},
 
-	'controllers' => function(Fonto\Core\Application\App $app) {
+	'controllers' => function(App $app) {
 		$app->addControllers(array(
 			'admin',
 			'auth'
