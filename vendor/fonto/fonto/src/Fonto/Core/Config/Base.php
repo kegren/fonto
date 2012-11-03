@@ -24,10 +24,16 @@ class Base
 	protected $app;
 
 
-	public function __construct(App $app, array $paths)
+	public function __construct(array $paths)
+	{
+		$this->paths = $paths;
+	}
+
+	public function setApp(App $app)
 	{
 		$this->app = $app;
-		$this->paths = $paths;
+
+		return $this;
 	}
 
 	/**
