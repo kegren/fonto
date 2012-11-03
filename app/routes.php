@@ -11,38 +11,29 @@ use Fonto\Core\Application\App;
  * Routing
  *
  * <code>
- * // Register multi controllers
- * $app->route('<:controller>',array('home', 'auth')); // not finished..
+ * // Register controllers
+ * $app->addRoute('<:controller>', ('demo'));
  * </code>
  *
  * <code>
  * // Register '/', uses home controller and index method
- * $app->route('/' , 'home#index')
+ * $app->addRoute('/' , 'home#index')
  *
  * // Register '/auth/anything'
- * $app->route('/auth/(:action)', 'auth#index');
+ * $app->addRoute('/auth/(:action)', 'auth#index');
  *
  * // Register '/users/show/10'
- * $app->route('/users/show/(:num)', 'users#show');
+ * $app->addRoute('/users/show/(:num)', 'users#show');
  * </code>
  *
  */
 
 return array(
-
 	'routes' => function(App $app) {
 
 		$app->addRoute('/', 'home#index');
-		$app->addRoute('/test/index', 'test#index');
+		$app->addRoute('/demo/(:action)', 'demo#index');
+		$app->addRoute('<:controller>', 'aik');
 
 	},
-
-	'controllers' => function(App $app) {
-		$app->addControllers(array(
-			'admin',
-			'auth'
-		));
-	},
-
-
 );
