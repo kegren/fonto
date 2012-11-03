@@ -11,12 +11,16 @@ class Home extends Controller
 {
 	public function indexAction()
 	{
-		$url = $this->app->container['url'];
+		$url = $this->url(); // Short
+
+		$session = $this->app->container['session'];
+		$session->set('username', 'fonto');
 
 		$data = array(
 			'title'   => 'Fonto PHP Framework',
 			'text'    => 'Under development!',
-			'baseUrl' => $url->baseUrl()
+			'baseUrl' => $url->baseUrl(),
+			'session' => $session
 		);
 
 		$view = $this->app->container['view'];
