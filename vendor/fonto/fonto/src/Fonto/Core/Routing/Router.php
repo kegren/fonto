@@ -16,7 +16,7 @@ use Fonto\Core\Application\App;
 class Router
 {
     const ACTION_PREFIX        = 'Action';
-    const CONTROLLER_NAMESPACE = 'Demo\\Controllers';
+    const CONTROLLER_NAMESPACE = '\\Controllers';
     const DEFAULT_ROUTE        = '/';
     const ROUTE_DELIMITER      = '#';
     const DEFAULT_CONTROLLER   = 'home';
@@ -103,7 +103,7 @@ class Router
      */
     public function run()
     {
-        $ns = $this->app->getAppName() . '\\Controllers';
+        $ns = $this->app->getAppName() . self::CONTROLLER_NAMESPACE;
         $class = $ns . '\\' . ucfirst($this->getController());
         $file  = CONTROLLERPATH . ucfirst($this->getController()) . EXT;
 
@@ -115,23 +115,15 @@ class Router
             throw new FontoException("The class $class does not exist");
         }
 
-        // _vd($this->app->container['controller']);
-        // $cls = new $class();
+        $object = new $class;
+        $object->setApp($this->app);
 
-        $reflection = new \ReflectionClass($class);
-        $instance   = $reflection->newInstance();
-        $method     = "setApp";
-        $instance->{$method}($this->app);
-
-
-        if (method_exists($instance, $this->action)) {
-
-            if (isset($this->params)) {
-                call_user_func_array(array($instance, $this->action), $this->params);
+        if (method_exists($object, $this->action)) {
+            if (!empty($this->parameters)) {
+                call_user_func_array(array($object, $this->action), $this->parameters);
             } else {
-                call_user_func(array($instance, $this->action));
+                call_user_func(array($object, $this->action));
             }
-
         } else {
             throw new FontoException("Class: $class does not contain action: $this->action");
         }
@@ -162,14 +154,15 @@ class Router
             }
 
             if ($route == $parsedUriStr) {
-                return $this->map($uses);
+                return $this->map($uses, null, true);
             }
 
            $route = str_replace(array($num,$action), array($rNum,$rAction), $route);
 
             if (preg_match('@^' . $route . '$@', $parsedUriStr, $return)) {
                 if (!empty($return[0])) {
-                    return $this->map($return[0]);
+                    unset($return[0]);
+                    return $this->map($uses, $return, true);
                 }
             }
         }
@@ -177,22 +170,15 @@ class Router
         return false;
     }
 
-    public function map($route, $uri = null)
+    public function map($route, $uri = null, $routeReg = false)
     {
-        if (null === $uri) {
-
+        if ($routeReg) {
             $delimit = strpos($route, self::ROUTE_DELIMITER) and $delimit = self::ROUTE_DELIMITER;
-
-            if ($delimit) {
-                $route = explode($delimit, $route);
-            } else {
-                $route = explode('/', $route);
-            }
+            $route   = explode($delimit, $route);
 
             $controller = !empty($route[0]) and $controller = $route[0];
             $action     = !empty($route[1]) and $action = $route[1];
-            unset($route[0], $route[1]);
-            $parameters = !empty($route[2]) and $parameters = $route;
+            $parameters = !empty($uri[2]) and $parameters = $uri;
 
             $this->setController($controller)
                  ->setAction($action)
@@ -200,6 +186,25 @@ class Router
 
             return $this;
         }
+
+
+        // if (null === $uri) {
+        //     $route = explode('/', $route);
+        //     $route = array_filter($route);
+
+        //     _pr($route);
+
+        //     $controller = !empty($route[0]) and $controller = $route[0];
+        //     $action     = !empty($route[1]) and $action = $route[1];
+        //     unset($route[0], $route[1]);
+        //     $parameters = !empty($route[2]) and $parameters = $route;
+
+        //     $this->setController($controller)
+        //          ->setAction($action)
+        //          ->setParameters($parameters);
+
+        //     return $this;
+        // }
 
         $controller = $route;
         $action     = !empty($uri[2]) and $action = $uri[2];
@@ -250,20 +255,4 @@ class Router
     {
         return $this->parameters;
     }
-
-    private function setup($route)
-    {
-        $route = explode('#', $route);
-
-        $controller = !empty($route[0]) ? $route[0] : self::DEFAULT_CONTROLLER;
-        $action = !empty($route[1]) ? $route[1] : self::DEFAULT_ACTION;
-        unset($route[0]);
-        unset($route[1]);
-        $parameters = !empty($route) ? $route : array();
-
-        $this->controller($controller);
-        $this->action($action);
-        $this->parameters($parameters);
-    }
-
 }
