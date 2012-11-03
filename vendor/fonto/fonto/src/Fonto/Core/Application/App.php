@@ -9,7 +9,7 @@
 
 namespace Fonto\Core\Application;
 
-use Fonto\Core\Router;
+use Fonto\Core\Routing\Router;
 use	Fonto\Core\Request;
 use	Fonto\Core\DI\Container;
 use Fonto\Core\Config;
@@ -17,6 +17,7 @@ use Fonto\Core\FontoException;
 use Fonto\Core\Controller;
 use Fonto\Core\Url;
 use Fonto\Core\View;
+use Fonto\Core\Session;
 
 class App
 {
@@ -56,7 +57,7 @@ class App
 	 *
 	 * @var array
 	 */
-	private $routes = array();
+	private $routes;
 
 	/**
 	 * Environment for the application
@@ -88,6 +89,9 @@ class App
 			$this->appName = $name;
 		}
 
+		$this->routes = array();
+		$this->controllers = array();
+
 		$this->registerAutoload();
 	}
 
@@ -116,7 +120,10 @@ class App
 		};
 
 		$this->container['config'] = function() use ($app) {
-			return new Config\Base($app, array(CONFIGPATH, APPPATH));
+			$config = new Config\Base(array(CONFIGPATH, APPPATH));
+			$config->setApp($app);
+
+			return $config;
 		};
 
 		$this->container['url'] = function() {
@@ -130,12 +137,18 @@ class App
 			return $view;
 		};
 
+		$this->container['session'] = function() {
+			return new Session();
+		};
+
 		$this->container['twig'] = function() {
 			$loader = new \Twig_Loader_Filesystem(VIEWPATH);
       		$twig = new \Twig_Environment($loader);
 
       		return $twig;
 		};
+
+		$this->setPaths();
 
 		$config = $this->container['config'];
 		$config->load('routes', 'routes');
@@ -160,7 +173,7 @@ class App
 			$router = $this->container['router'];
 			$router->setRoutes($this->routes);
 
-			$matched = $router->match($this->routes);
+			$matched = $router->match();
 
 			if (false === $matched) {
 				throw new FontoException("No route was found");
@@ -367,5 +380,14 @@ class App
 			date_default_timezone_set($value);
 		}
 		return $this;
+	}
+
+	private function setPaths()
+	{
+		defined('CONFIGPATH') or define('CONFIGPATH', APPPATH . 'src' . DS . $this->appName . DS . 'Config' . DS);
+		defined('APPWEBPATH') or define('APPWEBPATH', APPPATH . 'src' . DS . $this->appName . DS);
+		defined('CONTROLLERPATH') or define('CONTROLLERPATH', APPPATH . 'src' . DS . $this->appName . DS . 'Controllers' . DS);
+		defined('VIEWPATH') or define('VIEWPATH', APPPATH . 'src' . DS . $this->appName . DS . 'Views' . DS);
+		defined('MODELPATH') or define('MODELPATH', APPPATH . 'src' . DS . $this->appName . DS . 'Models' . DS);
 	}
 }
