@@ -29,8 +29,7 @@ class Router
      */
     private $patterns = array(
         '(:num)' => '(\d+)',
-        '(:action)' => '([\w\_\-\%]+)',
-        '<:controller>' => '([\w\_\-\%]+)'
+        '(:action)' => '([\w\_\-\%]+)'
     );
 
     /**
@@ -75,7 +74,7 @@ class Router
     public function __construct()
     {
         $this->routes = array();
-        $this->controllers = array();
+        $this->parameters = array();
     }
 
     public function setApp(App $app)
@@ -92,13 +91,10 @@ class Router
         return $this;
     }
 
-    public function setControllers($controllers = array())
+    public function getRoutes()
     {
-        $this->controllers = $controllers;
-
-        return $this;
+        return $this->routes;
     }
-
 
     /**
      * Route current request
@@ -108,8 +104,8 @@ class Router
     public function run()
     {
         $ns = $this->app->getAppName() . '\\Controllers';
-        $class = $ns . '\\' . ucfirst($this->controller());
-        $file  = CONTROLLERPATH . ucfirst($this->controller()) . EXT;
+        $class = $ns . '\\' . ucfirst($this->getController());
+        $file  = CONTROLLERPATH . ucfirst($this->getController()) . EXT;
 
         if (!file_exists($file) or (!is_readable($file))) {
             throw new FontoException("The file $file was not found");
@@ -148,49 +144,75 @@ class Router
      */
     public function match()
     {
-        $requestedUri = $this->app->container['request']->getRequestUri();
-        $match = false;
+        $parsedUriStr = $this->app->container['request']->getRequestUri();
+        $parsedUriArr = explode('/', $parsedUriStr);
+        $parsedUriArr = array_filter($parsedUriArr);
 
-        list($num, $action, $controller) = array_keys($this->patterns);
-        list($rNum, $rAction, $rController) = array_values($this->patterns);
+        list($num, $action) = array_keys($this->patterns);
+        list($rNum, $rAction) = array_values($this->patterns);
 
         foreach ($this->routes as $route => $uses) {
 
-           $route = str_replace(array(
-                $num,
-                $action,
-                $controller
-            ), array(
-                $rNum,
-                $rAction,
-                $rController
-            ), $route);
-
-            if (preg_match('@^' . $route . '$@', $requestedUri, $return)) {
-                $this->setup($uses."#".end($return));
-                $match = true;
-                return $this;
-                break;
-            }
-        }
-
-        if (false === $match) {
-            $uri = explode('/', $requestedUri);
-            $uri = array_filter($uri); // Array 1
-
-            foreach ($this->controllers as $controller) {
-                if ($uri[1] === $controller) {
-                    $this->controller = $controller;
-                    $this->action = !empty($uri[2]) ? $uri[2] : '';
-                    $this->parameters = array_slice($uri, 2);
-                    return $this;
-                    break;
+            if ($route == '<:controller>') {
+                if (!empty($parsedUriArr)) {
+                    if ($parsedUriArr[1] == $uses) {
+                        return $this->map($uses, $parsedUriArr);
+                    }
                 }
             }
 
+            if ($route == $parsedUriStr) {
+                return $this->map($uses);
+            }
+
+           $route = str_replace(array($num,$action), array($rNum,$rAction), $route);
+
+            if (preg_match('@^' . $route . '$@', $parsedUriStr, $return)) {
+                if (!empty($return[0])) {
+                    return $this->map($return[0]);
+                }
+            }
         }
 
         return false;
+    }
+
+    public function map($route, $uri = null)
+    {
+        if (null === $uri) {
+
+            $delimit = strpos($route, self::ROUTE_DELIMITER) and $delimit = self::ROUTE_DELIMITER;
+
+            if ($delimit) {
+                $route = explode($delimit, $route);
+            } else {
+                $route = explode('/', $route);
+            }
+
+            $controller = !empty($route[0]) and $controller = $route[0];
+            $action     = !empty($route[1]) and $action = $route[1];
+            unset($route[0], $route[1]);
+            $parameters = !empty($route[2]) and $parameters = $route;
+
+            $this->setController($controller)
+                 ->setAction($action)
+                 ->setParameters($parameters);
+
+            return $this;
+        }
+
+        $controller = $route;
+        $action     = !empty($uri[2]) and $action = $uri[2];
+        unset($uri[1], $uri[2]);
+
+        $this->setController($controller)
+             ->setAction($action);
+
+        if (!empty($parsedUriArr[3])) {
+            $this->setParameters($parsedUriArr);
+        }
+
+        return $this;
     }
 
     public function setController($controller)
