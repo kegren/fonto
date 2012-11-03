@@ -4,7 +4,7 @@
  */
 
 /**
- * Shorthand function for var_dump
+ * var_dump
  *
  * @access  public
  */
@@ -18,7 +18,7 @@ if ( ! function_exists('_vd')) {
 }
 
 /**
- * Shorthand function for print_r
+ * print_r
  *
  * @access  public
  * @param   array
@@ -33,7 +33,7 @@ if (!function_exists('_pr')) {
 }
 
 /**
- * Shorthand function for echo
+ * echo
  *
  * @access  public
  * @param   string
