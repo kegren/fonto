@@ -10,13 +10,24 @@
 namespace Fonto\Core;
 
 use Fonto\Core\View;
+use Fonto\Core\Application\App;
 
-abstract class Controller
+class Controller
 {
-	abstract public function indexAction();
+	protected $app;
 
-	public function view($file, $data = null)
+	public function __construct()
 	{
-		return new View($file, $data);
+
+	}
+
+	public function setApp(App $app)
+	{
+		$this->app = $app;
+	}
+
+	public function __call($class, $args)
+	{
+		return $this->app->container[$class];
 	}
 }
