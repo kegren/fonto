@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 class Twig_Tests_Node_BlockTest extends Twig_Test_NodeTestCase
 {
     /**
@@ -17,8 +16,8 @@ class Twig_Tests_Node_BlockTest extends Twig_Test_NodeTestCase
      */
     public function testConstructor()
     {
-        $body = new Twig_Node_Text('foo', 0);
-        $node = new Twig_Node_Block('foo', $body, 0);
+        $body = new Twig_Node_Text('foo', 1);
+        $node = new Twig_Node_Block('foo', $body, 1);
 
         $this->assertEquals($body, $node->getNode('body'));
         $this->assertEquals('foo', $node->getAttribute('name'));
@@ -35,11 +34,12 @@ class Twig_Tests_Node_BlockTest extends Twig_Test_NodeTestCase
 
     public function getTests()
     {
-        $body = new Twig_Node_Text('foo', 0);
-        $node = new Twig_Node_Block('foo', $body, 0);
+        $body = new Twig_Node_Text('foo', 1);
+        $node = new Twig_Node_Block('foo', $body, 1);
 
         return array(
             array($node, <<<EOF
+// line 1
 public function block_foo(\$context, array \$blocks = array())
 {
     echo "foo";

@@ -6,7 +6,7 @@ class Form
 {
 	public function open($url, $method)
 	{
-		return '<form action='.$url.' method='.$method.'>';
+		return '<form action="'.$url.'" method="'.$method.'">';
 	}
 
 	public function label($for, $text)

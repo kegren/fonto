@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 class Twig_Tests_Node_MacroTest extends Twig_Test_NodeTestCase
 {
     /**
@@ -17,9 +16,9 @@ class Twig_Tests_Node_MacroTest extends Twig_Test_NodeTestCase
      */
     public function testConstructor()
     {
-        $body = new Twig_Node_Text('foo', 0);
-        $arguments = new Twig_Node(array(new Twig_Node_Expression_Name('foo', 0)), array(), 0);
-        $node = new Twig_Node_Macro('foo', $body, $arguments, 0);
+        $body = new Twig_Node_Text('foo', 1);
+        $arguments = new Twig_Node(array(new Twig_Node_Expression_Name('foo', 1)), array(), 1);
+        $node = new Twig_Node_Macro('foo', $body, $arguments, 1);
 
         $this->assertEquals($body, $node->getNode('body'));
         $this->assertEquals($arguments, $node->getNode('arguments'));
@@ -37,16 +36,17 @@ class Twig_Tests_Node_MacroTest extends Twig_Test_NodeTestCase
 
     public function getTests()
     {
-        $body = new Twig_Node_Text('foo', 0);
-        $arguments = new Twig_Node(array(new Twig_Node_Expression_Name('foo', 0)), array(), 0);
-        $node = new Twig_Node_Macro('foo', $body, $arguments, 0);
+        $body = new Twig_Node_Text('foo', 1);
+        $arguments = new Twig_Node(array(new Twig_Node_Expression_Name('foo', 1)), array(), 1);
+        $node = new Twig_Node_Macro('foo', $body, $arguments, 1);
 
         return array(
             array($node, <<<EOF
-public function getfoo(\$foo = null)
+// line 1
+public function getfoo(\$_foo = null)
 {
     \$context = \$this->env->mergeGlobals(array(
-        "foo" => \$foo,
+        "foo" => \$_foo,
     ));
 
     \$blocks = array();
@@ -54,7 +54,7 @@ public function getfoo(\$foo = null)
     ob_start();
     try {
         echo "foo";
-    } catch(Exception \$e) {
+    } catch (Exception \$e) {
         ob_end_clean();
 
         throw \$e;

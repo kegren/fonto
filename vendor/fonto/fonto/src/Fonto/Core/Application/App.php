@@ -18,6 +18,7 @@ use Fonto\Core\Controller;
 use Fonto\Core\Url;
 use Fonto\Core\View;
 use Fonto\Core\Session;
+use Fonto\Core\Form;
 
 class App
 {
@@ -128,6 +129,10 @@ class App
 
 		$this->container['url'] = function() {
 			return new Url();
+		};
+
+		$this->container['form'] = function() {
+			return new Form();
 		};
 
 		$this->container['view'] = function() use ($app) {

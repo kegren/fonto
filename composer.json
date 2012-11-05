@@ -2,7 +2,7 @@
 	"name": "kenren/fonto",
     "require": {
         "php-activerecord/php-activerecord": "dev-master",
-        "twig/twig": "1.*"
+        "twig/twig": "1.11.x-dev"
     },
     "autoload": {
     	"psr-0": {"Fonto": "vendor/fonto/fonto/src/"}

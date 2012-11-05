@@ -12,6 +12,7 @@ class Home extends Controller
 	public function indexAction()
 	{
 		$url = $this->url(); // Short
+		$form = $this->form();
 
 		$session = $this->app->container['session'];
 		$session->set('username', 'fonto');
@@ -20,7 +21,8 @@ class Home extends Controller
 			'title'   => 'Fonto PHP Framework',
 			'text'    => 'Under development!',
 			'baseUrl' => $url->baseUrl(),
-			'session' => $session
+			'session' => $session,
+			'form'    => $form
 		);
 
 		$view = $this->app->container['view'];
