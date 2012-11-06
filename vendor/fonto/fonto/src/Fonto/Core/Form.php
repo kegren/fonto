@@ -22,9 +22,35 @@ class Form
 		return '<form action="'.$url.'" method="'.$method.'" '.$enct.' '.$attr.'>';
 	}
 
+	public function input($type, $name, $attributes = array())
+	{
+		$attr = '';
+
+		if ($attributes) {
+			foreach ($attributes as $id => $value) {
+				$attr .= $id . '="'.$value.'"' . ' ';
+			}
+		}
+
+		return '<input type="'.$type.'" name="'.$name.'" id="'.$name.'" '.$attr.'>';
+	}
+
+	public function submit($value, $attributes = array())
+	{
+		$attr = '';
+
+		if ($attributes) {
+			foreach ($attributes as $id => $val) {
+				$attr .= $id . '="'.$val.'"' . ' ';
+			}
+		}
+
+		return '<input type="submit" value="'.$value.'" '.$attr.'>';
+	}
+
 	public function label($for, $text)
 	{
-		return '<label for='.$for.'>'.$text.'</label>';
+		return '<label for="'.$for.'">'.$text.'</label>';
 	}
 
 	public function close()
