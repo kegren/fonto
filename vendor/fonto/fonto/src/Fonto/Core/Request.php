@@ -49,6 +49,11 @@ class Request
 		return $this->method;
 	}
 
+	public function isPost()
+	{
+		return $this->method === 'POST' ? true : false;
+	}
+
 	/**
 	 * Get requested uri
 	 *
