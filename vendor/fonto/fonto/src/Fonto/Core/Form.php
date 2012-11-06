@@ -4,9 +4,22 @@ namespace Fonto\Core;
 
 class Form
 {
-	public function open($url, $method)
+	public function open($url, $method, $attributes = array(), $enctype = false)
 	{
-		return '<form action="'.$url.'" method="'.$method.'">';
+		$attr = '';
+		$enct = '';
+
+		if ($attributes) {
+			foreach ($attributes as $id => $value) {
+				$attr .= $id . '="'.$value.'"' . ' ';
+			}
+		}
+
+		if ($enctype) {
+			$enct = 'enctype="multipart/form-data"';
+		}
+
+		return '<form action="'.$url.'" method="'.$method.'" '.$enct.' '.$attr.'>';
 	}
 
 	public function label($for, $text)
