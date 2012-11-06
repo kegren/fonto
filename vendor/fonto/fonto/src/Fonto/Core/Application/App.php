@@ -121,7 +121,7 @@ class App
 		};
 
 		$this->container['config'] = function() use ($app) {
-			$config = new Config\Base(array(CONFIGPATH, APPPATH));
+			$config = new Config\Base(array(CONFIGPATH, APPWEBPATH));
 			$config->setApp($app);
 
 			return $config;
