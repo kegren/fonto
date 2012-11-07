@@ -15,11 +15,20 @@
  	 * Database settings
  	 */
  	'database' => array(
- 		'type' => 'mysql',
- 		'host' => 'localhost',
- 		'user' => 'root',
- 		'pass' => '',
- 		'name' => 'fonto'
+ 		'development' => array(
+	 		'type' => 'mysql',
+	 		'host' => 'localhost',
+	 		'user' => 'root',
+	 		'pass' => '',
+	 		'name' => 'fontomvc'
+ 		),
+ 		'production' => array(
+	 		'type' => 'mysql',
+	 		'host' => 'localhost',
+	 		'user' => 'root',
+	 		'pass' => '',
+	 		'name' => 'fonto'
+ 		),
  	),
 
  	/**
@@ -31,4 +40,9 @@
  	 * Set baseUrl for application
  	 */
  	'baseUrl' => '',
+
+ 	/**
+ 	 * Twig
+ 	 */
+ 	'twig' => true
  );
