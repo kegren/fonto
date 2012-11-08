@@ -21,6 +21,11 @@ class Base
 	 */
 	private $paths = array();
 
+	/**
+	 * Fonto\Core\Application\App
+	 *
+	 * @var
+	 */
 	protected $app;
 
 
@@ -29,6 +34,11 @@ class Base
 		$this->paths = $paths;
 	}
 
+	/**
+	 * Current application
+	 *
+	 * @param App $app
+	 */
 	public function setApp(App $app)
 	{
 		$this->app = $app;
