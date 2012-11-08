@@ -44,16 +44,19 @@ class View
 	protected $app;
 
 	/**
-	 * Adding view and data for the output.
+	 * Adding view and data for the output
 	 *
 	 * @param string $file
 	 * @param array  $data
 	 */
 	public function __construct()
-	{
+	{}
 
-	}
-
+	/**
+	 * Current application
+	 *
+	 * @param App $app
+	 */
 	public function setApp(App $app)
 	{
 		$this->app = $app;
@@ -61,6 +64,11 @@ class View
 		return $this;
 	}
 
+	/**
+	 * Set data for view
+	 *
+	 * @param array $data
+	 */
 	public function setData(array $data = array())
 	{
 		$this->data = $data;
@@ -78,6 +86,13 @@ class View
 		return $this->data;
 	}
 
+	/**
+	 * Renders a view
+	 *
+	 * @param  string $view Viewfile
+	 * @param  array  $data Data
+	 * @return
+	 */
 	public function render($view, $data = null)
 	{
 		$twig =	$this->app->isTwig();
@@ -94,6 +109,11 @@ class View
 		}
 	}
 
+	/**
+	 * Sets extension for the view file
+	 *
+	 * @param string $type
+	 */
 	public function setExtension($type)
 	{
 		switch ($type) {
@@ -107,6 +127,11 @@ class View
 		}
 	}
 
+	/**
+	 * Returning current file extension
+	 *
+	 * @return string
+	 */
 	public function getExtension()
 	{
 		return $this->extension;
