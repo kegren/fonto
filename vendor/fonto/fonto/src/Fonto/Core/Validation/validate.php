@@ -11,13 +11,15 @@ namespace Fonto\Core\Validation;
 
 class Validate
 {
-	protected $errors;
+	public $errors;
 
-	protected $name;
+	public $name;
 
-	protected $rules;
+	public $rules;
 
 	protected $attributes;
+
+	protected $current;
 
 	public function __construct()
 	{
@@ -31,28 +33,36 @@ class Validate
 
 	public function max($max)
 	{
-		$this->rules[$this->name]['isMax'] = $max;
+		$this->rules[$this->current]['isMax'] = $max;
 
 		return $this;
 	}
 
-	public function num($num)
+	public function num()
 	{
-		$this->rules[$this->name]['isNumeric'] = true;
+		$this->rules[$this->current]['isNumeric'] = true;
+
+		return $this;
+	}
+
+	public function required()
+	{
+		$this->rules[$this->current]['isRequired'] = true;
 
 		return $this;
 	}
 
 	public function field($name)
 	{
-		$this->name = $name;
+		$this->name[$name] = $name;
+		$this->current = $name;
 
 		return $this;
 	}
 
 	public function isValid()
 	{
-		return empty($this->errors) ? true : false;
+		return empty($this->errors);
 	}
 
 	public function validate($attributes = array())
@@ -64,15 +74,12 @@ class Validate
 		foreach ($this->attributes as $id => $value) {
 			if ($this->isDefined($id)) {
 				$this->validator($id, $value, $this->rules[$id]);
-				break;
 			}
 		}
 	}
 
 	private function validator($id, $value, $rules)
 	{
-		unset($rules[$id]);
-
 		foreach ($rules as $method => $validateValue) {
 
 			if (method_exists($this, $method)) {
@@ -82,23 +89,28 @@ class Validate
 		}
 	}
 
-	private function isMax($id, $value, $validateValue)
-	{
-		if (strlen($value) > $validateValue) {
-			$this->errors[$id][0] = 'Värdet är för stort';
-		}
-	}
-
 	private function isDefined($id)
 	{
 		return array_key_exists($id, $this->rules);
 	}
 
+	private function isMax($id, $value, $validateValue)
+	{
+		if (strlen($value) > $validateValue) {
+			$this->errors[$id]['max'] = 'Värdet är för stort';
+		}
+	}
+
 	private function isNumeric($id, $value, $validateValue)
 	{
 		if (!is_numeric($value)) {
-			$this->errors[$id][1] = 'Värdet måste bestå av endast siffror';
+			$this->errors[$id]['numeric'] = 'Värdet måste bestå av endast siffror';
 		}
+	}
+
+	private function isRequired($id, $value, $validateValue)
+	{
+		return strlen($value) == 0 and $this->errors[$id]['required'] = 'Du måste ange ett värde';
 	}
 
 }
