@@ -17,11 +17,11 @@ require SYSCOREAPPPATH . 'App' . EXT;
  */
 use Fonto\Core\Application\App as App;
 
+
 /**
  * Run application
  */
 $app = new App();
-$app->setAppName('demo')
-	->useTwig(true)
+$app->setAppName('Demo')
 	->setup()
 	->run();
