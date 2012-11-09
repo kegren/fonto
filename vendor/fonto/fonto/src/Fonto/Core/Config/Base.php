@@ -15,7 +15,7 @@ use Fonto\Core\Application\App;
 class Base
 {
 	/**
-	 * Path for config directory
+	 * Paths for config files
 	 *
 	 * @var string
 	 */
@@ -24,7 +24,7 @@ class Base
 	/**
 	 * Fonto\Core\Application\App
 	 *
-	 * @var
+	 * @var object
 	 */
 	protected $app;
 
@@ -47,7 +47,8 @@ class Base
 	}
 
 	/**
-	 * Read config file by name and key optional
+	 * Trys to read a config file from filesystem based on file and
+	 * key.
 	 *
 	 * @param  string $file
 	 * @param  string $key
@@ -71,7 +72,7 @@ class Base
 	}
 
 	/**
-	 * Check if given config file exists
+	 * Checks if the given config file exists
 	 *
 	 * @param  string $file
 	 * @return file
