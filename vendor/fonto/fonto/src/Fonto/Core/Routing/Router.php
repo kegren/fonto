@@ -67,7 +67,11 @@ class Router
      */
     private $parameters;
 
-
+    /**
+     * Fonto\Core\Application\App
+     *
+     * @var object
+     */
     protected $app;
 
 
@@ -77,6 +81,11 @@ class Router
         $this->parameters = array();
     }
 
+    /**
+     * Sets the current application
+     *
+     * @param App $app
+     */
     public function setApp(App $app)
     {
         $this->app = $app;
@@ -84,6 +93,11 @@ class Router
         return $this;
     }
 
+    /**
+     * Sets routes
+     *
+     * @param array $routes
+     */
     public function setRoutes($routes = array())
     {
         $this->routes = $routes;
@@ -91,13 +105,18 @@ class Router
         return $this;
     }
 
+    /**
+     * Returns routes
+     *
+     * @return routes
+     */
     public function getRoutes()
     {
         return $this->routes;
     }
 
     /**
-     * Route current request
+     * Routes the request
      *
      * @return mixed
      */
@@ -130,13 +149,13 @@ class Router
     }
 
     /**
-     * Match current request with registered routes
+     * Matches the current request with registered routes
      *
      * @return mixed
      */
     public function match()
     {
-        $parsedUriStr = $this->app->container['request']->getRequestUri();
+        $parsedUriStr = $this->app->getRequest()->getRequestUri();
         $parsedUriArr = explode('/', $parsedUriStr);
         $parsedUriArr = array_filter($parsedUriArr);
 
@@ -170,6 +189,11 @@ class Router
         return false;
     }
 
+    /**
+     * Maps a route/uri to controller, action and parameters
+     *
+     * @return Router
+     */
     public function map($route, $uri = null, $routeReg = false)
     {
         if ($routeReg) {
@@ -187,25 +211,6 @@ class Router
             return $this;
         }
 
-
-        // if (null === $uri) {
-        //     $route = explode('/', $route);
-        //     $route = array_filter($route);
-
-        //     _pr($route);
-
-        //     $controller = !empty($route[0]) and $controller = $route[0];
-        //     $action     = !empty($route[1]) and $action = $route[1];
-        //     unset($route[0], $route[1]);
-        //     $parameters = !empty($route[2]) and $parameters = $route;
-
-        //     $this->setController($controller)
-        //          ->setAction($action)
-        //          ->setParameters($parameters);
-
-        //     return $this;
-        // }
-
         $controller = $route;
         $action     = !empty($uri[2]) and $action = $uri[2];
         unset($uri[1], $uri[2]);
@@ -220,6 +225,11 @@ class Router
         return $this;
     }
 
+    /**
+     * Sets controller
+     *
+     * @param string $controller
+     */
     public function setController($controller)
     {
         $this->controller = $controller;
@@ -227,11 +237,21 @@ class Router
         return $this;
     }
 
+    /**
+     * Returns controller
+     *
+     * @return controller
+     */
     public function getController()
     {
         return $this->controller;
     }
 
+    /**
+     * Sets action
+     *
+     * @param string $action
+     */
     public function setAction($action)
     {
         $this->action = $action . self::ACTION_PREFIX;
@@ -239,11 +259,21 @@ class Router
         return $this;
     }
 
+    /**
+     * Returns action
+     *
+     * @return action
+     */
     public function getAction()
     {
         return $this->action;
     }
 
+    /**
+     * Sets parameters
+     *
+     * @param string $parameters
+     */
     public function setParameters($parameters)
     {
         $this->parameters = $parameters;
@@ -251,6 +281,11 @@ class Router
         return $this;
     }
 
+    /**
+     * Returns parameters
+     *
+     * @return parameters
+     */
     public function getParameters()
     {
         return $this->parameters;
