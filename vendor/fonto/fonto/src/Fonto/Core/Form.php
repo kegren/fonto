@@ -1,9 +1,25 @@
 <?php
+/**
+ * Fonto Framework
+ *
+ * @author Kenny Damgren <kenny.damgren@gmail.com>
+ * @package Fonto
+ * @link https://github.com/kenren/fonto
+ */
 
 namespace Fonto\Core;
 
 class Form
 {
+	/**
+	 * Open tag for an form
+	 *
+	 * @param  string  $url
+	 * @param  string  $method
+	 * @param  array   $attributes
+	 * @param  boolean $enctype
+	 * @return HTML
+	 */
 	public function open($url, $method, $attributes = array(), $enctype = false)
 	{
 		$attr = '';
@@ -22,6 +38,14 @@ class Form
 		return '<form action="'.$url.'" method="'.$method.'" '.$enct.' '.$attr.'>';
 	}
 
+	/**
+	 * Input field
+	 *
+	 * @param  string $type
+	 * @param  string $name
+	 * @param  array  $attributes
+	 * @return HTML
+	 */
 	public function input($type, $name, $attributes = array())
 	{
 		$attr = '';
@@ -35,6 +59,13 @@ class Form
 		return '<input type="'.$type.'" name="'.$name.'" id="'.$name.'" '.$attr.'>';
 	}
 
+	/**
+	 * Submit button
+	 *
+	 * @param  string $value
+	 * @param  array  $attributes
+	 * @return HTML
+	 */
 	public function submit($value, $attributes = array())
 	{
 		$attr = '';
@@ -48,11 +79,23 @@ class Form
 		return '<input type="submit" value="'.$value.'" '.$attr.'>';
 	}
 
+	/**
+	 * Label
+	 *
+	 * @param  string $for
+	 * @param  array  $text
+	 * @return HTML
+	 */
 	public function label($for, $text)
 	{
 		return '<label for="'.$for.'">'.$text.'</label>';
 	}
 
+	/**
+	 * Closing tag for the form
+	 *
+	 * @return HTML
+	 */
 	public function close()
 	{
 		return '</form>';
