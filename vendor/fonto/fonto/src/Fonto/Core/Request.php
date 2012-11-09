@@ -40,7 +40,7 @@ class Request
 	}
 
 	/**
-	 * Get current method
+	 * Returns current method
 	 *
 	 * @return string
 	 */
@@ -49,13 +49,18 @@ class Request
 		return $this->method;
 	}
 
+	/**
+	 * Returns true if the current method is post false otherwise
+	 *
+	 * @return boolean
+	 */
 	public function isPost()
 	{
 		return $this->method === 'POST' ? true : false;
 	}
 
 	/**
-	 * Get requested uri
+	 * Returns requested uri
 	 *
 	 * @return array uri
 	 */
@@ -66,7 +71,7 @@ class Request
 	}
 
 	/**
-	 * Get current script path
+	 * Returns current script path
 	 *
 	 * @return string
 	 */
