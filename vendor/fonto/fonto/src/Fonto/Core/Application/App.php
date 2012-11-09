@@ -19,18 +19,27 @@ use Fonto\Core\Url;
 use Fonto\Core\View;
 use Fonto\Core\Session;
 use Fonto\Core\Form;
+use Fonto\Core\Validation\Validator;
+use ActiveRecord;
 
 class App
 {
 	/**
 	 * Current version
 	 */
-	const VERSION = '0.3-DEV';
+	const VERSION = '0.4-alpha';
 
 	/**
 	 * Default timezone
 	 */
 	const DEFAULT_TIMEZONE = 'Europe/Stockholm';
+
+	/**
+	 * The application name
+	 *
+	 * @var string
+	 */
+	protected $appName;
 
 	/**
 	 * Fonto\Core\Application\App
@@ -68,37 +77,28 @@ class App
 	private $environment;
 
 	/**
-	 *
-	 *
-	 * @var [type]
-	 */
-	private $twigEnabled;
-
-
-	/**
-	 * Name for the app
+	 * Database settings
 	 *
 	 * @var string
 	 */
-	protected $appName;
+	private $databaseSettings;
 
-	public function __construct($name = null)
+	public function __construct()
 	{
-		if (null === $name) {
-			$this->appName = 'demo';
-		} else {
-			$this->appName = $name;
-		}
-
 		$this->routes = array();
 		$this->controllers = array();
-
-		$this->registerAutoload();
+		$this->databaseSettings = array();
 	}
 
+	/**
+	 * Sets up the application
+	 */
 	public function setup()
 	{
 		$app = $this;
+
+		$this->registerAutoload();
+		$this->setPaths();
 
 		$this->container = new Container($app);
 
@@ -116,16 +116,16 @@ class App
 			return $controller;
 		};
 
-		$this->container['request'] = function() {
+		$this->container['request'] = function () {
 			return new Request();
 		};
 
-		$this->container['config'] = function() use ($app) {
+		$this->container['config'] = $this->container->shared(function () use ($app) {
 			$config = new Config\Base(array(CONFIGPATH, APPWEBPATH));
 			$config->setApp($app);
 
 			return $config;
-		};
+		});
 
 		$this->container['url'] = function() {
 			return new Url();
@@ -133,6 +133,13 @@ class App
 
 		$this->container['form'] = function() {
 			return new Form();
+		};
+
+		$this->container['validator'] = function() use ($app) {
+			$validator = new Validator();
+			$validator->setApp($app);
+
+			return $validator;
 		};
 
 		$this->container['view'] = function() use ($app) {
@@ -148,12 +155,10 @@ class App
 
 		$this->container['twig'] = function() {
 			$loader = new \Twig_Loader_Filesystem(VIEWPATH);
-      		$twig = new \Twig_Environment($loader);
+			$twig   = new \Twig_Environment($loader);
 
       		return $twig;
 		};
-
-		$this->setPaths();
 
 		$config = $this->container['config'];
 		$config->load('routes', 'routes');
@@ -164,13 +169,16 @@ class App
 		$timezone = $config->load('app', 'timezone');
 		$this->setTimezone($timezone);
 
+		$this->databaseSettings();
+		$this->activeRecord();
+
 		$this->setExceptionHandler(array('Fonto\Core\FontoException', 'handle'));
 
 		return $this;
 	}
 
 	/**
-	 * Run app
+	 * Runs the application.
 	 */
 	public function run()
 	{
@@ -202,7 +210,7 @@ class App
 	}
 
 	/**
-	 * Add routes
+	 * Adds routes
 	 *
 	 * @param  string $route
 	 * @param  string $uses
@@ -216,21 +224,17 @@ class App
     }
 
     /**
-     * Load ActiveRecords and set directory for models
+     * Loads ActiveRecords and sets directory for models
      *
-     * @todo   Fix hardcoded database settings (cant use $this ref?)
-     * @return void
+     * @return Application
      */
-    public function setActiveRecord($active = true)
+    public function activeRecord()
     {
-    	if (false === $active) {
-    		return;
-    	}
-
-    	$config = $this->container->get('config')->load('app', 'database');
+    	$config = $this->databaseSettings;
     	if ($config === false) {
     		throw new Exception("Missing database settings from application config file");
     	}
+
     	$type = $config['type'];
     	$host = $config['host'];
     	$user = $config['user'];
@@ -238,7 +242,8 @@ class App
     	$name = $config['name'];
 
     	$dsn = "$type://$user:$pass@$host/$name";
-     	\ActiveRecord\Config::initialize(function($cfg) use($dsn)
+
+     	ActiveRecord\Config::initialize(function($cfg) use($dsn)
 		{
      		$cfg->set_model_directory(MODELPATH);
 	    	$cfg->set_connections(array(
@@ -248,75 +253,177 @@ class App
  		return $this;
     }
 
-    public function useTwig($active)
-    {
-    	$this->twigEnabled = $active;
-
-    	return $this;
-    }
-
-    public function isTwig()
-    {
-    	return $this->twigEnabled;
-    }
-
 
     /**
-	 * Get all registered routes
-	 *
-	 * @return array
-	 */
-    public function getRoutes()
-    {
-    	return (array) $this->routes;
-    }
-
-    /**
-     * Register composers autoloader and add
-     * namespace for application
+     * Sets the application name
      *
-     * @return void
+     * @param string $name
+     * @return Application
      */
-	private function registerAutoload($ns = null)
-	{
-		$loader = include VENDORPATH . 'autoload' . EXT;
-		if (null === $ns) {
-			$loader->add($this->appName, APPPATH . 'src');
-		} else {
-			$loader->add($ns, APPPATH . 'src');
-		}
-
-		return $this;
-	}
-
 	public function setAppName($name = null)
 	{
 		if (null === $name) {
-			$this->name = 'demo';
+			$this->appName = 'Demo';
 		} else {
-			$this->name = $name;
+			$this->appName = $name;
 		}
 
 		return $this;
 	}
 
+	/**
+	 * Gets application name
+	 *
+	 * @return string Current application name
+	 */
 	public function getAppName()
 	{
 		return $this->appName;
 	}
 
 	/**
-	 * Get container
+	 * Sets database settings based on what the user has specified in the config
 	 *
-	 * @return object
+	 * @return array
 	 */
-	private function getContainer()
+	public function databaseSettings()
+	{
+		$db = $this->container['config']->load('app', 'database');
+		$this->databaseSettings = $db[$this->environment];
+
+		return $this->databaseSettings;
+	}
+
+	/**
+	 * Sets default timezone
+	 *
+	 * @param string $value
+	 */
+	public function setTimezone($value = null)
+	{
+		if (null === $value) {
+			date_default_timezone_set(self::DEFAULT_TIMEZONE);
+		} else {
+			date_default_timezone_set($value);
+		}
+		return $this;
+	}
+
+	/**
+	 * Returns the time zone used by this application.
+	 *
+	 * @return string
+	 */
+	public function getTimezone()
+	{
+		return date_default_timezone_get();
+	}
+
+	/**
+	 * Returns the router service
+	 */
+	public function getRouter()
+	{
+		return $this->container['router'];
+	}
+
+	/**
+	 * Returns the controller service
+	 */
+	public function getController()
+	{
+		return $this->container['controller'];
+	}
+
+	/**
+	 * Returns the request service
+	 */
+	public function getRequest()
+	{
+		return $this->container['request'];
+	}
+
+	/**
+	 * Returns the config service
+	 */
+	public function getConfig()
+	{
+		return $this->container['config'];
+	}
+
+	/**
+	 * Returns the url service
+	 */
+	public function getUrl()
+	{
+		return $this->container['url'];
+	}
+
+	/**
+	 * Returns the form service
+	 */
+	public function getForm()
+	{
+		return $this->container['form'];
+	}
+
+	/**
+	 * Returns the validator service
+	 */
+	public function getValidator()
+	{
+		return $this->container['validator'];
+	}
+
+	/**
+	 * Returns the view service
+	 */
+	public function getView()
+	{
+		return $this->container['view'];
+	}
+
+	/**
+	 * Returns the session service
+	 */
+	public function getSession()
+	{
+		return $this->container['session'];
+	}
+
+	/**
+	 * Returns the twig service
+	 */
+	public function getTwig()
+	{
+		return $this->container['twig'];
+	}
+
+	/**
+     * Registers autoloader for this application
+     *
+     * @return Application
+     */
+	private function registerAutoload()
+	{
+		$loader = include VENDORPATH . 'autoload' . EXT;
+		$loader->add($this->appName, APPPATH . 'src');
+
+		return $this;
+	}
+
+	/**
+	 * Returns the DI Container
+	 *
+	 * @return DI Container
+	 */
+	public function container()
 	{
 		return $this->container;
 	}
 
 	/**
-	 * Set error_reporting
+	 * Sets error_reporting based on the environment
 	 */
 	private function setErrorReporting()
 	{
@@ -338,7 +445,7 @@ class App
 	}
 
 	/**
-	 * Get environment
+	 * Gets environment
 	 *
 	 * @return string
 	 */
@@ -348,7 +455,7 @@ class App
 	}
 
 	/**
-	 * Set environment for application
+	 * Sets environment for application
 	 *
 	 * @param string $env
 	 */
@@ -363,7 +470,7 @@ class App
 	}
 
 	/**
-	 * Setting custom exception handler
+	 * Sets custom exception handler
 	 *
 	 * @param array $options
 	 */
@@ -373,20 +480,8 @@ class App
 	}
 
 	/**
-	 * Set default timezone
-	 *
-	 * @param string $value
+	 * Defines paths based on the application name
 	 */
-	private function setTimezone($value = null)
-	{
-		if (null === $value) {
-			date_default_timezone_set(self::DEFAULT_TIMEZONE);
-		} else {
-			date_default_timezone_set($value);
-		}
-		return $this;
-	}
-
 	private function setPaths()
 	{
 		defined('CONFIGPATH') or define('CONFIGPATH', APPPATH . 'src' . DS . $this->appName . DS . 'Config' . DS);
