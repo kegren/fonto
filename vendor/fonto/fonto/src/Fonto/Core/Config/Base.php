@@ -35,7 +35,7 @@ class Base
 	}
 
 	/**
-	 * Current application
+	 * Sets the current application
 	 *
 	 * @param App $app
 	 */
