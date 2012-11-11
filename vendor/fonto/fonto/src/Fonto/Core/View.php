@@ -16,7 +16,7 @@ use Fonto\Core\Application\App;
 class View
 {
 	/**
-	 * File ending
+	 * File extension
 	 *
 	 * @var string
 	 */
@@ -95,18 +95,33 @@ class View
 	 */
 	public function render($view, $data = null)
 	{
-		$twig =	$this->app->isTwig();
+		$twig = $this->app->getConfig()->load('app', 'twig');
 
 		if ($twig) {
 			$this->setExtension('twig');
 			$this->view = $view . $this->getExtension();
 
 			if (null === $data) {
-				echo $this->app->container['twig']->render($this->view, $this->getData());
+				echo $this->app->getTwig()->render($this->view, $this->getData());
 			} else {
-				echo $this->app->container['twig']->render($this->view, $data);
+				echo $this->app->getTwig()->render($this->view, $data);
 			}
-		}
+		} else {
+            $this->setExtension('php');
+
+            null === $data and $data = $this->data;
+            ob_start() and extract($data, EXTR_OVERWRITE);
+
+            try {
+                require VIEWPATH . $view . $this->getExtension();
+            }
+            catch (\FontoException $e) {
+                ob_get_clean();
+                throw $e;
+            }
+
+            return ob_get_clean();
+        }
 	}
 
 	/**
@@ -121,14 +136,18 @@ class View
 				$this->extension = '.html.twig';
 				break;
 
+            case 'php':
+                $this->extension = '.php';
+                break;
+
 			default:
-				$this->extension = '.php';
+				$this->extension = '.html';
 				break;
 		}
 	}
 
 	/**
-	 * Returning current file extension
+	 * Returns current file extension
 	 *
 	 * @return string
 	 */
