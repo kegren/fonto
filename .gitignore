@@ -3,3 +3,5 @@
 /vendor/php-activerecord
 /vendor/twig
 .DS_Store
+.idea
+/.idea
