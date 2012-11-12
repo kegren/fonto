@@ -12,9 +12,4 @@ namespace Fonto\Core;
 use \ActiveRecord\Model as ARModel;
 
 class Model extends ARModel
-{
-	public function __construct()
-	{
-		parent::__construct();
-	}
-}
+{}
