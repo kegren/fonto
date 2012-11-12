@@ -12,7 +12,7 @@ namespace Fonto\Core;
 class Form
 {
 	/**
-	 * Open tag for an form
+	 * Form open tag
 	 *
 	 * @param  string  $url
 	 * @param  string  $method
