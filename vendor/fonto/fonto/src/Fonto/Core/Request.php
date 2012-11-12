@@ -56,7 +56,7 @@ class Request
 	 */
 	public function isPost()
 	{
-		return $this->method === 'POST' ? true : false;
+		return $this->method === 'POST';
 	}
 
 	/**
