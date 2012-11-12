@@ -7,20 +7,21 @@
  * @link https://github.com/kenren/fonto
  */
 
-namespace Fonto\Core;
+namespace Fonto\Core\Session;
 
-class Session
+class Base
 {
 	/**
 	 * Start session
 	 */
 	public function __construct()
 	{
+		@session_name('fonto');
 		@session_start();
 	}
 
 	/**
-	 * Setting a value
+	 * Sets a value
 	 *
 	 * @param string $id
 	 * @param string $value
@@ -33,7 +34,7 @@ class Session
 	}
 
 	/**
-	 * Returning a value from session
+	 * Returns a value from session
 	 *
 	 * @param  string $id
 	 * @return session value
@@ -44,7 +45,19 @@ class Session
 	}
 
 	/**
-	 * Getter for flash massages.
+	 * Regenerates session id
+	 *
+	 * @return $this
+	 */
+	public function regenerateId()
+	{
+		session_regenerate_id();
+
+		return $this;
+	}
+
+	/**
+	 * Gets flash massages
 	 *
 	 * @param  string $id
 	 * @return mixed
@@ -61,7 +74,7 @@ class Session
 	}
 
 	/**
-	 * Flush specified session var
+	 * Flushes specified session var
 	 *
 	 * @param  string $id
 	 * @return this
@@ -75,4 +88,13 @@ class Session
 		return $this;
 	}
 
+	/**
+	 * Destroys all of the data associated with the current session
+	 *
+	 * @return void
+	 */
+	public function kill()
+	{
+		session_destroy();
+	}
 }
