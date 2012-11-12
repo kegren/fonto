@@ -9,21 +9,44 @@
 
 namespace Fonto\Core\Validation;
 
-class Validate
-{
-	public $errors;
+use Fonto\Core\Application\App;
 
+class Validator
+{
 	public $name;
 
 	public $rules;
+
+	protected $errors;
+
+	protected $message;
 
 	protected $attributes;
 
 	protected $current;
 
+	protected $mapRules = array(
+		'max'      => 'Fonto\Core\Validation\Components\ValidateMax',
+		'num'      => 'Fonto\Core\Validation\Components\ValidateNum',
+		'min'      => 'Fonto\Core\Validation\Components\ValidateMin',
+		'require'  => 'Fonto\Core\Validation\Components\ValidateRequire'
+	);
+
+	protected $app;
+
 	public function __construct()
 	{
 		$this->errors = array();
+	}
+
+	public function setApp(App $app)
+	{
+		$this->app = $app;
+	}
+
+	public function addError($error = array())
+	{
+		$this->errors = $error;
 	}
 
 	public function getErrors()
@@ -31,23 +54,48 @@ class Validate
 		return $this->errors;
 	}
 
+	public function getError($field, $error)
+	{
+		if (isset($this->errors[$field]) and isset($this->errors[$field][$error])) {
+			return $this->errors[$field][$error];
+		}
+
+		return false;
+	}
+
+	public function getErrorFor($field)
+	{
+		if (isset($this->errors[$field])) {
+			return $this->errors[$field];
+		}
+
+		return false;
+	}
+
 	public function max($max)
 	{
-		$this->rules[$this->current]['isMax'] = $max;
+		$this->rules[$this->current]['max'] = $max;
 
 		return $this;
 	}
 
 	public function num()
 	{
-		$this->rules[$this->current]['isNumeric'] = true;
+		$this->rules[$this->current]['num'] = true;
+
+		return $this;
+	}
+
+	public function min($min)
+	{
+		$this->rules[$this->current]['min'] = $min;
 
 		return $this;
 	}
 
 	public function required()
 	{
-		$this->rules[$this->current]['isRequired'] = true;
+		$this->rules[$this->current]['require'] = true;
 
 		return $this;
 	}
@@ -78,39 +126,22 @@ class Validate
 		}
 	}
 
-	private function validator($id, $value, $rules)
+	protected function validator($id, $value, $rules)
 	{
 		foreach ($rules as $method => $validateValue) {
+			if (array_key_exists($method, $this->mapRules)) {
+				$class = new $this->mapRules[$method]($this->app, $value, $validateValue);
+				$errors = $class->getErrorMessage();
 
-			if (method_exists($this, $method)) {
-				call_user_func(array($this, $method), $id, $value, $validateValue);
+				if ($errors) {
+					$this->errors[$id][$method] = $class->getErrorMessage();
+				}
 			}
-
 		}
 	}
 
-	private function isDefined($id)
+	protected function isDefined($id)
 	{
 		return array_key_exists($id, $this->rules);
 	}
-
-	private function isMax($id, $value, $validateValue)
-	{
-		if (strlen($value) > $validateValue) {
-			$this->errors[$id]['max'] = 'Värdet är för stort';
-		}
-	}
-
-	private function isNumeric($id, $value, $validateValue)
-	{
-		if (!is_numeric($value)) {
-			$this->errors[$id]['numeric'] = 'Värdet måste bestå av endast siffror';
-		}
-	}
-
-	private function isRequired($id, $value, $validateValue)
-	{
-		return strlen($value) == 0 and $this->errors[$id]['required'] = 'Du måste ange ett värde';
-	}
-
 }
