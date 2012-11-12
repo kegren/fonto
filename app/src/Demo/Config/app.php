@@ -7,12 +7,12 @@
 
  return array(
  	/**
- 	 * Default timezone
+ 	 * Sets Default timezone
  	 */
  	'timezone' => 'Europe/Stockholm',
 
  	/**
- 	 * Database settings
+ 	 * Sets database settings
  	 */
  	'database' => array(
  		'development' => array(
@@ -32,17 +32,17 @@
  	),
 
  	/**
- 	 * Application environment, development enables error_reporting(-1)
+ 	 * Sets application environment, development enables error_reporting(-1)
  	 */
  	'environment' => 'development',
 
  	/**
- 	 * Set baseUrl for application
+ 	 * Sets baseUrl for application
  	 */
  	'baseUrl' => '',
 
  	/**
- 	 * Twig
+ 	 * Enables twig
  	 */
  	'twig' => true
  );
