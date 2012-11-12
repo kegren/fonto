@@ -35,13 +35,6 @@ class App
 	const DEFAULT_TIMEZONE = 'Europe/Stockholm';
 
 	/**
-	 * The application name
-	 *
-	 * @var string
-	 */
-	protected $appName;
-
-	/**
 	 * Fonto\Core\Application\App
 	 *
 	 * @var object
@@ -54,6 +47,13 @@ class App
 	 * @var object
 	 */
 	public $container;
+
+	/**
+	 * The application name
+	 *
+	 * @var string
+	 */
+	private $appName;
 
 	/**
 	 * Fonto\Core\Controller
@@ -83,6 +83,13 @@ class App
 	 */
 	private $databaseSettings;
 
+	/**
+	 * Language for messages
+	 *
+	 * @var string
+	 */
+	private $langague = 'sv';
+
 	public function __construct()
 	{
 		$this->routes = array();
@@ -110,7 +117,7 @@ class App
 		};
 
 		$this->container['controller'] = function() use ($app) {
-			$controller = new Controller();
+			$controller = new Controller\Base();
 			$controller->setApp($app);
 
 			return $controller;
@@ -121,7 +128,7 @@ class App
 		};
 
 		$this->container['config'] = $this->container->shared(function () use ($app) {
-			$config = new Config\Base(array(CONFIGPATH, APPWEBPATH));
+			$config = new Config\Base(array(CONFIGPATH, APPWEBPATH, LANGPATH));
 			$config->setApp($app);
 
 			return $config;
@@ -486,6 +493,7 @@ class App
 	{
 		defined('CONFIGPATH') or define('CONFIGPATH', APPPATH . 'src' . DS . $this->appName . DS . 'Config' . DS);
 		defined('APPWEBPATH') or define('APPWEBPATH', APPPATH . 'src' . DS . $this->appName . DS);
+		defined('LANGPATH') or define('LANGPATH', APPWEBPATH . DS . 'Language' . DS . $this->langague . DS);
 		defined('CONTROLLERPATH') or define('CONTROLLERPATH', APPPATH . 'src' . DS . $this->appName . DS . 'Controllers' . DS);
 		defined('VIEWPATH') or define('VIEWPATH', APPPATH . 'src' . DS . $this->appName . DS . 'Views' . DS);
 		defined('MODELPATH') or define('MODELPATH', APPPATH . 'src' . DS . $this->appName . DS . 'Models' . DS);
