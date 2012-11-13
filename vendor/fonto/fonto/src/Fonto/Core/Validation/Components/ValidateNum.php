@@ -14,19 +14,25 @@ use Fonto\Core\Application\App;
 
 class ValidateNum extends Validator
 {
+	/**
+	 * Fonto\Core\Application\App
+	 *
+	 * @var object
+	 */
+	protected $app;
+
 	public function __construct(App $app, $value, $validateValue)
 	{
-        $this->message = $app->getConfig()->load('Validation', 'num');
+		$this->app = $app;
 		$this->validateAttribute($value, $validateValue);
 	}
 
 	protected function validateAttribute($value, $validateValue)
 	{
-		return !is_numeric($value) and $this->error = $this->message;
+		if (!is_numeric($value)) {
+			$this->setMessage($this->app->getConfig()->load('Validation', 'num'));
+			$this->hasError = true;
+		}
+		return false;
 	}
-
-    public function getErrorMessage()
-    {
-        return !empty($this->error) ? $this->error : false;
-    }
 }

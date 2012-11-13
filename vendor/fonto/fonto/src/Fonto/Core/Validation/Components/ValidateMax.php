@@ -14,19 +14,25 @@ use Fonto\Core\Application\App;
 
 class ValidateMax extends Validator
 {
+	/**
+	 * Fonto\Core\Application\App
+	 *
+	 * @var object
+	 */
+	protected $app;
+
 	public function __construct(App $app, $value, $validateValue)
 	{
-        $this->message = $app->getConfig()->load('Validation', 'max');
+		$this->app = $app;
 		$this->validateAttribute($value, $validateValue);
 	}
 
 	protected function validateAttribute($value, $validateValue)
 	{
-		return strlen($value) > $validateValue and $this->error = $this->message;
+		if (strlen($value) > $validateValue) {
+			$this->setMessage($this->app->getConfig()->load('Validation', 'max'));
+			$this->hasError = true;
+		}
+		return false;
 	}
-
-    public function getErrorMessage()
-    {
-        return !empty($this->error) ? $this->error : false;
-    }
 }
