@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>{{ session.get('username') }}</title>
+	<title>{{ title }}</title>
 	<link rel="stylesheet" href="{{ baseUrl }}web/css/bootstrap.min.css">
 	<link rel="stylesheet" href="{{ baseUrl }}web/css/style.css">
 
@@ -18,7 +18,6 @@
 		</header>
 		<section>
 			<p>{{ text }}</p>
-			{{ form.open('aik/new', 'post')|raw }}
 		</section>
 	</div>
 </body>
