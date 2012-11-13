@@ -212,14 +212,14 @@ class Router
         }
 
         $controller = $route;
-        $action     = !empty($uri[2]) and $action = $uri[2];
+        $action     = !empty($uri[2]) ? $action = $uri[2] : 'index';
         unset($uri[1], $uri[2]);
 
         $this->setController($controller)
              ->setAction($action);
 
-        if (!empty($parsedUriArr[3])) {
-            $this->setParameters($parsedUriArr);
+        if (!empty($uri[3])) {
+            $this->setParameters($uri);
         }
 
         return $this;
