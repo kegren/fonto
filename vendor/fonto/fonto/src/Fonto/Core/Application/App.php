@@ -10,7 +10,7 @@
 namespace Fonto\Core\Application;
 
 use Fonto\Core\Routing\Router;
-use	Fonto\Core\Request;
+use	Fonto\Core\Http\Request;
 use	Fonto\Core\DI\Container;
 use Fonto\Core\Config;
 use Fonto\Core\FontoException;
@@ -18,7 +18,7 @@ use Fonto\Core\Controller;
 use Fonto\Core\Url;
 use Fonto\Core\View;
 use Fonto\Core\Session;
-use Fonto\Core\Form;
+use Fonto\Core\Form\Form;
 use Fonto\Core\Validation\Validator;
 use ActiveRecord;
 
@@ -272,7 +272,7 @@ class App
 		if (null === $name) {
 			$this->appName = 'Demo';
 		} else {
-			$this->appName = $name;
+			$this->appName = ucfirst($name);
 		}
 
 		return $this;
@@ -324,6 +324,16 @@ class App
 	public function getTimezone()
 	{
 		return date_default_timezone_get();
+	}
+
+	/**
+	 * Returns the DI Container
+	 *
+	 * @return DI Container
+	 */
+	public function container()
+	{
+		return $this->container;
 	}
 
 	/**
@@ -417,16 +427,6 @@ class App
 		$loader->add($this->appName, APPPATH . 'src');
 
 		return $this;
-	}
-
-	/**
-	 * Returns the DI Container
-	 *
-	 * @return DI Container
-	 */
-	public function container()
-	{
-		return $this->container;
 	}
 
 	/**
