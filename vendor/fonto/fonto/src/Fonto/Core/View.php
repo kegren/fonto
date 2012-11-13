@@ -91,7 +91,6 @@ class View
 	 *
 	 * @param  string $view Viewfile
 	 * @param  array  $data Data
-	 * @return
 	 */
 	public function render($view, $data = null)
 	{
@@ -109,19 +108,31 @@ class View
 		} else {
             $this->setExtension('php');
 
-            null === $data and $data = $this->data;
-            ob_start() and extract($data, EXTR_OVERWRITE);
-
-            try {
-                require VIEWPATH . $view . $this->getExtension();
-            }
-            catch (\FontoException $e) {
-                ob_get_clean();
-                throw $e;
-            }
-
-            return ob_get_clean();
+            echo $this->show($view, $data);
         }
+	}
+
+	/**
+	 * Sets up a view for native php
+	 *
+	 * @param  string $view Viewfile
+	 * @param  array  $data Data
+	 * @return mixed
+	 */
+	public function show($view, $data = null)
+	{
+	    null === $data and $data = $this->data;
+        ob_start() and extract($data, EXTR_OVERWRITE);
+
+        try {
+            require VIEWPATH . $view . $this->getExtension();
+        }
+        catch (\FontoException $e) {
+            ob_end_clean();
+            throw $e;
+        }
+
+        return ob_get_clean();
 	}
 
 	/**
