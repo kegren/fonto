@@ -7,7 +7,7 @@
  * @link https://github.com/kenren/fonto
  */
 
-namespace Fonto\Core;
+namespace Fonto\Core\Http;
 
 class Request
 {
