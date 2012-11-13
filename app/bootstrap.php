@@ -7,19 +7,19 @@
 
 
 /**
- * Include files
+ * Includes files
  */
 include APPPATH . 'helpers' . EXT;
 require SYSCOREAPPPATH . 'App' . EXT;
 
 /**
- * Namespace alias
+ * Namespaces alias
  */
 use Fonto\Core\Application\App as App;
 
 
 /**
- * Run application
+ * Runs application
  */
 $app = new App();
 $app->setAppName('Demo')
