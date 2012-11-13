@@ -44,5 +44,5 @@
  	/**
  	 * Enables twig
  	 */
- 	'twig' => true
+ 	'twig' => false
  );
