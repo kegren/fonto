@@ -5,27 +5,21 @@
 
 namespace Demo\Controllers;
 
-use Fonto\Core\Controller;
+use Fonto\Core\Controller\Base;
 
-class Home extends Controller
+class Home extends Base
 {
 	public function indexAction()
 	{
-		$url = $this->url(); // Short
-		$form = $this->form();
-
-		$session = $this->app->container['session'];
-		$session->set('username', 'fonto');
+		$url = $this->url();
 
 		$data = array(
 			'title'   => 'Fonto PHP Framework',
-			'text'    => 'Under development!',
+			'text'    => 'Under development',
+			'version' => $this->app->version(),
 			'baseUrl' => $url->baseUrl(),
-			'session' => $session,
-			'form'    => $form
 		);
 
-		$view = $this->app->container['view'];
-		$view->render('home/index', $data);
+		return $this->view()->render('home/index', $data);
 	}
 }
