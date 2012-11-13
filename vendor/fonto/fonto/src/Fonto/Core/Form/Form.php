@@ -7,12 +7,12 @@
  * @link https://github.com/kenren/fonto
  */
 
-namespace Fonto\Core;
+namespace Fonto\Core\Form;
 
 class Form
 {
 	/**
-	 * Form open tag
+	 * Returns an open form tag
 	 *
 	 * @param  string  $url
 	 * @param  string  $method
@@ -39,12 +39,12 @@ class Form
 	}
 
 	/**
-	 * Input field
+	 * Returns an input field
 	 *
 	 * @param  string $type
 	 * @param  string $name
 	 * @param  array  $attributes
-	 * @return HTML
+	 * @return html
 	 */
 	public function input($type, $name, $attributes = array())
 	{
@@ -60,11 +60,11 @@ class Form
 	}
 
 	/**
-	 * Submit button
+	 * Returns a submit button
 	 *
 	 * @param  string $value
 	 * @param  array  $attributes
-	 * @return HTML
+	 * @return html
 	 */
 	public function submit($value, $attributes = array())
 	{
@@ -80,11 +80,11 @@ class Form
 	}
 
 	/**
-	 * Label
+	 * Returns a label
 	 *
 	 * @param  string $for
 	 * @param  array  $text
-	 * @return HTML
+	 * @return html
 	 */
 	public function label($for, $text)
 	{
@@ -92,7 +92,7 @@ class Form
 	}
 
 	/**
-	 * Closing tag for the form
+	 * Returns a closing tag
 	 *
 	 * @return HTML
 	 */
