@@ -152,6 +152,31 @@ class Validator
 	}
 
 	/**
+	 * Sets email validation
+	 *
+	 * @return Validator
+	 */
+	public function email()
+	{
+		$this->rules[$this->name]['email'] = true;
+
+		return $this;
+	}
+
+	/**
+	 * Sets identical validation
+	 *
+	 * @return Validator
+	 */
+	public function identical($with)
+	{
+		$this->rules[$this->name]['identical'] = $with;
+
+		return $this;
+	}
+
+
+	/**
 	 * Sets field name for the current validation object
 	 *
 	 * @param  string $name
