@@ -25,14 +25,20 @@ class Validator
 
 	protected $current;
 
-
 	protected $mapRules = array(
-		'max'      => 'Fonto\Core\Validation\Components\ValidateMax',
-		'num'      => 'Fonto\Core\Validation\Components\ValidateNum',
-		'min'      => 'Fonto\Core\Validation\Components\ValidateMin',
-		'require'  => 'Fonto\Core\Validation\Components\ValidateRequire'
+		'max'       => 'Fonto\Core\Validation\Components\ValidateMax',
+		'num'       => 'Fonto\Core\Validation\Components\ValidateNum',
+		'min'       => 'Fonto\Core\Validation\Components\ValidateMin',
+		'require'   => 'Fonto\Core\Validation\Components\ValidateRequire',
+		'email'     => 'Fonto\Core\Validation\Components\ValidateEmail',
+		'identical' => 'Fonto\Core\Validation\Components\ValidateIdentical',
 	);
 
+	/**
+	 * Fonto\Core\Application\App
+	 *
+	 * @var object
+	 */
 	protected $app;
 
 	public function __construct()
@@ -85,12 +91,16 @@ class Validator
 	public function getErrorFor($field)
 	{
 		if (isset($this->errors[$field])) {
-			return $this->errors[$field];
-		}
+			$errors = array_keys($this->errors[$field]);
 
+			foreach ($errors as $error) {
+				$user = $this->getError($field, $error);
+			}
+
+			return $user;
+		}
 		return false;
 	}
-
 	/**
 	 * Sets max characters
 	 *
