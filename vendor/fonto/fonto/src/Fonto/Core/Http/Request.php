@@ -60,6 +60,41 @@ class Request
 	}
 
 	/**
+	 * Gets this instance if the request is post
+	 *
+	 * @return mixed
+	 */
+	public function post()
+	{
+		if ($this->isPost()) {
+			return $this;
+		}
+
+		throw new FontoException("Http method need to be POST");
+	}
+
+	/**
+	 * Returns all post data
+	 *
+	 * @return $_POST
+	 */
+	public function getAll()
+	{
+		return $_POST;
+	}
+
+	/**
+	 * Returns specified post
+	 *
+	 * @param  string $get
+	 * @return $_POST
+	 */
+	public function get($get)
+	{
+		return $_POST[$get];
+	}
+
+	/**
 	 * Returns requested uri
 	 *
 	 * @return array uri
