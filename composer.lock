@@ -1,6 +1,50 @@
 {
-    "hash": "a21c953b4f17b2531a4b3472fb688865",
+    "hash": "19fce46eff11aef29cbd445d7012b2b5",
     "packages": [
+        {
+            "name": "hautelook/phpass",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hautelook/phpass",
+                "reference": "da4c2c693aa4e1c616a350015c90af0da82a0fd8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/hautelook/phpass/archive/da4c2c693aa4e1c616a350015c90af0da82a0fd8.zip",
+                "reference": "da4c2c693aa4e1c616a350015c90af0da82a0fd8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "time": "1346441559",
+            "type": "library",
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "Hautelook": "src/"
+                }
+            },
+            "license": [
+                "Public Domain"
+            ],
+            "authors": [
+                {
+                    "name": "Solar Designer",
+                    "email": "solar@openwall.com",
+                    "homepage": "http://openwall.com/phpass/"
+                }
+            ],
+            "description": "Portable PHP password hashing framework",
+            "homepage": "http://github.com/hautelook/phpass/",
+            "keywords": [
+                "security",
+                "password",
+                "crypt",
+                "blowfish"
+            ]
+        },
         {
             "name": "php-activerecord/php-activerecord",
             "version": "dev-master",
@@ -42,18 +86,18 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/fabpot/Twig.git",
-                "reference": "abec35b833abfce5eb0ac7ce2bf2bf3462a5bebf"
+                "reference": "f85076b091c6b6a2f9e14276a436724d23a1217e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/fabpot/Twig/archive/abec35b833abfce5eb0ac7ce2bf2bf3462a5bebf.zip",
-                "reference": "abec35b833abfce5eb0ac7ce2bf2bf3462a5bebf",
+                "url": "https://github.com/fabpot/Twig/archive/f85076b091c6b6a2f9e14276a436724d23a1217e.zip",
+                "reference": "f85076b091c6b6a2f9e14276a436724d23a1217e",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.2.4"
             },
-            "time": "1352101924",
+            "time": "1352875253",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -93,6 +137,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "php-activerecord/php-activerecord": 20,
-        "twig/twig": 20
+        "twig/twig": 20,
+        "hautelook/phpass": 20
     }
 }
