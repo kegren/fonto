@@ -232,7 +232,16 @@ class Validator
 	{
 		foreach ($rules as $method => $validateValue) {
 			if (array_key_exists($method, $this->mapRules)) {
-				$validatorClass = new $this->mapRules[$method]($this->app, $value, $validateValue);
+
+				if ($method == 'identical') {
+					$identicalWith = $validateValue;
+
+					$identicalValue = $this->attributes[$identicalWith];
+
+					$validatorClass = new $this->mapRules[$method]($this->app, $value, $identicalValue);
+				} else {
+					$validatorClass = new $this->mapRules[$method]($this->app, $value, $validateValue);
+				}
 
 				if ($validatorClass->hasError()) {
 					$this->errors[$id][$method] = $validatorClass->getMessage();
