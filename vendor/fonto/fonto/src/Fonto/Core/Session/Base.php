@@ -49,6 +49,22 @@ class Base
 	}
 
 	/**
+	 * Checks if session is set returns boolean
+	 *
+	 * @param  string $id
+	 * @return session value
+	 */
+	public function has($id)
+	{
+		if (isset($_SESSION[$id])) {
+			return true;
+		}
+
+		return false;
+	}
+
+
+	/**
 	 * Regenerates session id
 	 *
 	 * @return $this
