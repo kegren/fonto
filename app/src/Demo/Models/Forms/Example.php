@@ -23,6 +23,7 @@ class Example extends Base
 
 			$validator->field('password')
 					  ->max(32)
+					  ->min(8)
 					  ->required();
 		};
 
