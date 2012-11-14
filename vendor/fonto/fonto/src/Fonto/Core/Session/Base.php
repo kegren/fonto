@@ -41,7 +41,11 @@ class Base
 	 */
 	public function get($id)
 	{
-		return $_SESSION[$id];
+		if (isset($_SESSION[$id])) {
+			return $_SESSION[$id];
+		}
+
+		return false;
 	}
 
 	/**
