@@ -35,7 +35,7 @@ class Form
 			$enct = 'enctype="multipart/form-data"';
 		}
 
-		return '<form action="'.$url.'" method="'.$method.'" '.$enct.' '.$attr.'>';
+		return '<form action="'.$url.'" method="'.$method.'" '.$enct.' '.$attr.'>'."\n";
 	}
 
 	/**
@@ -56,7 +56,7 @@ class Form
 			}
 		}
 
-		return '<input type="'.$type.'" name="'.$name.'" id="'.$name.'" '.$attr.'>';
+		return '<input type="'.$type.'" name="'.$name.'" id="'.$name.'" '.$attr.'>'."\n";
 	}
 
 	/**
@@ -76,7 +76,7 @@ class Form
 			}
 		}
 
-		return '<input type="submit" value="'.$value.'" '.$attr.'>';
+		return '<input type="submit" value="'.$value.'" '.$attr.'>'."\n";
 	}
 
 	/**
@@ -88,7 +88,7 @@ class Form
 	 */
 	public function label($for, $text)
 	{
-		return '<label for="'.$for.'">'.$text.'</label>';
+		return '<label for="'.$for.'">'.$text.'</label>'."\n";
 	}
 
 	/**
@@ -98,6 +98,6 @@ class Form
 	 */
 	public function close()
 	{
-		return '</form>';
+		return '</form>'."\n";
 	}
 }
