@@ -50,8 +50,8 @@ class Auth
 	 */
 	public function authenticate($username, $password)
 	{
-		$modelNs = $this->app->getAppName() . '\\Models\\';
-		$user = new $modelsNs.User();
+		$modelNs = '\\' . $this->app->getAppName() . '\\Models\\User';
+		$user = new $modelNs;
 		$user = User::find_by_username($username);
 
 		if ($user) {
@@ -77,7 +77,7 @@ class Auth
 	 */
 	public function IsAuthenticated()
 	{
-		return $this->app->getSession()->get('user');
+		return $this->app->getSession()->has('user');
 	}
 
 	/**
@@ -96,6 +96,27 @@ class Auth
 		}
 
 		return false;
+	}
+
+	/**
+	 * Returns all session data
+	 *
+	 * @return array
+	 */
+	public function getUser()
+	{
+		return $this->app->getSession()->get('user');
+	}
+
+	/**
+	 * Kills session
+	 *
+	 * @return array
+	 */
+	public function logout()
+	{
+		$this->user = null;
+		$this->app->getSession()->kill();
 	}
 
 	/**
