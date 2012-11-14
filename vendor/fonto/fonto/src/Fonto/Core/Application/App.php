@@ -10,9 +10,9 @@
 namespace Fonto\Core\Application;
 
 use Fonto\Core\Routing\Router;
-use	Fonto\Core\Http\Request;
-use	Fonto\Core\Http\Response;
-use	Fonto\Core\DI\Container;
+use Fonto\Core\Http\Request;
+use Fonto\Core\Http\Response;
+use Fonto\Core\DI\Container;
 use Fonto\Core\Config;
 use Fonto\Core\FontoException;
 use Fonto\Core\Controller;
