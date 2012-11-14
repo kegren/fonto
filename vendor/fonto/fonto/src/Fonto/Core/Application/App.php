@@ -11,6 +11,7 @@ namespace Fonto\Core\Application;
 
 use Fonto\Core\Routing\Router;
 use	Fonto\Core\Http\Request;
+use	Fonto\Core\Http\Response;
 use	Fonto\Core\DI\Container;
 use Fonto\Core\Config;
 use Fonto\Core\FontoException;
@@ -22,7 +23,7 @@ use Fonto\Core\Form\Form;
 use Fonto\Core\Validation\Validator;
 use ActiveRecord;
 use Hautelook\Phpass\PasswordHash;
-use Fonto\Core\Authentication;
+use Fonto\Core\Authentication\Auth;
 
 class App
 {
@@ -129,6 +130,10 @@ class App
 			return new Request();
 		};
 
+		$this->container['response'] = function () {
+			return new Response();
+		};
+
 		$this->container['config'] = $this->container->shared(function () use ($app) {
 			$config = new Config\Base(array(CONFIGPATH, APPWEBPATH, LANGPATH));
 			$config->setApp($app);
@@ -159,7 +164,7 @@ class App
 		};
 
 		$this->container['session'] = function() {
-			return new Session();
+			return new Session\Base();
 		};
 
 		$this->container['twig'] = function() {
