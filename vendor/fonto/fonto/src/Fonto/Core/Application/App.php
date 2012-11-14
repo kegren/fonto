@@ -21,6 +21,8 @@ use Fonto\Core\Session;
 use Fonto\Core\Form\Form;
 use Fonto\Core\Validation\Validator;
 use ActiveRecord;
+use Hautelook\Phpass\PasswordHash;
+use Fonto\Core\Authentication;
 
 class App
 {
@@ -165,6 +167,17 @@ class App
 			$twig   = new \Twig_Environment($loader);
 
       		return $twig;
+		};
+
+		$this->container['phpass'] = function() {
+			return new PasswordHash(8, false);
+		};
+
+		$this->container['auth'] = function() use ($app) {
+			$auth = new Auth();
+			$auth->setApp($app);
+
+			return $auth;
 		};
 
 		$config = $this->container['config'];
@@ -334,6 +347,22 @@ class App
 	public function container()
 	{
 		return $this->container;
+	}
+
+	/**
+	 * Returns the phpass service
+	 */
+	public function getPhpass()
+	{
+		return $this->container['phpass'];
+	}
+
+	/**
+	 * Returns the authentication service
+	 */
+	public function getAuth()
+	{
+		return $this->container['auth'];
 	}
 
 	/**
