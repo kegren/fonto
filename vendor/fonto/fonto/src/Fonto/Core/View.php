@@ -42,6 +42,13 @@ class View
 	 */
 	protected $app;
 
+	/**
+	 * Holds external data
+	 *
+	 * @var array
+	 */
+	private $storage;
+
 
 	public function __construct()
 	{}
@@ -59,20 +66,23 @@ class View
 	}
 
 	/**
-	 * Loads layout file inside view
+	 * Loads external file inside view
 	 *
 	 * @param  string $layout
 	 * @return mixed
 	 */
-	public function load($layout)
+	public function load($external)
 	{
-		if (file_exists(VIEWPATH . DS . 'layout' . DS . $layout . EXT)) {
-			include VIEWPATH . DS . 'layout' . DS . $layout . EXT;
+		if (file_exists(VIEWPATH . DS . $external . EXT)) {
+
+			$path = VIEWPATH . DS . $external . EXT;
+
+			echo $this->show($path, $this->storage, true);
 
 			return true;
 		}
 
-		throw new FontoException("The requested layout $layout does not exists");
+		throw new FontoException("The requested view '$external' does not exists");
 	}
 
 	/**
@@ -130,13 +140,20 @@ class View
 	 * @param  array  $data Data
 	 * @return mixed
 	 */
-	private function show($view, $data = null)
+	private function show($view, $data = null, $external = false)
 	{
-	    null === $data and $data = $this->data;
+	    null === $data and $data = $this->data and $this->storage = $this->data;
+
+	    $this->storage = $data;
+
         ob_start() and extract($data, EXTR_OVERWRITE);
 
         try {
-            require VIEWPATH . $view . $this->getExtension();
+        	if ($external) {
+        		require $view;
+        	} else {
+        		require VIEWPATH . $view . $this->getExtension();
+        	}
         }
         catch (\FontoException $e) {
             ob_end_clean();
