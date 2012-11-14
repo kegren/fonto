@@ -52,7 +52,7 @@ class Auth
 	{
 		$modelNs = '\\' . $this->app->getAppName() . '\\Models\\User';
 		$user = new $modelNs;
-		$user = User::find_by_username($username);
+		$user = $modelNs::find_by_username($username);
 
 		if ($user) {
 
