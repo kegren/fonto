@@ -9,6 +9,9 @@
 
 namespace Fonto\Core\Authentication;
 
+use Hautelook\Phpass\PasswordHash;
+use Fonto\Core\Application\App;
+
 class Auth
 {
 	private $user;
@@ -20,13 +23,13 @@ class Auth
 	public function authenticate($username, $password)
 	{
 		$user = new User();
-		$user = User::find_by_username('fonto');
+		$user = User::find_by_username($username);
 
 		if ($user) {
 
 			$this->user = $user;
 
-			if ($this->validatePassword('admin')) {
+			if ($this->validatePassword($password)) {
 
 				$this->login($this->user);
 
@@ -36,6 +39,12 @@ class Auth
 		}
 
 		return false;
+	}
+
+	private function validatePassword($password)
+	{
+		$passwordChecker = new PasswordHash(8, false);
+		return $passwordChecker->CheckPassword($password, $this->user->password);
 	}
 
 }
