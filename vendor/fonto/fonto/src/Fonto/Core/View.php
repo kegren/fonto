@@ -10,7 +10,6 @@
 namespace Fonto\Core;
 
 use Fonto\Core\FontoException;
-use	Fonto\Core\DI\Container;
 use Fonto\Core\Application\App;
 
 class View
@@ -43,17 +42,12 @@ class View
 	 */
 	protected $app;
 
-	/**
-	 * Adding view and data for the output
-	 *
-	 * @param string $file
-	 * @param array  $data
-	 */
+
 	public function __construct()
 	{}
 
 	/**
-	 * Current application
+	 * Sets current application
 	 *
 	 * @param App $app
 	 */
@@ -65,7 +59,24 @@ class View
 	}
 
 	/**
-	 * Set data for view
+	 * Loads layout file inside view
+	 *
+	 * @param  string $layout
+	 * @return mixed
+	 */
+	public function load($layout)
+	{
+		if (file_exists(VIEWPATH . DS . 'layout' . DS . $layout . EXT)) {
+			include VIEWPATH . DS . 'layout' . DS . $layout . EXT;
+
+			return true;
+		}
+
+		throw new FontoException("The requested layout $layout does not exists");
+	}
+
+	/**
+	 * Sets data for view
 	 *
 	 * @param array $data
 	 */
@@ -119,7 +130,7 @@ class View
 	 * @param  array  $data Data
 	 * @return mixed
 	 */
-	public function show($view, $data = null)
+	private function show($view, $data = null)
 	{
 	    null === $data and $data = $this->data;
         ob_start() and extract($data, EXTR_OVERWRITE);
@@ -140,7 +151,7 @@ class View
 	 *
 	 * @param string $type
 	 */
-	public function setExtension($type)
+	private function setExtension($type)
 	{
 		switch ($type) {
 			case 'twig':
@@ -162,7 +173,7 @@ class View
 	 *
 	 * @return string
 	 */
-	public function getExtension()
+	private function getExtension()
 	{
 		return $this->extension;
 	}
