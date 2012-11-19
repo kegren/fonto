@@ -42,6 +42,7 @@ class Base
 	 */
 	public function __call($class, $args)
 	{
-		return $this->app->container[$class];
+		$getter = "get".ucfirst($class);
+		return $this->app->$getter();
 	}
 }
