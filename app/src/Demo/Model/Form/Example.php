@@ -1,6 +1,6 @@
 <?php
 
-namespace Demo\Models\Forms;
+namespace Demo\Model\Form;
 
 use Fonto\Core\FormModel\Base;
 use Fonto\Core\Validation\Validator;
