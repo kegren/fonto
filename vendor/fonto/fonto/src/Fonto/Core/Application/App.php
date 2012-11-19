@@ -17,13 +17,16 @@ use Fonto\Core\Config;
 use Fonto\Core\FontoException;
 use Fonto\Core\Controller;
 use Fonto\Core\Url;
-use Fonto\Core\View;
+use Fonto\Core\View\View;
 use Fonto\Core\Session;
 use Fonto\Core\Form\Form;
 use Fonto\Core\Validation\Validator;
 use ActiveRecord;
 use Hautelook\Phpass\PasswordHash;
 use Fonto\Core\Authentication\Auth;
+use Fonto\Core\View\Helper\Css;
+
+use HTMLPurifier as Purifier;
 
 class App
 {
@@ -52,11 +55,18 @@ class App
 	public $container;
 
 	/**
-	 * The application name
+	 * The default app
 	 *
 	 * @var string
 	 */
-	private $appName;
+	protected $defaultApp;
+
+	/**
+	 * The current active app
+	 *
+	 * @var string
+	 */
+	protected $activeApp;
 
 	/**
 	 * Fonto\Core\Controller
@@ -93,11 +103,14 @@ class App
 	 */
 	private $langague = 'sv';
 
-	public function __construct()
+	public function __construct(array $settings = array())
 	{
 		$this->routes = array();
 		$this->controllers = array();
 		$this->databaseSettings = array();
+
+		$this->setDefaultApp($settings['defaultApp']);
+		$this->setActiveApp($settings['activeApp']);
 	}
 
 	/**
@@ -109,6 +122,9 @@ class App
 
 		$this->registerAutoload();
 		$this->setPaths();
+
+		// Register autoloader for HTMLPurifier
+		\HTMLPurifier_Bootstrap::registerAutoload();
 
 		$this->container = new Container($app);
 
@@ -178,11 +194,25 @@ class App
 			return new PasswordHash(8, false);
 		};
 
+		$this->container['purifier'] = $this->container->shared(function() use ($app) {
+			$cfg = \HTMLPurifier_Config::createDefault();
+			$purifier = new \HTMLPurifier($cfg);
+
+			return $purifier;
+		});
+
 		$this->container['auth'] = function() use ($app) {
 			$auth = new Auth();
 			$auth->setApp($app);
 
 			return $auth;
+		};
+
+		$this->container['css'] = function() use ($app) {
+			$css = new Css();
+			$css->setApp($app);
+
+			return $css;
 		};
 
 		$config = $this->container['config'];
@@ -248,63 +278,35 @@ class App
         return $this;
     }
 
-    /**
-     * Loads ActiveRecords and sets directory for models
-     *
-     * @return Application
-     */
-    public function activeRecord()
+    public function setDefaultApp($defaultApp = '')
     {
-    	$config = $this->databaseSettings;
-    	if ($config === false) {
-    		throw new Exception("Missing database settings from application config file");
+    	if (!$defaultApp) {
+    		throw new Exception("A default app most be provided");
     	}
 
-    	$type = $config['type'];
-    	$host = $config['host'];
-    	$user = $config['user'];
-    	$pass = $config['pass'];
-    	$name = $config['name'];
-
-    	$dsn = "$type://$user:$pass@$host/$name";
-
-     	ActiveRecord\Config::initialize(function($cfg) use($dsn)
-		{
-     		$cfg->set_model_directory(MODELPATH);
-	    	$cfg->set_connections(array(
-	    	'development' => $dsn));
- 		});
-
- 		return $this;
+    	$this->defaultApp = (string) ucfirst($defaultApp);
     }
 
+    public function getDefaultApp()
+   	{
+   		return isset($this->defaultApp) ? $this->defaultApp : '';
+   	}
 
-    /**
-     * Sets the application name
-     *
-     * @param string $name
-     * @return Application
-     */
-	public function setAppName($name = null)
-	{
-		if (null === $name) {
-			$this->appName = 'Demo';
-		} else {
-			$this->appName = ucfirst($name);
-		}
+   	public function setActiveApp($activeApp = '')
+   	{
+   		if (!$activeApp) {
+   			if ($this->getDefaultApp() != '') {
+   				$this->setActiveApp = $this->getDefaultApp();
+   			}
+   		}
 
-		return $this;
-	}
+		$this->activeApp = $activeApp;
+   	}
 
-	/**
-	 * Gets application name
-	 *
-	 * @return string Current application name
-	 */
-	public function getAppName()
-	{
-		return $this->appName;
-	}
+   	public function getActiveApp()
+   	{
+   		return isset($this->activeApp) ? $this->activeApp : '';
+   	}
 
 	/**
 	 * Sets database settings based on what the user has specified in the config
@@ -352,6 +354,16 @@ class App
 	public function container()
 	{
 		return $this->container;
+	}
+
+	public function getCss()
+	{
+		return $this->container['css'];
+	}
+
+	public function getPurifier()
+	{
+		return $this->container['purifier'];
 	}
 
 	/**
@@ -451,6 +463,36 @@ class App
 	}
 
 	/**
+     * Loads ActiveRecords and sets directory for models
+     *
+     * @return Application
+     */
+    private function activeRecord()
+    {
+    	$config = $this->databaseSettings;
+    	if ($config === false) {
+    		throw new Exception("Missing database settings from application config file");
+    	}
+
+    	$type = $config['type'];
+    	$host = $config['host'];
+    	$user = $config['user'];
+    	$pass = $config['pass'];
+    	$name = $config['name'];
+
+    	$dsn = "$type://$user:$pass@$host/$name";
+
+     	ActiveRecord\Config::initialize(function($cfg) use($dsn)
+		{
+     		$cfg->set_model_directory(MODELPATH);
+	    	$cfg->set_connections(array(
+	    	'development' => $dsn));
+ 		});
+
+ 		return $this;
+    }
+
+	/**
      * Registers autoloader for this application
      *
      * @return Application
@@ -458,7 +500,7 @@ class App
 	private function registerAutoload()
 	{
 		$loader = include VENDORPATH . 'autoload' . EXT;
-		$loader->add($this->appName, APPPATH . 'src');
+		$loader->add($this->activeApp, APPPATH . 'src');
 
 		return $this;
 	}
@@ -525,11 +567,11 @@ class App
 	 */
 	private function setPaths()
 	{
-		defined('CONFIGPATH') or define('CONFIGPATH', APPPATH . 'src' . DS . $this->appName . DS . 'Config' . DS);
-		defined('APPWEBPATH') or define('APPWEBPATH', APPPATH . 'src' . DS . $this->appName . DS);
+		defined('CONFIGPATH') or define('CONFIGPATH', APPPATH . 'src' . DS . $this->activeApp . DS . 'Config' . DS);
+		defined('APPWEBPATH') or define('APPWEBPATH', APPPATH . 'src' . DS . $this->activeApp . DS);
 		defined('LANGPATH') or define('LANGPATH', APPWEBPATH . DS . 'Language' . DS . $this->langague . DS);
-		defined('CONTROLLERPATH') or define('CONTROLLERPATH', APPPATH . 'src' . DS . $this->appName . DS . 'Controllers' . DS);
-		defined('VIEWPATH') or define('VIEWPATH', APPPATH . 'src' . DS . $this->appName . DS . 'Views' . DS);
-		defined('MODELPATH') or define('MODELPATH', APPPATH . 'src' . DS . $this->appName . DS . 'Models' . DS);
+		defined('CONTROLLERPATH') or define('CONTROLLERPATH', APPPATH . 'src' . DS . $this->activeApp . DS . 'Controllers' . DS);
+		defined('VIEWPATH') or define('VIEWPATH', APPPATH . 'src' . DS . $this->activeApp . DS . 'Views' . DS);
+		defined('MODELPATH') or define('MODELPATH', APPPATH . 'src' . DS . $this->activeApp . DS . 'Models' . DS);
 	}
 }

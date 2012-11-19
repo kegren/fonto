@@ -87,22 +87,22 @@
         "source": {
             "type": "git",
             "url": "git://github.com/fabpot/Twig.git",
-            "reference": "f85076b091c6b6a2f9e14276a436724d23a1217e"
+            "reference": "9b75e2c7ae51b66fd4bb2ffbf1d2f28a8604e8f6"
         },
         "dist": {
             "type": "zip",
-            "url": "https://github.com/fabpot/Twig/archive/f85076b091c6b6a2f9e14276a436724d23a1217e.zip",
-            "reference": "f85076b091c6b6a2f9e14276a436724d23a1217e",
+            "url": "https://github.com/fabpot/Twig/archive/9b75e2c7ae51b66fd4bb2ffbf1d2f28a8604e8f6.zip",
+            "reference": "9b75e2c7ae51b66fd4bb2ffbf1d2f28a8604e8f6",
             "shasum": ""
         },
         "require": {
             "php": ">=5.2.4"
         },
-        "time": "2012-11-14 06:40:53",
+        "time": "2012-11-19 07:06:38",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "1.11-dev"
+                "dev-master": "1.12-dev"
             }
         },
         "installation-source": "source",
@@ -128,6 +128,48 @@
         "homepage": "http://twig.sensiolabs.org",
         "keywords": [
             "templating"
+        ]
+    },
+    {
+        "name": "ezyang/htmlpurifier",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "git://github.com/ezyang/htmlpurifier.git",
+            "reference": "8a8b123d3322d24d77114dfa767a5eafbe9ff24b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://github.com/ezyang/htmlpurifier/archive/8a8b123d3322d24d77114dfa767a5eafbe9ff24b.zip",
+            "reference": "8a8b123d3322d24d77114dfa767a5eafbe9ff24b",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.2"
+        },
+        "time": "2012-09-16 09:11:46",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "classmap": [
+                "library/"
+            ]
+        },
+        "license": [
+            "LGPL"
+        ],
+        "authors": [
+            {
+                "name": "Edward Z. Yang",
+                "email": "admin@htmlpurifier.org",
+                "homepage": "http://ezyang.com"
+            }
+        ],
+        "description": "Standards compliant HTML filter written in PHP",
+        "homepage": "http://htmlpurifier.org/",
+        "keywords": [
+            "html"
         ]
     }
 ]

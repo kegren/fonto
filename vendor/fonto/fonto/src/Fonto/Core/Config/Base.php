@@ -29,7 +29,7 @@ class Base
 	protected $app;
 
 
-	public function __construct(array $paths)
+	public function __construct($paths = array())
 	{
 		$this->paths = $paths;
 	}
