@@ -1,5 +1,5 @@
 {
-    "hash": "19fce46eff11aef29cbd445d7012b2b5",
+    "hash": "c8bf533ab1f5344950a24f3c7ab59844",
     "packages": [
         {
             "name": "hautelook/phpass",
@@ -81,27 +81,59 @@
             ]
         },
         {
-            "name": "twig/twig",
+            "name": "spekkionu/htmlpurifier",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "git://github.com/fabpot/Twig.git",
-                "reference": "f85076b091c6b6a2f9e14276a436724d23a1217e"
+                "url": "https://github.com/spekkionu/htmlpurifier",
+                "reference": "95e16443811da5dd1b5e4ef800c1d636fadfbeee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/fabpot/Twig/archive/f85076b091c6b6a2f9e14276a436724d23a1217e.zip",
-                "reference": "f85076b091c6b6a2f9e14276a436724d23a1217e",
+                "url": "https://github.com/spekkionu/htmlpurifier/archive/95e16443811da5dd1b5e4ef800c1d636fadfbeee.zip",
+                "reference": "95e16443811da5dd1b5e4ef800c1d636fadfbeee",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.2.4"
             },
-            "time": "1352875253",
+            "time": "1343666043",
+            "type": "library",
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "HTMLPurifier": "",
+                    "HTMLPurifier_": "HTMLPurifier/"
+                }
+            },
+            "license": [
+                "LGPL-2.0"
+            ],
+            "description": "HTML Purifier is a standards-compliant HTML filter library written in PHP.",
+            "homepage": "http://htmlpurifier.org/"
+        },
+        {
+            "name": "twig/twig",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git://github.com/fabpot/Twig.git",
+                "reference": "9b75e2c7ae51b66fd4bb2ffbf1d2f28a8604e8f6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/fabpot/Twig/archive/9b75e2c7ae51b66fd4bb2ffbf1d2f28a8604e8f6.zip",
+                "reference": "9b75e2c7ae51b66fd4bb2ffbf1d2f28a8604e8f6",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.4"
+            },
+            "time": "1353308798",
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.11-dev"
+                    "dev-master": "1.12-dev"
                 }
             },
             "installation-source": "source",
@@ -138,6 +170,7 @@
     "stability-flags": {
         "php-activerecord/php-activerecord": 20,
         "twig/twig": 20,
-        "hautelook/phpass": 20
+        "hautelook/phpass": 20,
+        "spekkionu/htmlpurifier": 20
     }
 }
