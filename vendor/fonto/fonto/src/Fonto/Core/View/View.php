@@ -7,7 +7,7 @@
  * @link https://github.com/kenren/fonto
  */
 
-namespace Fonto\Core;
+namespace Fonto\Core\View;
 
 use Fonto\Core\FontoException;
 use Fonto\Core\Application\App;
@@ -131,6 +131,11 @@ class View
 
             echo $this->show($view, $data);
         }
+	}
+
+	protected function css($file)
+	{
+		return $this->app->getCss()->getCssFile($file);
 	}
 
 	/**
