@@ -122,7 +122,7 @@ class Router
      */
     public function run()
     {
-        $ns = $this->app->getAppName() . self::CONTROLLER_NAMESPACE;
+        $ns = $this->app->getActiveApp() . self::CONTROLLER_NAMESPACE;
         $class = $ns . '\\' . ucfirst($this->getController());
         $file  = CONTROLLERPATH . ucfirst($this->getController()) . EXT;
 
