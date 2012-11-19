@@ -138,6 +138,11 @@ class View
 		return $this->app->getCss()->getCssFile($file);
 	}
 
+	protected function purify($file)
+	{
+		return $this->app->getPurifier()->purify($file);
+	}
+
 	/**
 	 * Sets up a view for native php
 	 *
