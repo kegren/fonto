@@ -17,11 +17,19 @@ require SYSCOREAPPPATH . 'App' . EXT;
  */
 use Fonto\Core\Application\App as App;
 
+/**
+ * Gets main app settings
+ *
+ * @return array
+ */
+function appSettings() {
+	$appSettings = include __DIR__ . '/config.php';
+	return $appSettings;
+}
 
 /**
  * Runs application
  */
-$app = new App();
-$app->setAppName('Demo')
-	->setup()
+$app = new App(appSettings());
+$app->setup()
 	->run();
