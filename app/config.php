@@ -14,5 +14,5 @@ return array(
 	/**
 	 * Sets current active app
 	 */
-	'currentApp' => 'Demo'
+	'activeApp' => 'Demo'
 );
