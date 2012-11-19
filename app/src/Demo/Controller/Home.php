@@ -3,7 +3,7 @@
  * Homepage controller
  */
 
-namespace Demo\Controllers;
+namespace Demo\Controller;
 
 use Fonto\Core\Controller\Base;
 
