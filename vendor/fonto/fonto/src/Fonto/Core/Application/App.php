@@ -570,8 +570,8 @@ class App
 		defined('CONFIGPATH') or define('CONFIGPATH', APPPATH . 'src' . DS . $this->activeApp . DS . 'Config' . DS);
 		defined('APPWEBPATH') or define('APPWEBPATH', APPPATH . 'src' . DS . $this->activeApp . DS);
 		defined('LANGPATH') or define('LANGPATH', APPWEBPATH . DS . 'Language' . DS . $this->langague . DS);
-		defined('CONTROLLERPATH') or define('CONTROLLERPATH', APPPATH . 'src' . DS . $this->activeApp . DS . 'Controllers' . DS);
-		defined('VIEWPATH') or define('VIEWPATH', APPPATH . 'src' . DS . $this->activeApp . DS . 'Views' . DS);
-		defined('MODELPATH') or define('MODELPATH', APPPATH . 'src' . DS . $this->activeApp . DS . 'Models' . DS);
+		defined('CONTROLLERPATH') or define('CONTROLLERPATH', APPPATH . 'src' . DS . $this->activeApp . DS . 'Controller' . DS);
+		defined('VIEWPATH') or define('VIEWPATH', APPPATH . 'src' . DS . $this->activeApp . DS . 'View' . DS);
+		defined('MODELPATH') or define('MODELPATH', APPPATH . 'src' . DS . $this->activeApp . DS . 'Model' . DS);
 	}
 }
