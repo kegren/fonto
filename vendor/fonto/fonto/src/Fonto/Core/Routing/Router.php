@@ -16,7 +16,7 @@ use Fonto\Core\Application\App;
 class Router
 {
     const ACTION_PREFIX        = 'Action';
-    const CONTROLLER_NAMESPACE = '\\Controllers';
+    const CONTROLLER_NAMESPACE = '\\Controller';
     const DEFAULT_ROUTE        = '/';
     const ROUTE_DELIMITER      = '#';
     const DEFAULT_CONTROLLER   = 'home';
