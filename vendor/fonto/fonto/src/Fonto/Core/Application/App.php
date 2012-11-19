@@ -123,6 +123,9 @@ class App
 		$this->registerAutoload();
 		$this->setPaths();
 
+		// Register autoloader for HTMLPurifier
+		\HTMLPurifier_Bootstrap::registerAutoload();
+
 		$this->container = new Container($app);
 
 		$this->container['router'] = function() use ($app) {
@@ -190,6 +193,13 @@ class App
 		$this->container['phpass'] = function() {
 			return new PasswordHash(8, false);
 		};
+
+		$this->container['purifier'] = $this->container->shared(function() use ($app) {
+			$cfg = \HTMLPurifier_Config::createDefault();
+			$purifier = new \HTMLPurifier($cfg);
+
+			return $purifier;
+		});
 
 		$this->container['auth'] = function() use ($app) {
 			$auth = new Auth();
@@ -349,6 +359,11 @@ class App
 	public function getCss()
 	{
 		return $this->container['css'];
+	}
+
+	public function getPurifier()
+	{
+		return $this->container['purifier'];
 	}
 
 	/**
