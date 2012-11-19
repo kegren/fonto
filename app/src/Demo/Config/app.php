@@ -46,14 +46,4 @@
  	 */
  	'twig' => false,
 
- 	/**
- 	 * Sets fallback app
- 	 */
- 	'defaultApp' => 'Demo',
-
- 	/**
- 	 * Sets current working app
- 	 */
- 	'currentApp' => 'Demo'
-
  );
