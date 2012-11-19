@@ -81,39 +81,6 @@
         ]
     },
     {
-        "name": "spekkionu/htmlpurifier",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/spekkionu/htmlpurifier",
-            "reference": "95e16443811da5dd1b5e4ef800c1d636fadfbeee"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://github.com/spekkionu/htmlpurifier/archive/95e16443811da5dd1b5e4ef800c1d636fadfbeee.zip",
-            "reference": "95e16443811da5dd1b5e4ef800c1d636fadfbeee",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.2.4"
-        },
-        "time": "2012-07-30 09:34:03",
-        "type": "library",
-        "installation-source": "source",
-        "autoload": {
-            "psr-0": {
-                "HTMLPurifier": "",
-                "HTMLPurifier_": "HTMLPurifier/"
-            }
-        },
-        "license": [
-            "LGPL-2.0"
-        ],
-        "description": "HTML Purifier is a standards-compliant HTML filter library written in PHP.",
-        "homepage": "http://htmlpurifier.org/"
-    },
-    {
         "name": "twig/twig",
         "version": "dev-master",
         "version_normalized": "9999999-dev",
@@ -161,6 +128,48 @@
         "homepage": "http://twig.sensiolabs.org",
         "keywords": [
             "templating"
+        ]
+    },
+    {
+        "name": "ezyang/htmlpurifier",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "git://github.com/ezyang/htmlpurifier.git",
+            "reference": "8a8b123d3322d24d77114dfa767a5eafbe9ff24b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://github.com/ezyang/htmlpurifier/archive/8a8b123d3322d24d77114dfa767a5eafbe9ff24b.zip",
+            "reference": "8a8b123d3322d24d77114dfa767a5eafbe9ff24b",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.2"
+        },
+        "time": "2012-09-16 09:11:46",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "classmap": [
+                "library/"
+            ]
+        },
+        "license": [
+            "LGPL"
+        ],
+        "authors": [
+            {
+                "name": "Edward Z. Yang",
+                "email": "admin@htmlpurifier.org",
+                "homepage": "http://ezyang.com"
+            }
+        ],
+        "description": "Standards compliant HTML filter written in PHP",
+        "homepage": "http://htmlpurifier.org/",
+        "keywords": [
+            "html"
         ]
     }
 ]
