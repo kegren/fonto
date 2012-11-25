@@ -16,94 +16,82 @@ use \Closure;
 
 class Container implements ArrayAccess
 {
-	/**
-	 * Services in the container
-	 *
-	 * @var array
-	 */
-	protected $services = array();
+    /**
+     * Services in the container
+     *
+     * @var array
+     */
+    protected $services = array();
 
-	/**
-	 * Fonto\Core\Application\App
-	 *
-	 * @var object
-	 */
-	protected $app;
+    /**
+     * Registers a service by id
+     *
+     * @param  string $id
+     * @param  string $value
+     * @return void
+     */
+    public function offsetSet($key, $value)
+    {
+        if (isset($this->services[$key])) {
+            throw new FontoException("There is already an service with $key registered in the container");
+        }
 
-	public function __construct(App $app)
-	{
-		$this->app = $app;
-	}
+        $this->services[$key] = $value;
+    }
 
-	/**
-	 * Registers a service by id
-	 *
-	 * @param  string $id
-	 * @param  string $value
-	 * @return void
-	 */
-	public function offsetSet($id, $value)
-	{
-		if (isset($this->services[$id])) {
-			throw new FontoException("There is already an service with $id registered in the container");
-		}
+    /**
+     * Checks if the given service is registered in the container
+     *
+     * @param  string $id
+     * @return boolean
+     */
+    public function offsetExists($key)
+    {
+        return isset($this->services[$key]);
+    }
 
-		$this->services[$id] = $value;
-	}
+    /**
+     * Unsets a service
+     *
+     * @param  string $id
+     * @return
+     */
+    public function offsetUnset($key)
+    {
+        unset($this->services[$key]);
+    }
 
-	/**
-	 * Checks if the given service is registered in the container
-	 *
-	 * @param  string $id
-	 * @return boolean
-	 */
-	public function offsetExists($id)
-	{
-		return isset($this->services[$id]);
-	}
+    /**
+     * Returns the registered service if exists
+     *
+     * @param  string $id
+     * @return mixed
+     */
+    public function offsetGet($key)
+    {
+        if (!isset($this->services[$key])) {
+            throw new FontoException("No service is registered with name $key");
+        }
 
-	/**
-	 * Unsets a service
-	 *
-	 * @param  string $id
-	 * @return
-	 */
-	public function offsetUnset($id)
-	{
-		unset($this->services[$id]);
-	}
+        return is_callable($this->services[$key]) ? $this->services[$key]($this) : $this->services[$key];
+    }
 
-	/**
-	 * Returns the registered service if exists
-	 *
-	 * @param  string $id
-	 * @return mixed
-	 */
-	public function offsetGet($id)
-	{
-		if (!isset($this->services[$id])) {
-			throw new FontoException("No service is registered with name $id");
-		}
+    /**
+     * Registers a callback so it is shared.
+     *
+     * @param  Closure $callback
+     * @return Closure
+     */
+    public function shared(Closure $callback)
+    {
+        return function ($c) use ($callback) {
+            static $object;
 
-		return is_callable($this->services[$id]) ? $this->services[$id]($this) : $this->services[$id];
-	}
+            if (null === $object) {
+                $object = $callback($c);
+            }
 
-	/**
-	 * Registers a callback so it is shared.
-	 *
-	 * @param  Closure $callback
-	 * @return Closure
-	 */
-	public function shared(Closure $callback)
-	{
-		return function ($c) use ($callback) {
-			static $object;
-
-			if (null === $object) {
-				$object = $callback($c);
-			}
-
-			return $object;
-		};
-	}
+            return $object;
+        };
+    }
 }
