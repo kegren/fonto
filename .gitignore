@@ -1,4 +1,5 @@
 *.TODO
+/app/src/Demo/Storage/
 /vendor/composer/
 /vendor/php-activerecord/
 /vendor/twig/
