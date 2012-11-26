@@ -5,8 +5,6 @@
  * Sets routing for the application.
  */
 
-use Fonto\Core\Application\App;
-
 /**
  * Routing
  *
@@ -29,10 +27,8 @@ use Fonto\Core\Application\App;
  */
 
 return array(
-	'routes' => function(App $app) {
-
-		$app->addRoute('/', 'home#index');
-		$app->addRoute('/demo/(:action)', 'home#index');
-
-	},
+    'routes' => array(
+        '/' => 'home#index',
+        '/demo/(:action)' => 'home#index'
+    )
 );
