@@ -11,24 +11,23 @@ namespace Fonto\Core;
 
 class Url
 {
+    /**
+     * Create base url for application.
+     *
+     * @return string base url
+     */
+    public function baseUrl()
+    {
+        $url = '';
+        if (isset($_SERVER['HTTPS']) and $_SERVER['HTTPS'] == 'on') {
+            $url = 'https';
+        } else {
+            $url = 'http';
+        }
+        $url .= '://' . $_SERVER['HTTP_HOST'];
+        $url .= str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']);
 
-	/**
-	 * Create base url for application.
-	 *
-	 * @return string base url
-	 */
-	public function baseUrl()
-	{
-		$url = '';
-		if (isset($_SERVER['HTTPS']) and $_SERVER['HTTPS'] == 'on') {
-			$url = 'https';
-		} else {
-			$url = 'http';
-		}
-		$url .= '://' . $_SERVER['HTTP_HOST'];
-		$url .= str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']);
-
-		return (string) $url;
-	}
+        return (string)$url;
+    }
 
 }
