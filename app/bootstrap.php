@@ -10,26 +10,33 @@
  * Includes files
  */
 include APPPATH . 'helpers' . EXT;
+$autoloader = include VENDORPATH . 'autoload' . EXT;
 require SYSCOREAPPPATH . 'App' . EXT;
-
-/**
- * Namespaces alias
- */
-use Fonto\Core\Application\App as App;
 
 /**
  * Gets main app settings
  *
  * @return array
  */
-function appSettings() {
-	$appSettings = include __DIR__ . '/config.php';
-	return $appSettings;
+function appOptions()
+{
+    $appOptions = include __DIR__ . '/config.php';
+    return $appOptions;
 }
+
+function appConfig()
+{
+    $appConfig = include CONFIGPATH . 'app.php';
+    return $appConfig;
+}
+
+/**
+ * Sets error reporting
+ */
+error_reporting(-1);
 
 /**
  * Runs application
  */
-$app = new App(appSettings());
-$app->setup()
-	->run();
+$app = new Fonto\Core\Application\App();
+$app->run($autoloader);
