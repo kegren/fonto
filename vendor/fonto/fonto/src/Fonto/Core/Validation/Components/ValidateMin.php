@@ -3,35 +3,42 @@
  * Fonto Framework
  *
  * @author Kenny Damgren <kenny.damgren@gmail.com>
- * @package Fonto
+ * @package Fonto_Validation
  * @link https://github.com/kenren/fonto
  */
 
 namespace Fonto\Core\Validation\Components;
 
 use Fonto\Core\Validation\Validator;
-use Fonto\Core\Application\App;
 
 class ValidateMin extends Validator
 {
-	/**
-	 * Fonto\Core\Application\App
-	 *
-	 * @var object
-	 */
-	protected $app;
+    /**
+     * @var array
+     */
+    private $rule = array();
 
-	public function __construct(App $app, $value, $validateValue)
+    /**
+     * Constructor.
+     */
+    public function __construct()
 	{
-		$this->app = $app;
-		$this->validateAttribute($value, $validateValue);
+		$this->rule = $this->validators['min'];
 	}
 
-	protected function validateAttribute($value, $validateValue)
+    /**
+     * Validates given data
+     *
+     * @param $data
+     * @return bool|mixed
+     */
+    protected function validateAttribute($data)
 	{
-		if (strlen($value) < $validateValue) {
-			$this->setMessage($this->app->getConfig()->load('Validation', 'min'));
-			$this->hasError = true;
+		if (strlen($data['input']) < $data['value']) {
+            $message = $this->rule['message'];
+            $message = str_replace(array('{field}', '{value}'), array($data['field'], $data['value']), $message);
+
+            return $message;
 		}
 		return false;
 	}

@@ -3,35 +3,42 @@
  * Fonto Framework
  *
  * @author Kenny Damgren <kenny.damgren@gmail.com>
- * @package Fonto
+ * @package Fonto_Validation
  * @link https://github.com/kenren/fonto
  */
 
 namespace Fonto\Core\Validation\Components;
 
 use Fonto\Core\Validation\Validator;
-use Fonto\Core\Application\App;
 
-class ValidateRequire extends Validator
+class ValidateRequired extends Validator
 {
-	/**
-	 * Fonto\Core\Application\App
-	 *
-	 * @var object
-	 */
-	protected $app;
+    /**
+     * @var array
+     */
+    private $rule = array();
 
-	public function __construct(App $app, $value, $validateValue)
+    /**
+     * Constructor.
+     */
+    public function __construct()
 	{
-        $this->app = $app;
-		$this->validateAttribute($value, $validateValue);
+        $this->rule = $this->validators['required'];
 	}
 
-	protected function validateAttribute($value, $validateValue)
+    /**
+     * Validates given data
+     *
+     * @param $data
+     * @return bool|mixed
+     */
+	protected function validateAttribute($data)
 	{
-		if (strlen($value) == 0) {
-			$this->setMessage($this->app->getConfig()->load('Validation', 'required'));
-			$this->hasError = true;
+		if (strlen($data['input']) == 0) {
+            $message = $this->rule['message'];
+            $message = str_replace(array('{field}', '{value}'), array($data['field'], $data['value']), $message);
+
+            return $message;
 		}
 		return false;
 	}

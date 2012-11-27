@@ -3,36 +3,43 @@
  * Fonto Framework
  *
  * @author Kenny Damgren <kenny.damgren@gmail.com>
- * @package Fonto
+ * @package Fonto_Validation
  * @link https://github.com/kenren/fonto
  */
 
 namespace Fonto\Core\Validation\Components;
 
 use Fonto\Core\Validation\Validator;
-use Fonto\Core\Application\App;
 
 class ValidateMax extends Validator
 {
-	/**
-	 * Fonto\Core\Application\App
-	 *
-	 * @var object
-	 */
-	protected $app;
+    /**
+     * @var array
+     */
+    private $rule = array();
 
-	public function __construct(App $app, $value, $validateValue)
-	{
-		$this->app = $app;
-		$this->validateAttribute($value, $validateValue);
-	}
+    /**
+     * Constructor.
+     */
+    public function __construct()
+    {
+        $this->rule = $this->validators['max'];
+    }
 
-	protected function validateAttribute($value, $validateValue)
-	{
-		if (strlen($value) > $validateValue) {
-			$this->setMessage($this->app->getConfig()->load('Validation', 'max'));
-			$this->hasError = true;
-		}
-		return false;
-	}
+    /**
+     * Validates given data
+     *
+     * @param $data
+     * @return bool|mixed
+     */
+    public function validateAttribute($data)
+    {
+        if (strlen($data['input']) > $data['value']) {
+            $message = $this->rule['message'];
+            $message = str_replace(array('{field}', '{value}'), array($data['field'], $data['value']), $message);
+
+            return $message;
+        }
+        return false;
+    }
 }
