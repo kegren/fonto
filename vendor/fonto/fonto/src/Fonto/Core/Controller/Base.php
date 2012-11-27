@@ -10,9 +10,13 @@
 namespace Fonto\Core\Controller;
 
 use Fonto\Core\Application\App;
+use Fonto\Core\Helper\Arr;
 
 class Base extends App
 {
+    private $actionPrefix = 'Action';
+    private $defaultAction = 'index';
+
     /**
      * Constructor.
      */
@@ -21,24 +25,54 @@ class Base extends App
         parent::__construct();
     }
 
-    public function filter($filter, $redirectTo, $callback)
+    public function filter($filter, $callback)
+    {
+        if (is_array($filter)) {
+            foreach ($filter as $method) {
+                if ($this->checkFilter($method)) {
+                    return $callback();
+                }
+            }
+        } else {
+            if ($this->checkFilter($filter)) {
+                return $callback();
+            }
+        }
+
+        return false;
+    }
+
+    private function checkFilter($filter)
     {
         $reflector = new \ReflectionClass($this);
+        echo "<br />";
 
-        if ($reflector->hasMethod($filter.'Action')) {
+        if ($reflector->hasMethod($filter . $this->actionPrefix)) {
             $request = $this->getDi()->getService('request');
             $calledClass = get_called_class();
-            $filterStr = strtolower(substr($calledClass, strrpos($calledClass, '\\') + 1));   // strrpos start at 0...
+            $filterStr = strtolower(substr($calledClass, strrpos($calledClass, '\\') + 1)); // strrpos start at 0...
 
             $buildUri = "/$filterStr/$filter";
 
-            if ($buildUri == $request->getRequestUri()) {
-                $redirect = $this->getDi()->getService('response');
-                $redirect->redirect($redirectTo);
+            $arrHelper = new Arr();
+            $arr = explode('/', $request->getRequestUri());
+            $cleanedArr = $arrHelper->cleanArray($arr);
+            $requestedUri = $request->getRequestUri();
 
-                $callback();
+            if (sizeof($cleanedArr) < 2) {
+                if (strrpos($requestedUri, '/') > 2) {
+                    $requestedUri = $requestedUri . $this->defaultAction;
+                } else {
+                    $requestedUri = $requestedUri . '/' . $this->defaultAction;
+                }
+            }
+
+            if ($buildUri == $requestedUri) {
+                return true;
             }
         }
+
+        return false;
     }
 
     /**
