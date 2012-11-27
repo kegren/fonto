@@ -29,6 +29,7 @@
 return array(
     'routes' => array(
         '/' => 'home#index',
-        '/demo/(:action)' => 'home#index'
+        '/demo/(:action)' => 'home#index',
+        '<:controller>' => 'home'
     )
 );
