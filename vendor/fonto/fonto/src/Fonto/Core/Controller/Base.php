@@ -3,46 +3,52 @@
  * Fonto Framework
  *
  * @author Kenny Damgren <kenny.damgren@gmail.com>
- * @package Fonto
+ * @package Fonto.Controller
  * @link https://github.com/kenren/fonto
  */
 
 namespace Fonto\Core\Controller;
 
-use Fonto\Core\View;
 use Fonto\Core\Application\App;
 
-class Base
+class Base extends App
 {
-	/**
-	 * Fonto\Core\Application\App
-	 *
-	 * @var object
-	 */
-	protected $app;
+    /**
+     * Constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
-	public function __construct()
-	{}
+    public function filter($filter, $redirectTo, $callback)
+    {
+        $reflector = new \ReflectionClass($this);
 
-	/**
-	 * Sets the current application
-	 *
-	 * @param App $app
-	 */
-	public function setApp(App $app)
-	{
-		$this->app = $app;
-	}
+        if ($reflector->hasMethod($filter.'Action')) {
+            $request = $this->getDi()->getService('request');
+            $calledClass = get_called_class();
+            $filterStr = strtolower(substr($calledClass, strrpos($calledClass, '\\') + 1));   // strrpos start at 0...
 
-	/**
-	 * Magic method
-	 *
-	 * @param $class
-	 * @param $args
-	 */
-	public function __call($class, $args)
-	{
-		$getter = "get".ucfirst($class);
-		return $this->app->$getter();
-	}
+            $buildUri = "/$filterStr/$filter";
+
+            if ($buildUri == $request->getRequestUri()) {
+                $redirect = $this->getDi()->getService('response');
+                $redirect->redirect($redirectTo);
+
+                $callback();
+            }
+        }
+    }
+
+    /**
+     * @param $class
+     * @param $args
+     * @return mixed
+     */
+    public function __call($class, $args)
+    {
+        $getter = strtolower($class);
+        return $this->getDi()->getService($getter);
+    }
 }
