@@ -8,7 +8,9 @@
  * @version     0.5
  */
 
-interface ConfigInterface
+namespace Fonto\Core\Config;
+
+interface DriverInterface
 {
     public function load(array $options = array());
 }
