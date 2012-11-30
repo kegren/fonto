@@ -12,5 +12,11 @@ namespace Fonto\Core\Config;
 
 interface DriverInterface
 {
+    /**
+     * Loads a config file
+     *
+     * @param array $options
+     * @return mixed
+     */
     public function load(array $options = array());
 }
