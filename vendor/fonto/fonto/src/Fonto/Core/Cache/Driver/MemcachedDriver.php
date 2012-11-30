@@ -33,7 +33,7 @@ class MemcachedDriver implements DriverInterface
 
         $default = $this->servers['default'];
 
-        $this->memcache = new \Memcached();
+        $this->memcache = new \Memcache();
         $this->memcache->connect(
             $default['host'],
             $default['port']
@@ -49,6 +49,16 @@ class MemcachedDriver implements DriverInterface
     public function get($key)
     {
         return ($this->memcache->get($key)) ?: false;
+    }
+
+    public function delete($key)
+    {
+        $this->memcache->delete($key);
+    }
+
+    public function flush()
+    {
+        $this->memcache->flush();
     }
 
     protected function checkIfMemcacheIsAvailable()
