@@ -6,30 +6,43 @@
  */
 
 /**
- * Routing
- *
- * <code>
- * // Registers controllers
- * $app->addRoute('<:controller>', 'demo');
- * </code>
- *
- * <code>
- * // Registers '/', uses home controller and index method
- * $app->addRoute('/' , 'home#index')
- *
- * // Registers '/auth/anything'
- * $app->addRoute('/auth/(:action)', 'auth#index');
- *
- * // Registers '/users/show/num'
- * $app->addRoute('/users/show/(:num)', 'users#show');
- * </code>
- *
+ * Routing system setup
  */
 
-return array(
-    'routes' => array(
-        '/' => 'home#index',
-        '/demo/(:action)' => 'home#index',
-        '<:controller>' => 'home'
+/**
+ * Registers a default route
+ */
+$router->addRoute(
+    '/',
+    array(
+        'mapsTo' => 'home#index',
+        'restful' => true,
+        'method' => 'get',
+    )
+);
+
+/**
+ * Registers a route
+ */
+$router->addRoute(
+    '/demo/:action/:num',
+    array(
+        'mapsTo' => 'demo#index',
+        'restful' => false,
+    )
+);
+
+/**
+ * Registers controllers
+ */
+$router->addRoute(
+    '<:controller>',
+    array(
+        'mapsTo' => array(
+            'testController1',
+            'testController2',
+            'testController3'
+        ),
+        'restful' => true,
     )
 );
