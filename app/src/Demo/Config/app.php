@@ -52,5 +52,9 @@ return array(
     /**
      *
      */
-    'config' => '.php'
+    'configType' => 'php',
+    /**
+     *
+     */
+    'services' => true
 );
