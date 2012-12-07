@@ -1,15 +1,20 @@
 <?php
 /**
- * Fonto Framework
+ * Fonto - PHP framework
  *
- * @author Kenny Damgren <kenny.damgren@gmail.com>
- * @package Fonto
- * @link https://github.com/kenren/fonto
+ * @author      Kenny Damgren <kenny.damgren@gmail.com>
+ * @package     Fonto
+ * @link        https://github.com/kenren/fonto
+ * @version     0.5
  */
 
 namespace Fonto\Core;
 
-use \ActiveRecord\Model as ARModel;
-
-class Model extends ARModel
-{}
+class Model
+{
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {}
+}
