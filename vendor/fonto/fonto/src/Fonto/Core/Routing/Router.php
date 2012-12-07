@@ -1,26 +1,67 @@
 <?php
 /**
- * Fonto Framework
+ * Fonto - PHP framework
  *
- * @author Kenny Damgren <kenny.damgren@gmail.com>
- * @package Fonto
- * @link https://github.com/kenren/fonto
+ * @author      Kenny Damgren <kenny.damgren@gmail.com>
+ * @package     Fonto
+ * @link        https://github.com/kenren/fonto
+ * @version     0.5
  */
 
 namespace Fonto\Core\Routing;
 
 use Fonto\Core\FontoException;
-use Fonto\Core\Request;
-use Fonto\Core\Application\App;
+use Fonto\Core\Http\Request;
+use Fonto\Core\Routing\Route;
+use Fonto\Core\DI;
+use Fonto\Core\Routing\Exception;
 
 class Router
 {
-    const ACTION_PREFIX        = 'Action';
+    /**
+     * Stores part of current used namespace
+     */
     const CONTROLLER_NAMESPACE = '\\Controller';
-    const DEFAULT_ROUTE        = '/';
-    const ROUTE_DELIMITER      = '#';
-    const DEFAULT_CONTROLLER   = 'home';
-    const DEFAULT_ACTION       = 'indexAction';
+    /**
+     * Stores default route
+     */
+    const DEFAULT_ROUTE = '/';
+
+    /**
+     * @var array
+     */
+    protected $routes = array();
+
+    /**
+     * @var \Fonto\Core\Routing\Route
+     */
+    protected $route;
+
+    /**
+     * @var \Fonto\Core\Http\Request
+     */
+    protected $request;
+
+    /**
+     * @var array
+     */
+    protected $supported = array(
+        'mapsTo' => 'string',
+        'restful' => 'boolean',
+        'name' => 'string',
+        'method' => 'string'
+    );
+
+    /**
+     * @var array
+     */
+    protected $supportedMethods = array(
+        'GET',
+        'POST',
+        'PUT',
+        'DELETE',
+        'HEAD'
+    );
 
     /**
      * Patterns for routes
@@ -28,81 +69,34 @@ class Router
      * @var array
      */
     private $patterns = array(
-        '(:num)' => '(\d+)',
-        '(:action)' => '([\w\_\-\%]+)'
+        ':num' => '(\d+)',
+        ':action' => '([\w\_\-\%]+)'
     );
 
     /**
-     * Registered routes
+     * Constructor
      *
-     * var array
+     * @param Route $route
+     * @param \Fonto\Core\Http\Request $request
      */
-    private $routes;
-
-    /**
-     * Registered controllers
-     *
-     * var array
-     */
-    private $controllers;
-
-    /**
-     * Controller
-     *
-     * @var string
-     */
-    public $controller;
-
-    /**
-     * Action
-     *
-     * @var string
-     */
-    private $action;
-
-    /**
-     * Parameters
-     *
-     * @var string
-     */
-    private $parameters;
-
-    /**
-     * Fonto\Core\Application\App
-     *
-     * @var object
-     */
-    protected $app;
-
-
-    public function __construct()
+    public function __construct(Route $route, Request $request)
     {
-        $this->routes = array();
-        $this->parameters = array();
+        $this->route = ($route) ? : new Route();
+        $this->request = ($request) ? : new Request();
+        $router = $this;
+        include APPWEBPATH . 'routes.php';
+        unset($router);
     }
 
     /**
-     * Sets the current application
+     * Adds routes
      *
-     * @param App $app
+     * @param $rule
+     * @param $options
      */
-    public function setApp(App $app)
+    public function addRoute($rule, $options)
     {
-        $this->app = $app;
-
-        return $this;
-    }
-
-    /**
-     * Sets routes
-     *
-     * @param array $routes
-     */
-    public function setRoutes($routes = array())
-    {
-        $this->routes = $routes;
-
-        return $this;
+        $this->routes[$rule] = $options;
     }
 
     /**
@@ -118,33 +112,42 @@ class Router
     /**
      * Routes the request
      *
-     * @return mixed
+     * @throws Exception\MethodNotFound
      */
-    public function run()
+    public function dispatch()
     {
-        $ns = $this->app->getActiveApp() . self::CONTROLLER_NAMESPACE;
-        $class = $ns . '\\' . ucfirst($this->getController());
-        $file  = CONTROLLERPATH . ucfirst($this->getController()) . EXT;
+        $namespace = ACTIVE_APP . self::CONTROLLER_NAMESPACE;
+        $class = $namespace . '\\' . ucfirst($this->route->getController());
 
-        if (!file_exists($file) or (!is_readable($file))) {
-            throw new FontoException("The file $file was not found");
-        }
+        try {
 
-        if (!class_exists($class)) {
-            throw new FontoException("The class $class does not exist");
-        }
-
-        $object = new $class;
-        $object->setApp($this->app);
-
-        if (method_exists($object, $this->action)) {
-            if (!empty($this->parameters)) {
-                call_user_func_array(array($object, $this->action), $this->parameters);
-            } else {
-                call_user_func(array($object, $this->action));
+            if (!class_exists($class)) {
+                throw new \Fonto\Core\Routing\Exception\ClassNotFound("The class $class wasn't found");
             }
-        } else {
-            throw new FontoException("Class: $class does not contain action: $this->action");
+            $object = new $class;
+
+            $action = $this->getRoute()->getAction();
+
+            if ($this->getRoute()->getRestful()) {
+                $httpRequest = strtolower($this->request->getMethod());
+
+                $action = $httpRequest . ucfirst($action);
+            }
+
+            if (method_exists($object, $action)) {
+
+                if ($this->getRoute()->getParams()) {
+                    call_user_func_array(array($object, $action), $this->getRoute()->getParams());
+                } else {
+                    call_user_func(array($object, $action));
+                }
+
+            } else {
+                throw new \Fonto\Core\Routing\Exception\MethodNotFound("The class $class doesn't have a method called $action");
+            }
+
+        } catch (\Exception $e) {
+            echo $e->getMessage();
         }
     }
 
@@ -155,34 +158,64 @@ class Router
      */
     public function match()
     {
-        $parsedUriStr = $this->app->getRequest()->getRequestUri();
-        $parsedUriArr = explode('/', $parsedUriStr);
-        $parsedUriArr = array_filter($parsedUriArr);
+        $requestUri = $this->getRequest()->getRequestUri();
 
-        list($num, $action) = array_keys($this->patterns);
-        list($rNum, $rAction) = array_values($this->patterns);
+        $requestUriArr = explode('/', $requestUri);
+        $di = new DI\DIManager();
+        $arrHelper = $di->getService('Arr');
+        $requestUriArr = $arrHelper->cleanArray($requestUriArr);
 
-        foreach ($this->routes as $route => $uses) {
+        foreach ($this->routes as $route => $options) {
 
+            // Regular route without any patterns?
+            if (preg_match("#^{$route}$#", $requestUri)) {
+                $this->getRoute()->createRoute($options);
+                return true;
+                break;
+            }
+
+            // Registered only as a controller?
             if ($route == '<:controller>') {
-                if (!empty($parsedUriArr)) {
-                    if ($parsedUriArr[1] == $uses) {
-                        return $this->map($uses, $parsedUriArr);
-                    }
+                $controllers = (array)$options['mapsTo'];
+                $controller = $requestUriArr[1];
+                $requestUriArr = array_slice($requestUriArr, 1);
+
+                if (in_array($controller, $controllers)) {
+                    unset($options['mapsTo']);
+                    $merged = array(
+                        'controller' => $controller,
+                        'action' => isset($requestUriArr[0]) ? $requestUriArr[0] : '',
+                        'params' => isset($requestUriArr[1]) ? array_splice($requestUriArr, 1) : array(),
+                    );
+                    $options = $options + $merged;
+                    $this->getRoute()->createRoute($options);
+                    return true;
+                    break;
+
                 }
+
+                return false;
+                break;
             }
 
-            if ($route == $parsedUriStr) {
-                return $this->map($uses, null, true);
-            }
+            // Check pattern
+            $route = $this->regexRoute($route);
 
-           $route = str_replace(array($num,$action), array($rNum,$rAction), $route);
+            // Pattern found and appended
+            if ($route) {
+               preg_match_all("#^$route$#", $requestUri, $values);
 
-            if (preg_match('@^' . $route . '$@', $parsedUriStr, $return)) {
-                if (!empty($return[0])) {
-                    unset($return[0]);
-                    return $this->map($uses, $return, true);
-                }
+               // Any matches?
+               if (sizeof($values) > 0) {
+                   unset($values[0]); // Remove url
+                   $merged = array(
+                       'patternParams' => $values
+                   );
+                   $options = $options + $merged;
+                   $this->getRoute()->createRoute($options);
+                   return true;
+                   break;
+               }
             }
         }
 
@@ -190,104 +223,36 @@ class Router
     }
 
     /**
-     * Maps a route/uri to controller, action and parameters
-     *
-     * @return Router
+     * @param $route
+     * @return bool|mixed
      */
-    public function map($route, $uri = null, $routeReg = false)
+    protected function regexRoute($route)
     {
-        if ($routeReg) {
-            $delimit = strpos($route, self::ROUTE_DELIMITER) and $delimit = self::ROUTE_DELIMITER;
-            $route   = explode($delimit, $route);
+        if (preg_match('#:([a-zA-Z0-9]+)#', $route)) {
 
-            $controller = !empty($route[0]) and $controller = $route[0];
-            $action     = !empty($route[1]) and $action = $route[1];
-            $parameters = !empty($uri[2]) and $parameters = $uri;
+            foreach ($this->patterns as $prefix => $pattern) {
+                $route = str_replace($prefix, $pattern, $route);
+            }
 
-            $this->setController($controller)
-                 ->setAction($action)
-                 ->setParameters($parameters);
-
-            return $this;
+            return $route;
         }
 
-        $controller = $route;
-        $action     = !empty($uri[2]) ? $action = $uri[2] : 'index';
-        unset($uri[1], $uri[2]);
-
-        $this->setController($controller)
-             ->setAction($action);
-
-        if (!empty($uri[3])) {
-            $this->setParameters($uri);
-        }
-
-        return $this;
+        return false;
     }
 
     /**
-     * Sets controller
-     *
-     * @param string $controller
+     * @return \Fonto\Core\Http\Request
      */
-    public function setController($controller)
+    public function getRequest()
     {
-        $this->controller = $controller;
-
-        return $this;
+        return $this->request;
     }
 
     /**
-     * Returns controller
-     *
-     * @return controller
+     * @return \Fonto\Core\Routing\Route
      */
-    public function getController()
+    public function getRoute()
     {
-        return $this->controller;
-    }
-
-    /**
-     * Sets action
-     *
-     * @param string $action
-     */
-    public function setAction($action)
-    {
-        $this->action = $action . self::ACTION_PREFIX;
-
-        return $this;
-    }
-
-    /**
-     * Returns action
-     *
-     * @return action
-     */
-    public function getAction()
-    {
-        return $this->action;
-    }
-
-    /**
-     * Sets parameters
-     *
-     * @param string $parameters
-     */
-    public function setParameters($parameters)
-    {
-        $this->parameters = $parameters;
-
-        return $this;
-    }
-
-    /**
-     * Returns parameters
-     *
-     * @return parameters
-     */
-    public function getParameters()
-    {
-        return $this->parameters;
+        return $this->route;
     }
 }

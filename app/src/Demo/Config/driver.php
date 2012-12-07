@@ -3,14 +3,17 @@
 return array(
     /**
      * Cache storage
+     * Supported: memcache, apc
      */
     'cache' => 'memcache',
     /**
      * Configuration driver
+     * Supported: native
      */
     'config' => 'native',
     /**
-     * View driver, defaults to native php
+     * View driver
+     * Supported: native
      */
     'view' => 'native'
 );

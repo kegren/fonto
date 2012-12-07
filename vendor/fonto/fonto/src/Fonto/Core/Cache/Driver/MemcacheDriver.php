@@ -14,10 +14,16 @@ use Fonto\Core\Cache\DriverInterface;
 
 use Memcache;
 
-class MemcachedDriver implements DriverInterface
+class MemcacheDriver implements DriverInterface
 {
+    /**
+     * @var \Memcache
+     */
     protected $memcache;
 
+    /**
+     * @var array
+     */
     protected $servers = array(
         'default' => array(
             'host' => '127.0.0.1',
@@ -25,6 +31,9 @@ class MemcachedDriver implements DriverInterface
         )
     );
 
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         if (false === $this->checkIfMemcacheIsAvailable()) {
@@ -33,34 +42,60 @@ class MemcachedDriver implements DriverInterface
 
         $default = $this->servers['default'];
 
-        $this->memcache = new \Memcache();
+        $this->memcache = new Memcache();
         $this->memcache->connect(
             $default['host'],
             $default['port']
         );
     }
 
+    /**
+     * Stores a value in the cache
+     *
+     * @param $key
+     * @param $value
+     * @param int $expire
+     * @return MemcacheDriver
+     */
     public function set($key, $value, $expire = 0)
     {
-        $this->memcache->set($key, $value, MEMCACHE_COMPRESSED, $expire);
-        return $this;
+        return $this->memcache->set($key, $value, MEMCACHE_COMPRESSED, $expire);
     }
 
+    /**
+     * Gets a value from the cache
+     *
+     * @param $key
+     * @return bool
+     */
     public function get($key)
     {
         return ($this->memcache->get($key)) ?: false;
     }
 
+    /**
+     * Deletes a value from the cache
+     *
+     * @param $key
+     */
     public function delete($key)
     {
-        $this->memcache->delete($key);
+        return $this->memcache->delete($key);
     }
 
+    /**
+     * Removes all values from the cache
+     */
     public function flush()
     {
-        $this->memcache->flush();
+        return $this->memcache->flush();
     }
 
+    /**
+     * Checks if memcache extension is loaded
+     *
+     * @return bool
+     */
     protected function checkIfMemcacheIsAvailable()
     {
          return extension_loaded('memcache');

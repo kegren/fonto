@@ -9,22 +9,27 @@
 
 namespace Fonto\Core\View\Helper;
 
-use Fonto\Core\Application\App;
+use Fonto\Core\Url;
 
 class Css
 {
-	protected $app;
+    private $url;
 
-	public function setApp(App $app)
-	{
-		$this->app = $app;
-	}
+    private $activeApp;
+
+    public function __construct(Url $url, $activeApp = null)
+    {
+        $this->url = $url;
+        $this->activeApp = ($activeApp) ?: 'Demo';
+    }
+
+    public function cssLink($file)
+    {
+        return '<link rel="stylesheet" href="'.$this->getCssFile($file).'">'."\n";
+    }
 
 	public function getCssFile($file)
 	{
-		$baseUrl = $this->app->getUrl()->baseUrl();
-		$activeApp = $this->app->getActiveApp();
-
-		return "{$baseUrl}web/app/{$activeApp}/css/{$file}.css";
+		return "{$this->url->baseUrl()}web/app/{$this->activeApp}/css/{$file}.css";
 	}
 }

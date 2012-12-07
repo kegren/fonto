@@ -10,6 +10,8 @@
 
 namespace Fonto\Core\Routing;
 
+use Fonto\Core\DI\DIManager;
+
 class Route
 {
     /**
@@ -64,7 +66,9 @@ class Route
     /**
      * Constructor
      */
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 
     /**
      * Builds the route
@@ -95,6 +99,17 @@ class Route
                 if ($this->hasMethod($route)) {
                     $this->setMethod(strtolower($route['method']));
                 }
+                if ($this->hasPatternParams($route)) {
+                    $patternParams = $route['patternParams'];
+
+                    if (sizeof($patternParams) > 0) {
+                        if (sizeof($patternParams) == 1) {
+                            $this->setParams($patternParams[1]);
+                        } else {
+                            $this->setParams($patternParams[2]);
+                        }
+                    }
+                }
 
                 $this->setController($parsedMapsTo[0]);
                 $this->setAction($parsedMapsTo[1]);
@@ -112,10 +127,10 @@ class Route
      * @param $mapTo
      * @return array
      */
-    protected function parseMapTo($mapTo)
+    protected function parseMapTo($mapsTo)
     {
-        $toArray = explode(self::ROUTE_DELIMITER, $mapTo);
-        $di = new \Fonto\Core\DI\DIManager();
+        $toArray = explode(self::ROUTE_DELIMITER, $mapsTo);
+        $di = new DIManager();
         $helperArr = $di->getService('Arr');
         $toArray = $helperArr->cleanArray($toArray);
 
@@ -147,6 +162,15 @@ class Route
     protected function isRestful($route)
     {
         return $route['restful'] == true;
+    }
+
+    /**
+     * @param $route
+     * @return bool
+     */
+    protected function hasPatternParams($route)
+    {
+        return isset($route['patternParams']);
     }
 
     /**

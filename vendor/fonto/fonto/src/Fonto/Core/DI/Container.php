@@ -3,18 +3,16 @@
  * Fonto Framework
  *
  * @author Kenny Damgren <kenny.damgren@gmail.com>
- * @package Fonto
+ * @package Fonto.DI
  * @link https://github.com/kenren/Fonto
  */
 
 namespace Fonto\Core\DI;
 
 use Fonto\Core\FontoException;
-use Fonto\Core\Application\App;
-use \ArrayAccess;
 use \Closure;
 
-class Container implements ArrayAccess
+class Container
 {
     /**
      * Services in the container
@@ -23,51 +21,38 @@ class Container implements ArrayAccess
      */
     protected $services = array();
 
+    public function __construct()
+    {}
+
     /**
      * Registers a service by id
      *
-     * @param  string $id
+     * @param $key
      * @param  string $value
+     * @throws \Fonto\Core\FontoException
+     * @internal param string $id
      * @return void
      */
-    public function offsetSet($key, $value)
+    public function setService($key, $value)
     {
         if (isset($this->services[$key])) {
-            throw new FontoException("There is already an service with $key registered in the container");
+            throw new FontoException("There is already an service named {$key} registered in the container");
         }
 
         $this->services[$key] = $value;
-    }
 
-    /**
-     * Checks if the given service is registered in the container
-     *
-     * @param  string $id
-     * @return boolean
-     */
-    public function offsetExists($key)
-    {
-        return isset($this->services[$key]);
-    }
-
-    /**
-     * Unsets a service
-     *
-     * @param  string $id
-     * @return
-     */
-    public function offsetUnset($key)
-    {
-        unset($this->services[$key]);
+        return $this;
     }
 
     /**
      * Returns the registered service if exists
      *
-     * @param  string $id
+     * @param $key
+     * @throws \Fonto\Core\FontoException
+     * @internal param string $id
      * @return mixed
      */
-    public function offsetGet($key)
+    public function getService($key)
     {
         if (!isset($this->services[$key])) {
             throw new FontoException("No service is registered with name $key");
@@ -93,5 +78,13 @@ class Container implements ArrayAccess
 
             return $object;
         };
+    }
+
+    /**
+     * @return array
+     */
+    public function getRegisteredServices()
+    {
+        return array_keys($this->services);
     }
 }

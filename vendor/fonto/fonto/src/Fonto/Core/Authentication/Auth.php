@@ -9,8 +9,6 @@
 
 namespace Fonto\Core\Authentication;
 
-use Fonto\Core\Application\App;
-
 class Auth
 {
 	/**
@@ -20,28 +18,11 @@ class Auth
 	 */
 	private $user;
 
-	/**
-	 * Fonto\Core\Application\App
-	 *
-	 * @var object
-	 */
-	private $app;
-
 	public function __construct()
 	{}
 
-    /**
-     * Sets the current application
-     *
-     * @param App $app
-     */
-	public function setApp(App $app)
-	{
-		$this->app = $app;
-	}
-
 	/**
-	 * Authenticates an user by checking if username exists
+	 * Authenticates a user by checking if username exists
 	 * and if the provided password is correct
 	 *
 	 * @param  string $username

@@ -3,291 +3,208 @@
  * Fonto Framework
  *
  * @author Kenny Damgren <kenny.damgren@gmail.com>
- * @package Fonto
+ * @package Fonto_Validation
  * @link https://github.com/kenren/fonto
  */
 
 namespace Fonto\Core\Validation;
 
-use Fonto\Core\Application\App;
+use Fonto\Core\Helper\Arr;
 
 class Validator
 {
-	protected $rules;
-
-	protected $errors;
-
-	protected $hasError = false;
-
-	protected $message;
-
-	protected $attributes;
-
-	protected $current;
-
-	protected $mapRules = array(
-		'max'       => 'Fonto\Core\Validation\Components\ValidateMax',
-		'num'       => 'Fonto\Core\Validation\Components\ValidateNum',
-		'min'       => 'Fonto\Core\Validation\Components\ValidateMin',
-		'require'   => 'Fonto\Core\Validation\Components\ValidateRequire',
-		'email'     => 'Fonto\Core\Validation\Components\ValidateEmail',
-		'identical' => 'Fonto\Core\Validation\Components\ValidateIdentical',
-	);
-
-	/**
-	 * Fonto\Core\Application\App
-	 *
-	 * @var object
-	 */
-	protected $app;
-
-	public function __construct()
-	{
-		$this->errors = array();
-	}
+    /**
+     * @var array
+     */
+    protected $errors = array();
 
     /**
-     * Sets the current application
-     *
-     * @param App $app
+     * @var string
      */
-	public function setApp(App $app)
-	{
-		$this->app = $app;
-	}
+    protected $rulesPrefix = '{}';
 
-	/**
-	 * Returns all errors
-	 *
-	 * @return array
-	 */
-	public function getErrors()
-	{
-		return $this->errors;
-	}
+    /**
+     * @var string
+     */
+    protected $fieldPrefix = '{field}';
 
-	/**
-	 * Returns error based on field and type
-	 *
-	 * @param  string $field
-	 * @param  string $type
-	 * @return mixed
-	 */
-	public function getError($field, $type)
-	{
-		if (isset($this->errors[$field]) and isset($this->errors[$field][$type])) {
-			return $this->errors[$field][$type];
-		}
+    /**
+     * @var string
+     */
+    protected $valuePrefix = '{value}';
 
-		return false;
-	}
+    /**
+     * @var array
+     */
+    protected $validators = array(
+        'max' => array(
+            'class' => 'Fonto\Core\Validation\Components\ValidateMax',
+            'filters' => 'trim',
+            'message' => '{field} måste innehålla fler än {value} tecken.',
+            'pattern' => '([a-zA-Z0-9]+)'
+        ),
+        'min' => array(
+            'class' => 'Fonto\Core\Validation\Components\ValidateMin',
+            'filters' => 'trim',
+            'message' => '{field} måste innehålla mindre än {value} tecken',
+            'pattern' => '([a-zA-Z0-9]+)'
+        ),
+        'required' => array(
+            'class' => 'Fonto\Core\Validation\Components\ValidateRequired',
+            'filters' => 'trim',
+            'message' => '{field} är obligatoriskt.',
+        ),
+        'num' => array(
+            'class' => 'Fonto\Core\Validation\Components\ValidateNum',
+            'filters' => 'trim',
+            'message' => '{field} måste bestå av endast siffror.',
+            'pattern' => '([0-9]+)'
+        ),
+        'email' => array(
+            'class' => 'Fonto\Core\Validation\Components\ValidateEmail',
+            'filters' => 'trim',
+            'message' => '{field} är inte en giltig e-postadress.',
+        ),
+        'identical' => array(
+            'class' => 'Fonto\Core\Validation\Components\ValidateIdentical',
+            'filters' => 'trim',
+            'message' => '{field} matchar inte.',
+            'pattern' => '([a-zA-Z0-9]+)'
+        ),
+    );
 
-	/**
-	 * Returns error for specified field
-	 *
-	 * @param  string $field
-	 * @return mixed
-	 */
-	public function getErrorFor($field)
-	{
-		if (isset($this->errors[$field])) {
-			$errors = array_keys($this->errors[$field]);
+    /**
+     * Returns all errors
+     *
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->errors;
+    }
 
-			foreach ($errors as $error) {
-				$user = $this->getError($field, $error);
-			}
+    /**
+     * Returns error based on field and type
+     *
+     * @param  string $field
+     * @param  string $type
+     * @return mixed
+     */
+    public function getError($field, $type)
+    {
+        if (isset($this->errors[$field]) and isset($this->errors[$field][$type])) {
+            return $this->errors[$field][$type];
+        }
 
-			return $user;
-		}
-		return false;
-	}
-	/**
-	 * Sets max characters
-	 *
-	 * @param  int $max
-	 * @return Validator
-	 */
-	public function max($max)
-	{
-		$this->rules[$this->name]['max'] = (int) $max;
+        return false;
+    }
 
-		return $this;
-	}
+    /**
+     * Returns error for specified field
+     *
+     * @param  string $field
+     * @return mixed
+     */
+    public function getErrorFor($field)
+    {
+        if (isset($this->errors[$field])) {
+            $errors = array_keys($this->errors[$field]);
 
-	/**
-	 * Sets only numbers
-	 *
-	 * @return Validator
-	 */
-	public function num()
-	{
-		$this->rules[$this->name]['num'] = true;
+            foreach ($errors as $error) {
+                $user = $this->getError($field, $error);
+            }
 
-		return $this;
-	}
+            return $user;
+        }
+        return false;
+    }
 
-	/**
-	 * Sets min characters
-	 *
-	 * @param  int $min
-	 * @return Validator
-	 */
-	public function min($min)
-	{
-		$this->rules[$this->name]['min'] = (int) $min;
+    /**
+     * Returns true if there is no errors stored false otherwise
+     *
+     * @return boolean
+     */
+    public function isValid()
+    {
+        return empty($this->errors);
+    }
 
-		return $this;
-	}
+    /**
+     * Validates form data against given rules
+     *
+     * @param array $rules
+     * @param array $data
+     */
+    public function validate(array $rules = array(), array $data = array())
+    {
+        $valFieldAndRules = array();
+        $rulesArr = array();
 
-	/**
-	 * Sets field to be required
-	 *
-	 * @return Validator
-	 */
-	public function required()
-	{
-		$this->rules[$this->name]['require'] = true;
+        foreach ($rules as $field => $rule) {
+            $ruleArr = explode('|', $rule);
+            $cleanArr = new Arr();
+            $ruleArr = $cleanArr->cleanArray($ruleArr);
 
-		return $this;
-	}
+            foreach ($ruleArr as $rawRule) {
+                $fixedRule = $rawRule;
+                if ($pos = strpos($rawRule, '{')) {
 
-	/**
-	 * Sets email validation
-	 *
-	 * @return Validator
-	 */
-	public function email()
-	{
-		$this->rules[$this->name]['email'] = true;
+                    if ($pos > 0) {
+                        $fixedRule = substr($rawRule, 0, $pos);
+                        $prepareValue = substr($rawRule, $pos);
+                        $value = str_replace(array('{', '}'), array('', ''), $prepareValue);
+                    }
 
-		return $this;
-	}
+                    $value = '';
+                }
 
-	/**
-	 * Sets identical validation
-	 *
-	 * @return Validator
-	 */
-	public function identical($with)
-	{
-		$this->rules[$this->name]['identical'] = $with;
+                if (empty($value)) {
+                    $rulesArr[$fixedRule] = $fixedRule;
+                } else {
+                    $rulesArr[$fixedRule] = $value;
+                }
+            }
 
-		return $this;
-	}
+            $valFieldAndRules[$field] = $rulesArr;
+        }
 
+        foreach ($valFieldAndRules as $field => $value) {
+            if (isset($data[$field])) {
+                $input = $data[$field];
+            }
 
-	/**
-	 * Sets field name for the current validation object
-	 *
-	 * @param  string $name
-	 * @return Validator
-	 */
-	public function field($name)
-	{
-		$this->name = $name;
+            foreach ($value as $rule => $val) {
+                if (isset($this->validators[$rule])) {
 
-		return $this;
-	}
+                    $class = $this->validators[$rule]['class'];
 
-	/**
-	 * Returns true if there is no errors stored false otherwise
-	 *
-	 * @return boolean
-	 */
-	public function isValid()
-	{
-		return empty($this->errors);
-	}
+                    $validateThis = array(
+                        'input' => $input,
+                        'value' => ($val == 'username') ? $data['username'] : $val,
+                        'field' => $field
+                    );
 
-	/**
-	 * Sets values for validation and sends them to
-	 * the validator method
-	 *
-	 * @param  array  $attributes Data for validation
-	 * @return void
-	 */
-	public function validate($attributes = array())
-	{
-		foreach ($attributes as $id => $value) {
-			$this->attributes[$id] = $value;
-		}
+                    $instance = new $class();
+                    $message = $instance->validateAttribute($validateThis);
 
-		foreach ($this->attributes as $id => $value) {
-			if ($this->isDefined($id)) {
-				$this->validator($id, $value, $this->rules[$id]);
-			}
-		}
-	}
+                    if ($message) {
+                        $this->errors[$field][$rule] = $message;
+                    }
 
-	/**
-	 * Validates values in the proper class and sets
-	 * error messages if there an error
-	 *
-	 * @param  string $id    Name
-	 * @param  string $value Value
-	 * @param  array  $rules Rules
-	 * @return void
-	 */
-	protected function validator($id, $value, $rules)
-	{
-		foreach ($rules as $method => $validateValue) {
-			if (array_key_exists($method, $this->mapRules)) {
+                }
+            }
 
-				if ($method == 'identical') {
-					$identicalWith = $validateValue;
+        }
+    }
 
-					$identicalValue = $this->attributes[$identicalWith];
-
-					$validatorClass = new $this->mapRules[$method]($this->app, $value, $identicalValue);
-				} else {
-					$validatorClass = new $this->mapRules[$method]($this->app, $value, $validateValue);
-				}
-
-				if ($validatorClass->hasError()) {
-					$this->errors[$id][$method] = $validatorClass->getMessage();
-				}
-			}
-		}
-	}
-
-	/**
-	 * Returns true if there is an error
-	 *
-	 * @return boolean
-	 */
-	protected function hasError()
-	{
-		return $this->hasError;
-	}
-
-	/**
-	 * Sets error message
-	 *
-	 * @param string $message
-	 */
-	protected function setMessage($message)
-	{
-		$this->message = $message;
-	}
-
-	/**
-	 * Returns current error message
-	 *
-	 * @return string
-	 */
-	protected function getMessage()
-	{
-		return $this->message;
-	}
-
-	/**
-	 * Checks if given id exists
-	 *
-	 * @param  string  $id
-	 * @return boolean
-	 */
-	protected function isDefined($id)
-	{
-		return array_key_exists($id, $this->rules);
-	}
+    /**
+     * Checks if validator exists
+     *
+     * @param $key
+     * @return boolean
+     */
+    protected function isDefined($key)
+    {
+        return array_key_exists($key, $this->validators);
+    }
 }

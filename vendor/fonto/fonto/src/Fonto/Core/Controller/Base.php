@@ -3,7 +3,7 @@
  * Fonto Framework
  *
  * @author Kenny Damgren <kenny.damgren@gmail.com>
- * @package Fonto.Controller
+ * @package Fonto_Controller
  * @link https://github.com/kenren/fonto
  */
 
@@ -14,7 +14,14 @@ use Fonto\Core\Helper\Arr;
 
 class Base extends App
 {
+    /**
+     * @var string
+     */
     private $actionPrefix = 'Action';
+
+    /**
+     * @var string
+     */
     private $defaultAction = 'index';
 
     /**
@@ -22,9 +29,18 @@ class Base extends App
      */
     public function __construct()
     {
-        parent::__construct();
+        echo $this->value;
+        //parent::__construct();
     }
 
+    /**
+     * Filters incoming request against given methods in
+     * the controller.
+     *
+     * @param $filter
+     * @param $callback
+     * @return mixed
+     */
     public function filter($filter, $callback)
     {
         if (is_array($filter)) {
@@ -42,13 +58,19 @@ class Base extends App
         return false;
     }
 
+    /**
+     * Checks if filter matched the request.
+     *
+     * @param $filter
+     * @return bool
+     */
     private function checkFilter($filter)
     {
         $reflector = new \ReflectionClass($this);
-        echo "<br />";
 
         if ($reflector->hasMethod($filter . $this->actionPrefix)) {
-            $request = $this->getDi()->getService('request');
+            $di = new \Fonto\Core\DI\DIManager();
+            $request = $di->getService('request');
             $calledClass = get_called_class();
             $filterStr = strtolower(substr($calledClass, strrpos($calledClass, '\\') + 1)); // strrpos start at 0...
 
@@ -76,6 +98,8 @@ class Base extends App
     }
 
     /**
+     * Magical method for invoking inaccessible methods.
+     *
      * @param $class
      * @param $args
      * @return mixed
@@ -83,6 +107,6 @@ class Base extends App
     public function __call($class, $args)
     {
         $getter = strtolower($class);
-        return $this->getDi()->getService($getter);
+        return $this['di']->getService($getter);
     }
 }

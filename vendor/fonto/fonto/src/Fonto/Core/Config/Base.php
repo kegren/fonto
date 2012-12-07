@@ -10,81 +10,45 @@
 namespace Fonto\Core\Config;
 
 use Fonto\Core\FontoException;
-use Fonto\Core\Application\App;
 
-class Base
+
+abstract class Base
 {
-	/**
-	 * Paths for config files
-	 *
-	 * @var string
-	 */
-	private $paths = array();
+    /**
+     * @var array
+     */
+    protected $paths = array();
 
-	/**
-	 * Fonto\Core\Application\App
-	 *
-	 * @var object
-	 */
-	protected $app;
+    /**
+     * @var
+     */
+    protected $extension;
 
 
-	public function __construct($paths = array())
-	{
-		$this->paths = $paths;
-	}
+    public function __construct(array $options = array())
+    {
+        $this->setOptions($options);
+    }
 
-	/**
-	 * Sets the current application
-	 *
-	 * @param App $app
-	 */
-	public function setApp(App $app)
-	{
-		$this->app = $app;
+    protected function setOptions($options)
+    {
+        $this->paths = $options['paths'];
+        $this->extension = $options['extension'];
+    }
 
-		return $this;
-	}
+    /**
+     * @param $file
+     * @return bool|string
+     */
+    protected function isFound($file)
+    {
+        foreach ($this->paths as $path) {
+            $filePath = $path . $file . $this->extension;
 
-	/**
-	 * Trys to read a config file from filesystem based on file and
-	 * key.
-	 *
-	 * @param  string $file
-	 * @param  string $key
-	 * @return mixed
-	 */
-	public function load($file, $key = null)
-	{
-		if ($config = $this->findFile($file)) {
-
-			if (is_callable($config[$key])) {
-				return $config[$key]($this->app);
-			}
-
-			if (isset($config[$key])) {
-				return $config[$key];
-			}
-
-		}
-
-		throw new FontoException("No file with name $file was found");
-	}
-
-	/**
-	 * Checks if the given config file exists
-	 *
-	 * @param  string $file
-	 * @return file
-	 */
-	private function findFile($file)
-	{
-		foreach ($this->paths as $path) {
-			$config = $path . $file . EXT;
-
-			if (file_exists($config)) {
-				return require $config;
-			}
-		}
-	}
+            if (file_exists($filePath) and is_readable($filePath)) {
+                return $filePath;
+            }
+        }
+        return false;
+    }
 }
