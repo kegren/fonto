@@ -2,9 +2,9 @@
 	"name": "kenren/fonto",
     "require": {
         "php-activerecord/php-activerecord": "dev-master",
-        "twig/twig": "1.12.x-dev",
         "hautelook/phpass": "dev-master",
-        "ezyang/htmlpurifier": "dev-master"
+        "ezyang/htmlpurifier": "dev-master",
+        "doctrine/orm": "*"
     },
     "autoload": {
     	"psr-0": {
