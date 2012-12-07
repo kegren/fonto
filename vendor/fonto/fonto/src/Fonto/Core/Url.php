@@ -29,5 +29,4 @@ class Url
 
         return (string)$url;
     }
-
 }
