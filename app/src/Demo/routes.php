@@ -25,9 +25,9 @@ $router->addRoute(
  * Registers a route
  */
 $router->addRoute(
-    '/demo/:action/:num',
+    '/demo/visa/:num',
     array(
-        'mapsTo' => 'demo#index',
+        'mapsTo' => 'testController1#index',
         'restful' => false,
     )
 );
