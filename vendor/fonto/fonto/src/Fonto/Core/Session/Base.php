@@ -3,7 +3,7 @@
  * Fonto Framework
  *
  * @author Kenny Damgren <kenny.damgren@gmail.com>
- * @package Fonto
+ * @package Fonto.Session
  * @link https://github.com/kenren/fonto
  */
 
@@ -14,18 +14,43 @@ class Base
 	/**
 	 * Start session
 	 */
-	public function __construct()
+	public function __construct($sessionName = null)
 	{
-		@session_name('fonto');
-		@session_start();
+        session_save_path(SESSPATH);
+        if (!$this->isStarted()) {
+            session_name(isset($sessionName) ? $sessionName : 'FontoMVC');
+            session_start();
+            $this->regenerateId();
+        }
 	}
+
+    public function start()
+    {
+        return session_start();
+    }
+
+    public function isStarted()
+    {
+        return session_id();
+    }
+
+    public function setName($name = null)
+    {
+        session_name(($name) ?: 'FontoMVC');
+    }
+
+    public function setSessionSavePath($path = null)
+    {
+        session_save_path(($path) ?: SESSPATH);
+    }
 
 	/**
 	 * Sets a value
 	 *
 	 * @param string $id
 	 * @param string $value
-	 */
+     * @return \Fonto\Core\Session\Base
+     */
 	public function set($id, $value)
 	{
 		$_SESSION[$id] = $value;
@@ -37,7 +62,7 @@ class Base
 	 * Returns a value from session
 	 *
 	 * @param  string $id
-	 * @return session value
+	 * @return mixed
 	 */
 	public function get($id)
 	{
@@ -52,7 +77,7 @@ class Base
 	 * Checks if session is set returns boolean
 	 *
 	 * @param  string $id
-	 * @return session value
+	 * @return mixed
 	 */
 	public function has($id)
 	{
@@ -64,14 +89,12 @@ class Base
 	}
 
 
-	/**
-	 * Regenerates session id
-	 *
-	 * @return $this
-	 */
-	public function regenerateId()
+    /**
+     * @return Base
+     */
+    public function regenerateId()
 	{
-		session_regenerate_id();
+		session_regenerate_id(true);
 
 		return $this;
 	}
@@ -93,13 +116,13 @@ class Base
 		return '';
 	}
 
-	/**
-	 * Flushes specified session var
-	 *
-	 * @param  string $id
-	 * @return this
-	 */
-	public function flush($id)
+    /**
+     * Erases session variable
+     *
+     * @param string $id
+     * @return \Fonto\Core\Session\Base
+     */
+	public function erase($id)
 	{
 		if (isset($_SESSION[$id])) {
 			unset($_SESSION[$id]);
@@ -113,7 +136,7 @@ class Base
 	 *
 	 * @return void
 	 */
-	public function kill()
+	public function eraseAll()
 	{
 		session_destroy();
 	}
