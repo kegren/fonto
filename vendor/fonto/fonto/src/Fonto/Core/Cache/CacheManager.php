@@ -10,10 +10,12 @@
 
 namespace Fonto\Core\Cache;
 
+use Fonto\Core\Cache\Driver\DriverInterface;
+
 class CacheManager
 {
     /**
-     * @var
+     * @var Driver\DriverInterface
      */
     protected $driver;
 
@@ -27,25 +29,11 @@ class CacheManager
     /**
      * Constructor
      *
-     * @param array $options
+     * @param Driver\DriverInterface $driver
      */
-    public function __construct(array $options)
+    public function __construct(DriverInterface $driver)
     {
-        $this->setOptions($options);
-    }
-
-    /**
-     * Sets configuration for the cache
-     *
-     * @param $options
-     */
-    protected function setOptions($options)
-    {
-        $this->driver = $options['driver'];
-
-        if (array_key_exists($this->driver, $this->supported)) {
-            $this->driver = new $this->supported[$this->driver];
-        }
+        $this->driver = $driver;
     }
 
     /**
