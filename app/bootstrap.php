@@ -1,34 +1,27 @@
 <?php
 /**
- * Part of Fonto Framework
+ * Fonto - PHP framework
  *
- * Creates a new application
+ * @author      Kenny Damgren <kenny.damgren@gmail.com>
+ * @package     Fonto
+ * @link        https://github.com/kenren/fonto
+ * @version     0.5
  */
 
+/**
+ * Configuration constants
+ */
+define('START_TIME', microtime(true));
+define('DEBUG', true);
+define('CACHE', false);
+define('ACTIVE_APP', 'Demo');
 
 /**
- * Includes files
+ * Include files
  */
 include APPPATH . 'helpers' . EXT;
-$autoloader = include VENDORPATH . 'autoload' . EXT;
+$loader = require VENDORPATH . 'autoload' . EXT;
 require SYSCOREAPPPATH . 'App' . EXT;
-
-/**
- * Gets main app settings
- *
- * @return array
- */
-function appOptions()
-{
-    $appOptions = include __DIR__ . '/config.php';
-    return $appOptions;
-}
-
-function appConfig()
-{
-    $appConfig = include CONFIGPATH . 'app.php';
-    return $appConfig;
-}
 
 /**
  * Sets error reporting
@@ -36,7 +29,25 @@ function appConfig()
 error_reporting(-1);
 
 /**
+ * Registers autoloader for HTMLPurifier component
+ */
+\HTMLPurifier_Bootstrap::registerAutoload();
+
+/**
  * Runs application
  */
 $app = new Fonto\Core\Application\App();
-$app->run($autoloader);
+$app->run(
+    array(
+        'composerAutoloadInstance' => $loader
+    )
+);
+
+/**
+ * Prints out debug info
+ */
+if (DEBUG) {
+    $loadTime = round((microtime(true) - START_TIME), 5);
+
+    printf("Page loading time: %s", $loadTime);
+}
