@@ -3,17 +3,16 @@
  * Fonto - PHP framework
  *
  * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @package     Fonto
+ * @package     Fonto.Core
  * @link        https://github.com/kenren/fonto
  * @version     0.5
  */
 
 namespace Fonto\Core\Config\Driver;
 
-use Fonto\Core\Config\DriverInterface;
-use Fonto\Core\Config\Base;
+use Fonto\Core\Config\Driver\ConfigInterface;
 
-class IniDriver extends Base implements DriverInterface
+class IniDriver implements ConfigInterface
 {
-
+    public function read($config){}
 }
