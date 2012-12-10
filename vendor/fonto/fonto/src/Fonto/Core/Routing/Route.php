@@ -3,7 +3,7 @@
  * Fonto - PHP framework
  *
  * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @package     Fonto
+ * @package     Fonto.Core
  * @link        https://github.com/kenren/fonto
  * @version     0.5
  */
@@ -79,6 +79,7 @@ class Route
     public function createRoute($route)
     {
         if (false === $this->hasMapsTo($route)) {
+
             if ($this->isRestful($route)) {
                 $this->setRestful(true);
             }
@@ -124,17 +125,14 @@ class Route
      * Removes route delimiter and returns the route as
      * an array
      *
-     * @param $mapTo
+     * @param $mapsTo
      * @return array
      */
     protected function parseMapTo($mapsTo)
     {
         $toArray = explode(self::ROUTE_DELIMITER, $mapsTo);
-        $di = new DIManager();
-        $helperArr = $di->getService('Arr');
-        $toArray = $helperArr->cleanArray($toArray);
 
-        return (array)$toArray;
+        return $toArray;
     }
 
     /**
