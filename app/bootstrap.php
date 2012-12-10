@@ -8,6 +8,8 @@
  * @version     0.5
  */
 
+use Fonto\Core\Application\App;
+
 /**
  * Configuration constants
  */
@@ -36,12 +38,8 @@ error_reporting(-1);
 /**
  * Runs application
  */
-$app = new Fonto\Core\Application\App();
-$app->run(
-    array(
-        'composerAutoloadInstance' => $loader
-    )
-);
+$app = new App();
+$app->run($loader);
 
 /**
  * Prints out debug info
