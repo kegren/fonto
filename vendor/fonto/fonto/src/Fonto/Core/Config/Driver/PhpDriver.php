@@ -3,17 +3,17 @@
  * Fonto - PHP framework
  *
  * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @package     Fonto
+ * @package     Fonto.Core
  * @link        https://github.com/kenren/fonto
  * @version     0.5
  */
 
 namespace Fonto\Core\Config\Driver;
 
-use Fonto\Core\Config\Base;
-use Fonto\Core\Config\Driver\DriverInterface;
+use Fonto\Core\Config\Driver\ConfigInterface;
+use Exception;
 
-class PhpDriver
+class PhpDriver implements ConfigInterface
 {
     const DELIMITER = '#';
 
@@ -34,10 +34,9 @@ class PhpDriver
     {}
 
     /**
-     * Loads a config file
-     *
-     * @param array $options
-     * @return mixed
+     * @param $config
+     * @return bool|mixed
+     * @throws \Exception
      */
     public function read($config)
     {
@@ -62,7 +61,7 @@ class PhpDriver
             }
         }
 
-        throw new \Fonto\Core\FontoException("No file with name file was found.");
+        throw new Exception("The file: $file wasn't found.");
     }
 
     /**
@@ -71,7 +70,7 @@ class PhpDriver
      */
     protected function getFile($file)
     {
-        $this->path = VIEWPATH;
+        $this->path = CONFIGPATH;
         $file = $this->path . $file . $this->extension;
 
         if (file_exists($file)) {
@@ -81,6 +80,3 @@ class PhpDriver
         }
     }
 }
-
-$config = new \Fonto\Core\Config\Driver\PhpDriver();
-$config->read('app#timezone');
