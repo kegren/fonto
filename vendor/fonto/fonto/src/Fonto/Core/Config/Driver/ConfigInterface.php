@@ -3,20 +3,18 @@
  * Fonto - PHP framework
  *
  * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @package     Fonto
+ * @package     Fonto.Core
  * @link        https://github.com/kenren/fonto
  * @version     0.5
  */
 
 namespace Fonto\Core\Config\Driver;
 
-interface DriverInterface
+interface ConfigInterface
 {
     /**
-     * Loads a config file
-     *
-     * @param array $options
+     * @param $config
      * @return mixed
      */
-    public function load(array $options = array());
+    public function read($config);
 }
