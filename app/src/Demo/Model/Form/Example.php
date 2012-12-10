@@ -12,8 +12,9 @@ class Example extends Base
     public function rules()
     {
         return array(
-            'username' => 'max{5}|min{2}|required|email',
+            'username' => 'max{5}|min{2}|required',
             'password' => 'max{32}|min{8}|identical{username}|required',
+            'email' => 'email|required'
         );
     }
 }
