@@ -3,22 +3,18 @@
  * Fonto - PHP framework
  *
  * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @package     Fonto
+ * @package     Fonto.Core
  * @link        https://github.com/kenren/fonto
  * @version     0.5
  */
 
 namespace Fonto\Core\Application;
 
-use Fonto\Core\Routing\Router;
-use Fonto\Core\FontoException;
-use ActiveRecord;
-use HTMLPurifier as Purifier;
-use ArrayAccess;
+use Fonto\Core\DependencyInjection as DI;
+use Fonto\Core\Application\ObjectHandler;
+use Exception;
 
-use Fonto;
-
-class App extends Base
+class App extends ObjectHandler
 {
     /**
      * @var string
@@ -31,79 +27,39 @@ class App extends Base
     protected $app;
 
     /**
-     * @var \Fonto\Core\DI\DIManager
-     */
-    protected $di;
-
-    public $value;
-
-    /**
      * Constructor
      */
     public function __construct()
     {
         $this->app = $this;
         $this->setPaths();
-
-        $this->di = new Fonto\Core\DI\DIManager();
-
-        //$this->setExceptionHandler(array('\Fonto\Core\FontoException', 'handleException'));
+        parent::__construct();
     }
 
     /**
      * Runs the application.
      */
-    public function run($settings)
+    public function run($loader)
     {
         try {
-            $loader = $settings['composerAutoloadInstance'];
             $loader->add(ACTIVE_APP, APPPATH . 'src');
 
-            //$this->getDi()->getService('phpass');
-
-            //die;
-
-            $router = $this->getDi()->getService('router');
+            $router = $this->router();
             $matched = $router->match();
 
             if (false === $matched) {
-                echo "FEL";
-                $response = $this->getDi()->getService('response');
-                die;
-                //return $response->error(404);
+                return $this->response()->error(404);
             }
 
-            $this->value = "AIK!";
+            $dispatcher = $router->dispatch(); // Dispatch request
 
-            $obj = $router->dispatch(); // Dispatch request
+            if (false === $dispatcher) {
+                return $this->response()->error(404);
+            }
 
-            $this->value = "AIK!";
-
-            echo $obj;
-
-        } catch (\Exception $e) {
-            echo $e->getMessage() . "<br />" . get_class($e);
+        } catch (Exception $e) {
+            echo $e->getMessage() . " " . $e->getLine();
         }
-    }
-
-    public function getDi()
-    {
-        return $this->di;
-    }
-
-    protected function getApp()
-    {
-        return $this->app;
-    }
-
-    /**
-     * Sets custom exception handler
-     *
-     * @param array $options
-     */
-    private function setExceptionHandler(array $options = array())
-    {
-        set_exception_handler($options);
     }
 
     /**
