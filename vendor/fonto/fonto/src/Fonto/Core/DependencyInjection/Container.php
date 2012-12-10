@@ -3,7 +3,7 @@
  * Fonto - PHP framework
  *
  * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @package     Fonto
+ * @package     Fonto.Core
  * @link        https://github.com/kenren/fonto
  * @version     0.5
  */
@@ -38,8 +38,9 @@ class Container
         $core = require __DIR__ . "/{$this->coreDependenciesFile}";
         $this->services = $this->services + $core;
         unset($core);
+
+        $di = $this;
         $user = require APPWEBPATH . "/{$this->userProvided}";
-        $this->services = $this->services + $user;
         unset($user);
     }
 
@@ -77,6 +78,8 @@ class Container
      */
     public function getService($id)
     {
+        $id = ucfirst($id);
+
         // Is it registered?
         if ($this->isRegistered($id)) {
             $service = $this->services[$id];
@@ -92,12 +95,12 @@ class Container
 
             if (sizeof($args)) {
 
-                foreach ($args as $_arg) {
+                foreach ($args as $named => $class) {
 
                     // Checks if dependencies has own dependencies
-                    if ($this->isRegistered($_arg)) {
+                    if ($this->isRegistered($named)) {
 
-                        $_args['_args'][$_arg] = $this->services[$_arg]; // Add
+                        $_args['_args'][$named] = $this->services[$named]; // Add
 
                     }
 
