@@ -39,7 +39,7 @@ $router->addRoute(
     '<:controller>',
     array(
         'mapsTo' => array(
-            'testController1',
+            'home',
             'testController2',
             'testController3'
         ),
