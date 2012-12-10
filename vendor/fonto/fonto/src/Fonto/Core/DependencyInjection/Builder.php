@@ -3,7 +3,7 @@
  * Fonto - PHP framework
  *
  * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @package     Fonto
+ * @package     Fonto.Core
  * @link        https://github.com/kenren/fonto
  * @version     0.5
  */
@@ -46,17 +46,21 @@ class Builder
     {
         $this->class = $service['class'];
         $this->args = $service['args'];
-        $this->_args = $service['_args'];
+        $this->_args = isset($service['_args']) ? $service['_args'] : array();
+        $_args = false;
 
         if (sizeof($this->_args)) {
+            $_args = true;
             $argsOfArgs = array();
+
             foreach ($this->_args as $_arg) {
 
+                $id = $_arg['id'];
                 $class = $_arg['class'];
                 $args = $_arg['args'];
 
-                if ($this->args[$class]) {
-                    unset($this->args[$class]);
+                if (isset($this->args[$id])) {
+                    unset($this->args[$id]);
                 }
 
                 foreach ($args as $arg) {
@@ -71,9 +75,14 @@ class Builder
             $this->uses[$named] = $this->instance($class);
         }
 
-        $this->uses = array_reverse($this->uses);
+        if ($_args) {
+            $this->uses = array_reverse($this->uses);
+        }
 
-        return $this->instance($this->class, $this->uses);
+        $uses = $this->uses;
+        unset($this->uses); // Remove value
+
+        return $this->instance($this->class, $uses);
     }
 
     /**
