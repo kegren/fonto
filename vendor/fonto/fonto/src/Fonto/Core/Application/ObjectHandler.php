@@ -3,7 +3,7 @@
  * Fonto - PHP framework
  *
  * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @package     Fonto
+ * @package     Fonto.Core
  * @link        https://github.com/kenren/fonto
  * @version     0.5
  */
@@ -50,16 +50,33 @@ class ObjectHandler
         $this->di = new DI\Manager(new DI\Container(), new DI\Builder());
     }
 
+    /**
+     * @param $id
+     * @param $value
+     * @throws \Exception
+     */
     public function __set($id, $value)
     {
         throw new Exception("You cant set a value in the " . __CLASS__);
     }
 
+    /**
+     * @param $id
+     * @throws \Exception
+     */
     public function __get($id)
     {
         throw new Exception("You cant get a regular property in the " . __CLASS__);
     }
 
+    /**
+     * Catches method calls
+     *
+     * @param $object
+     * @param array $args
+     * @return object
+     * @throws \Exception
+     */
     public function __call($object, $args = array())
     {
         $object = ucfirst($object);
@@ -83,6 +100,11 @@ class ObjectHandler
         throw new Exception("The ObjectHandler only supports registered services or core objects of Fonto, the requested object: $object wasn't found");
     }
 
+    /**
+     * @param $object
+     * @param array $args
+     * @throws \Exception
+     */
     public static function __callStatic($object, $args = array())
     {
         throw new Exception("No static call allowed");
