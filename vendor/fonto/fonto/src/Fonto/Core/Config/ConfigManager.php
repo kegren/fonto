@@ -3,14 +3,14 @@
  * Fonto - PHP framework
  *
  * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @package     Fonto
+ * @package     Fonto.Core
  * @link        https://github.com/kenren/fonto
  * @version     0.5
  */
 
 namespace Fonto\Core\Config;
 
-use Fonto\Core\Config\Driver\DriverInterface;
+use Fonto\Core\Config\Driver\ConfigInterface;
 
 class ConfigManager
 {
@@ -30,46 +30,20 @@ class ConfigManager
     );
 
     /**
-     * Constructor
-     *
-     * @param Driver\DriverInterface $driver
+     * @param Driver\ConfigInterface $driver
      */
-    public function __construct(DriverInterface $driver)
+    public function __construct(ConfigInterface $driver)
     {
         $this->driver = $driver;
     }
 
     /**
-     * Loads a config file
-     *
-     * @param $options
+     * @param $config
+     * @return mixed
      */
-    public function load(array $options = array())
+    public function read($config)
     {
-        if ($this->has('file', $options)) {
-            $fileRaw = $options['file'] ? : null;
-            $file = pathinfo($fileRaw, PATHINFO_FILENAME);
-
-            $option = '';
-
-            if ($this->has('option', $options)) {
-                $option = $options['option'] ? : null;
-            }
-
-            $extension = strtolower(pathinfo($fileRaw, PATHINFO_EXTENSION));
-
-            if ($extension) {
-                if ($this->isSupported($extension)) {
-                    return $this->driver->load(compact('file', 'option'));
-                }
-
-                throw new \Fonto\Core\FontoException("The file {$file} is not supported");
-            }
-
-            return $this->driver->load(compact('file', 'option'));
-        }
-
-        throw new \Fonto\Core\FontoException("There must be a specified file option");
+        return $this->driver->read($config);
     }
 
     /**
