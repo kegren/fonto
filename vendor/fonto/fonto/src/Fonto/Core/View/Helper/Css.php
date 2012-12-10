@@ -1,35 +1,49 @@
 <?php
 /**
- * Fonto Framework
+ * Fonto - PHP framework
  *
- * @author Kenny Damgren <kenny.damgren@gmail.com>
- * @package Fonto
- * @link https://github.com/kenren/fonto
+ * @author      Kenny Damgren <kenny.damgren@gmail.com>
+ * @package     Fonto.Core
+ * @link        https://github.com/kenren/fonto
+ * @version     0.5
  */
 
 namespace Fonto\Core\View\Helper;
 
-use Fonto\Core\Url;
+use Fonto\Core\Http\Url;
 
 class Css
 {
+    /**
+     * @var \Fonto\Core\Http\Url
+     */
     private $url;
 
-    private $activeApp;
-
-    public function __construct(Url $url, $activeApp = null)
+    /**
+     * Constructor
+     *
+     * @param \Fonto\Core\Http\Url $url
+     */
+    public function __construct(Url $url)
     {
         $this->url = $url;
-        $this->activeApp = ($activeApp) ?: 'Demo';
     }
 
+    /**
+     * @param $file
+     * @return string
+     */
     public function cssLink($file)
     {
         return '<link rel="stylesheet" href="'.$this->getCssFile($file).'">'."\n";
     }
 
-	public function getCssFile($file)
+    /**
+     * @param $file
+     * @return string
+     */
+    public function getCssFile($file)
 	{
-		return "{$this->url->baseUrl()}web/app/{$this->activeApp}/css/{$file}.css";
+		return "{$this->url->baseUrl()}web/app/" . ACTIVE_APP . "/css/{$file}.css";
 	}
 }
