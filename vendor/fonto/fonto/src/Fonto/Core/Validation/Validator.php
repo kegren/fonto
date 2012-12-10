@@ -1,10 +1,11 @@
 <?php
 /**
- * Fonto Framework
+ * Fonto - PHP framework
  *
- * @author Kenny Damgren <kenny.damgren@gmail.com>
- * @package Fonto_Validation
- * @link https://github.com/kenren/fonto
+ * @author      Kenny Damgren <kenny.damgren@gmail.com>
+ * @package     Fonto.Core
+ * @link        https://github.com/kenren/fonto
+ * @version     0.5
  */
 
 namespace Fonto\Core\Validation;
@@ -109,12 +110,13 @@ class Validator
     {
         if (isset($this->errors[$field])) {
             $errors = array_keys($this->errors[$field]);
+            $return = '';
 
             foreach ($errors as $error) {
-                $user = $this->getError($field, $error);
+                $return = $this->getError($field, $error);
             }
 
-            return $user;
+            return $return;
         }
         return false;
     }
