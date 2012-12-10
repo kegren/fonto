@@ -1,13 +1,16 @@
 <?php
 /**
- * Fonto Framework
+ * Fonto - PHP framework
  *
- * @author Kenny Damgren <kenny.damgren@gmail.com>
- * @package Fonto
- * @link https://github.com/kenren/fonto
+ * @author      Kenny Damgren <kenny.damgren@gmail.com>
+ * @package     Fonto.Core
+ * @link        https://github.com/kenren/fonto
+ * @version     0.5
  */
 
 namespace Fonto\Core\Http;
+
+use Exception;
 
 class Request
 {
@@ -50,7 +53,7 @@ class Request
 	}
 
 	/**
-	 * Returns true if the current method is post false otherwise
+	 * Returns true if the current method is post
 	 *
 	 * @return boolean
 	 */
@@ -59,39 +62,43 @@ class Request
 		return $this->method === 'POST';
 	}
 
-	/**
-	 * Gets this instance if the request is post
-	 *
-	 * @return mixed
-	 */
-	public function post()
-	{
-		if ($this->isPost()) {
-			return $this;
-		}
+    public function isGet()
+    {
+        return $this->method === 'GET';
+    }
 
-		throw new FontoException("Http method need to be POST");
+    /**
+     * @return string
+     */
+    public function getParameters()
+	{
+        if ($this->isPost()) {
+            return $_POST;
+        }
+
+        if ($this->isGet()) {
+            return $_GET;
+        }
+
+		return false;
 	}
 
-	/**
-	 * Returns all post data
-	 *
-	 * @return $_POST
-	 */
-	public function getAll()
+    /**
+     * @param $key
+     * @return string
+     */
+    public function getParameter($key)
 	{
-		return $_POST;
-	}
+        if ($this->isPost()) {
+            return $_POST[$key];
+        }
 
-	/**
-	 * Returns specified post
-	 *
-	 * @param  string $get
-	 * @return $_POST
-	 */
-	public function get($get)
-	{
-		return $_POST[$get];
+        if ($this->isGet()) {
+            return $_GET[$key];
+        }
+
+
+        return false;
 	}
 
 	/**
