@@ -1,10 +1,11 @@
 <?php
 /**
- * Fonto Framework
+ * Fonto - PHP framework
  *
- * @author Kenny Damgren <kenny.damgren@gmail.com>
- * @package Fonto_Validation
- * @link https://github.com/kenren/fonto
+ * @author      Kenny Damgren <kenny.damgren@gmail.com>
+ * @package     Fonto.Core
+ * @link        https://github.com/kenren/fonto
+ * @version     0.5
  */
 
 namespace Fonto\Core\Validation\Components;
