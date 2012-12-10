@@ -7,54 +7,34 @@
 
 return array(
     /**
-     * Sets language
+     * language
      */
     'language' => 'sv',
     /**
-     * Sets Default timezone
+     * Default timezone
      */
     'timezone' => 'Europe/Stockholm',
     /**
-     * Sets database settings
+     * Database settings
      */
     'database' => array(
         'local' => array(
-            'type' => 'mysql',
+            'driver' => 'pdo_mysql',
             'host' => 'localhost',
+            'dbname' => 'doctrine',
             'user' => 'root',
-            'pass' => '',
-            'name' => 'fontomvc'
+            'password' => '',
         ),
         'server' => array(
-            'type' => 'mysql',
+            'driver' => 'pdo_mysql',
             'host' => 'localhost',
+            'dbname' => 'doctrine',
             'user' => 'root',
-            'pass' => '',
-            'name' => 'fonto'
+            'password' => '',
         ),
     ),
     /**
-     * Sets application environment, development enables error_reporting(-1)
+     * Application environment
      */
     'environment' => 'local',
-    /**
-     * Sets baseUrl for application
-     */
-    'baseUrl' => '',
-    /**
-     * Enables twig
-     */
-    'twig' => false,
-    /**
-     *
-     */
-    'sessionName' => 'FontoMVC',
-    /**
-     *
-     */
-    'configType' => 'php',
-    /**
-     *
-     */
-    'services' => true
 );
