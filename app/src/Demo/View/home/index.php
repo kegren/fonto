@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title><?php echo $title ?></title>
-    <?php echo $this->getCss()->cssLink('style') ?>
+	<title><?php echo $title; ?></title>
+    <link rel="stylesheet" href="<?php echo $baseUrl ?>web/app/Demo/css/style.css">
 
 	<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -14,13 +14,16 @@
 	<div class="fontoContainer">
 		<header>
 			<h1><?php echo $title; ?></h1>
-            <?php echo $this->purify('<script>') ?>
 		</header>
 		<section>
-			<p><?php echo $text ?></p>
+			<p><?php echo $this->purify($text); ?></p>
 		</section>
 		<footer>
-			<p><em>Version: <?php echo $version ?></em></p>
+			<p>
+                <address>
+                    <a href="mailto:kennydamgren@gmail.com">Kenny Damgren</a>
+                </address>
+			</p>
 		</footer>
 	</div>
 </body>
