@@ -3,18 +3,16 @@
  * Fonto - PHP framework
  *
  * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @package     Fonto
+ * @package     Fonto.Core
  * @link        https://github.com/kenren/fonto
  * @version     0.5
  */
 
 namespace Fonto\Core\Routing;
 
-use Fonto\Core\FontoException;
 use Fonto\Core\Http\Request;
 use Fonto\Core\Routing\Route;
-use Fonto\Core\DI;
-use Fonto\Core\Routing\Exception;
+use Exception;
 
 class Router
 {
@@ -102,7 +100,7 @@ class Router
     /**
      * Returns routes
      *
-     * @return routes
+     * @return array
      */
     public function getRoutes()
     {
@@ -110,9 +108,9 @@ class Router
     }
 
     /**
-     * Routes the request
+     * Dispatches request
      *
-     * @throws Exception\MethodNotFound
+     * @throws \Exception
      */
     public function dispatch()
     {
@@ -122,7 +120,7 @@ class Router
         try {
 
             if (!class_exists($class)) {
-                throw new \Fonto\Core\Routing\Exception\ClassNotFound("The class $class wasn't found");
+                throw new Exception("The class $class wasn't found");
             }
             $object = new $class;
 
@@ -137,16 +135,15 @@ class Router
             if (method_exists($object, $action)) {
 
                 if ($this->getRoute()->getParams()) {
-                    call_user_func_array(array($object, $action), $this->getRoute()->getParams());
+                    return call_user_func_array(array($object, $action), $this->getRoute()->getParams());
                 } else {
-                    call_user_func(array($object, $action));
+                    return call_user_func(array($object, $action));
                 }
 
-            } else {
-                throw new \Fonto\Core\Routing\Exception\MethodNotFound("The class $class doesn't have a method called $action");
             }
+            return false;
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             echo $e->getMessage();
         }
     }
@@ -159,11 +156,7 @@ class Router
     public function match()
     {
         $requestUri = $this->getRequest()->getRequestUri();
-
         $requestUriArr = explode('/', $requestUri);
-        $di = new DI\DIManager();
-        $arrHelper = $di->getService('Arr');
-        $requestUriArr = $arrHelper->cleanArray($requestUriArr);
 
         foreach ($this->routes as $route => $options) {
 
@@ -174,18 +167,19 @@ class Router
                 break;
             }
 
-            // Registered only as a controller?
+            // Registered only as a controller?  @TODO Fix
             if ($route == '<:controller>') {
                 $controllers = (array)$options['mapsTo'];
                 $controller = $requestUriArr[1];
                 $requestUriArr = array_slice($requestUriArr, 1);
 
                 if (in_array($controller, $controllers)) {
+
                     unset($options['mapsTo']);
                     $merged = array(
                         'controller' => $controller,
-                        'action' => isset($requestUriArr[0]) ? $requestUriArr[0] : '',
-                        'params' => isset($requestUriArr[1]) ? array_splice($requestUriArr, 1) : array(),
+                        'action' => isset($requestUriArr[1]) ? $requestUriArr[1] : 'index',
+                        'params' => isset($requestUriArr[2]) ? array_splice($requestUriArr, 2) : array(),
                     );
                     $options = $options + $merged;
                     $this->getRoute()->createRoute($options);
@@ -203,19 +197,26 @@ class Router
 
             // Pattern found and appended
             if ($route) {
-               preg_match_all("#^$route$#", $requestUri, $values);
+                preg_match_all("#^$route$#", $requestUri, $values);
 
-               // Any matches?
-               if (sizeof($values) > 0) {
-                   unset($values[0]); // Remove url
-                   $merged = array(
-                       'patternParams' => $values
-                   );
-                   $options = $options + $merged;
-                   $this->getRoute()->createRoute($options);
-                   return true;
-                   break;
-               }
+                $value = array_filter(
+                    $values,
+                    function ($element) {
+                        return !empty($element);
+                    }
+                );
+
+                // Any matches?
+                if (!empty($value)) {
+                    unset($values[0]); // Remove url
+                    $merged = array(
+                        'patternParams' => $values
+                    );
+                    $options = $options + $merged;
+                    $this->getRoute()->createRoute($options);
+                    return true;
+                    break;
+                }
             }
         }
 
