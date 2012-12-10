@@ -1,15 +1,16 @@
 <?php
 /**
- * Fonto Framework
+ * Fonto - PHP framework
  *
- * @author Kenny Damgren <kenny.damgren@gmail.com>
- * @package Fonto.Session
- * @link https://github.com/kenren/fonto
+ * @author      Kenny Damgren <kenny.damgren@gmail.com>
+ * @package     Fonto.Core
+ * @link        https://github.com/kenren/fonto
+ * @version     0.5
  */
 
-namespace Fonto\Core\Session;
+namespace Fonto\Core\Http;
 
-class Base
+class Session
 {
 	/**
 	 * Start session
@@ -49,7 +50,8 @@ class Base
 	 *
 	 * @param string $id
 	 * @param string $value
-     * @return \Fonto\Core\Session\Base
+     *
+     * @return \Fonto\Core\Http\Session
      */
 	public function set($id, $value)
 	{
@@ -90,7 +92,7 @@ class Base
 
 
     /**
-     * @return Base
+     * @return Session
      */
     public function regenerateId()
 	{
@@ -99,13 +101,13 @@ class Base
 		return $this;
 	}
 
-	/**
-	 * Gets flash massages
-	 *
-	 * @param  string $id
-	 * @return mixed
-	 */
-	public function flashMessage($id)
+    /**
+     * Returns session value and unsets it
+     *
+     * @param $id
+     * @return string
+     */
+    public function flashMessage($id)
 	{
 		if (isset($_SESSION[$id])) {
 			$message = $_SESSION[$id];
@@ -117,12 +119,12 @@ class Base
 	}
 
     /**
-     * Erases session variable
+     * Removes a single variable
      *
      * @param string $id
-     * @return \Fonto\Core\Session\Base
+     * @return \Fonto\Core\Http\Session
      */
-	public function erase($id)
+	public function remove($id)
 	{
 		if (isset($_SESSION[$id])) {
 			unset($_SESSION[$id]);
@@ -136,7 +138,7 @@ class Base
 	 *
 	 * @return void
 	 */
-	public function eraseAll()
+	public function removeAll()
 	{
 		session_destroy();
 	}
