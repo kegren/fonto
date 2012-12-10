@@ -3,7 +3,7 @@
  * Fonto - PHP framework
  *
  * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @package     Fonto
+ * @package     Fonto.Core
  * @link        https://github.com/kenren/fonto
  * @version     0.5
  */
@@ -13,6 +13,7 @@ namespace Fonto\Core\Cache\Driver;
 use Fonto\Core\Cache\DriverInterface;
 
 use Memcache;
+use Exception;
 
 class MemcacheDriver implements DriverInterface
 {
@@ -37,7 +38,7 @@ class MemcacheDriver implements DriverInterface
     public function __construct()
     {
         if (false === $this->checkIfMemcacheIsAvailable()) {
-            throw new \Fonto\Core\FontoException("{memcache} doesn't appears to be loaded, please check your settings");
+            throw new Exception("{memcache} doesn't appears to be loaded, please check your settings");
         }
 
         $default = $this->servers['default'];
