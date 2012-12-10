@@ -3,7 +3,7 @@
  * Fonto - PHP framework
  *
  * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @package     Fonto
+ * @package     Fonto.Core
  * @link        https://github.com/kenren/fonto
  * @version     0.5
  */
@@ -18,13 +18,6 @@ class CacheManager
      * @var Driver\DriverInterface
      */
     protected $driver;
-
-    /**
-     * @var array
-     */
-    protected $supported = array(
-        'memcache' => 'Fonto\Core\Cache\Driver\MemcacheDriver'
-    );
 
     /**
      * Constructor
