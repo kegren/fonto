@@ -10,6 +10,15 @@
 
 namespace Fonto\Core\Form;
 
+/**
+ * Form class, an helper class for form elements.
+ *
+ * @package Fonto_Core
+ * @subpackage Form
+ * @link https://github.com/kenren/fonto
+ * @author Kenny Damgren <kenny.damgren@gmail.com>
+ */
+
 class Form
 {
 	/**
