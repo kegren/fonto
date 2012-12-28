@@ -72,6 +72,27 @@ class Form
         return $this->input('hidden', $name, $attributes);
     }
 
+    /**
+     * Returns an textarea field
+     *
+     * @param $name
+     * @param string $value
+     * @param array $attributes
+     * @return string
+     */
+    public function textarea($name, $value = '', $attributes = array())
+    {
+        $attr = '';
+
+        if ($attributes) {
+            foreach ($attributes as $id => $val) {
+                $attr .= $id . '="'.$val.'"' . ' ';
+            }
+        }
+
+        return '<textarea name="'.$name.'" '.$attr.'>'.$value.'</textarea'."\n";
+    }
+
 	/**
 	 * Returns a submit button
 	 *
