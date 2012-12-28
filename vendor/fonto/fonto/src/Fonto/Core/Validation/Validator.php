@@ -91,38 +91,16 @@ class Validator
     }
 
     /**
-     * Returns error based on field and type
-     *
-     * @param  string $field
-     * @param  string $type
-     * @return mixed
-     */
-    public function getError($field, $type)
-    {
-        if (isset($this->errors[$field]) and isset($this->errors[$field][$type])) {
-            return $this->errors[$field][$type];
-        }
-
-        return false;
-    }
-
-    /**
      * Returns error for specified field
      *
      * @param  string $field
      * @return mixed
      */
-    public function getErrorFor($field)
+    public function getError($field)
     {
         if (isset($this->errors[$field])) {
-            $errors = array_keys($this->errors[$field]);
-            $return = '';
 
-            foreach ($errors as $error) {
-                $return = $this->getError($field, $error);
-            }
-
-            return $return;
+            return reset($this->errors[$field]);
         }
         return false;
     }
