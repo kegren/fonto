@@ -41,37 +41,43 @@ class Validator
         'max' => array(
             'class' => 'Fonto\Core\Validation\Components\ValidateMax',
             'filters' => 'trim',
-            'message' => '{field} måste innehålla fler än {value} tecken.',
+            'message' => '{field} cant be more than {value} characters.',
             'pattern' => '([a-zA-Z0-9]+)'
         ),
         'min' => array(
             'class' => 'Fonto\Core\Validation\Components\ValidateMin',
             'filters' => 'trim',
-            'message' => '{field} måste innehålla mindre än {value} tecken',
+            'message' => '{field} most be at least {value} characters',
             'pattern' => '([a-zA-Z0-9]+)'
         ),
         'required' => array(
             'class' => 'Fonto\Core\Validation\Components\ValidateRequired',
             'filters' => 'trim',
-            'message' => '{field} är obligatoriskt.',
+            'message' => '{field} is required.',
         ),
         'num' => array(
             'class' => 'Fonto\Core\Validation\Components\ValidateNum',
             'filters' => 'trim',
-            'message' => '{field} måste bestå av endast siffror.',
+            'message' => '{field} must be a number.',
             'pattern' => '([0-9]+)'
         ),
         'email' => array(
             'class' => 'Fonto\Core\Validation\Components\ValidateEmail',
             'filters' => 'trim',
-            'message' => '{field} är inte en giltig e-postadress.',
+            'message' => '{field} is not a valid email address.',
         ),
         'identical' => array(
             'class' => 'Fonto\Core\Validation\Components\ValidateIdentical',
             'filters' => 'trim',
-            'message' => '{field} matchar inte.',
+            'message' => '{field} doesn\'t match.',
             'pattern' => '([a-zA-Z0-9]+)'
         ),
+        'match' => array(
+            'class' => 'Fonto\Core\Validation\Components\ValidateMatch',
+            'filters' => 'trim',
+            'message' => '{field} doesn\'t match.',
+            'pattern' => '([a-zA-Z0-9]+)'
+        )
     );
 
     /**
