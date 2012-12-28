@@ -60,6 +60,18 @@ class Form
 		return '<input type="'.$type.'" name="'.$name.'" id="'.$name.'" '.$attr.'>'."\n";
 	}
 
+    /**
+     * Returns an hidden field
+     *
+     * @param $name
+     * @param array $attributes
+     * @return html
+     */
+    public function hidden($name, $attributes = array())
+    {
+        return $this->input('hidden', $name, $attributes);
+    }
+
 	/**
 	 * Returns a submit button
 	 *
