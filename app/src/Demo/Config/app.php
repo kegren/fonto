@@ -9,7 +9,7 @@ return array(
     /**
      * language
      */
-    'language' => 'sv',
+    'language' => 'en',
     /**
      * Default timezone
      */
