@@ -119,78 +119,106 @@ class Validator
      * Validates form data against given rules
      *
      * @param array $rules
-     * @param array $data
+     * @param array $inputData
+     * @internal param array $data
+     * @return bool
      */
-    public function validate(array $rules = array(), array $data = array())
+    public function validate(array $rules = array(), array $inputData = array())
     {
-        $valFieldAndRules = array();
-        $rulesArr = array();
+        $matchedRules = array(); // Hold matched rules
+        $fixedRules = array();
+        $arrayHelper = new \Fonto\Core\Helper\Arr(); // For triming and removal of empty values
+        $inputData = $arrayHelper->trimArray($inputData);
 
-        foreach ($rules as $field => $rule) {
-            $ruleArr = explode('|', $rule);
-            $cleanArr = new Arr();
-            $ruleArr = $cleanArr->cleanArray($ruleArr);
-
-            foreach ($ruleArr as $rawRule) {
-                $fixedRule = $rawRule;
-                if ($pos = strpos($rawRule, '{')) {
-
-                    if ($pos > 0) {
-                        $fixedRule = substr($rawRule, 0, $pos);
-                        $prepareValue = substr($rawRule, $pos);
-                        $value = str_replace(array('{', '}'), array('', ''), $prepareValue);
-                    }
-
-                    $value = '';
-                }
-
-                if (empty($value)) {
-                    $rulesArr[$fixedRule] = $fixedRule;
-                } else {
-                    $rulesArr[$fixedRule] = $value;
-                }
+        // Begin by checking if there is a rule set for a field
+        foreach ($rules as $field => $options) {
+            if (isset($inputData[$field])) {
+                $matchedRules[$field] = $options;
             }
-
-            $valFieldAndRules[$field] = $rulesArr;
         }
 
-        foreach ($valFieldAndRules as $field => $value) {
-            if (isset($data[$field])) {
-                $input = $data[$field];
+        // No matching rules defined, return false
+        if (sizeof($matchedRules) == 0) {
+            return false;
+        }
+
+        // Loop through defined rules
+        foreach ($matchedRules as $field => $options) {
+            if (!isset($options['rules']) and !isset($options['message'])) {
+                break;
             }
+            $rules = isset($options['rules']) ? $options['rules'] : '';
+            $message = isset($options['messages']) ? $options['messages'] : '';
 
-            foreach ($value as $rule => $val) {
-                if (isset($this->validators[$rule])) {
+            // Make sure that rules is not an empty string
+            if (!empty($rules)) {
+                $rules = explode('|', $rules);
+                $rules = $arrayHelper->cleanArray($rules); // Remove empty elements
 
-                    $class = $this->validators[$rule]['class'];
+                if (sizeof($rules)) {
+                    $temporaryRulesArray = array();
+                    foreach ($rules as $rule) {
+                        $matches = array();
+                        $ruleValue = null;
+                        preg_match('/{([^}]*)}/', $rule, $matches); // Grabs value between {}
 
-                    $validateThis = array(
-                        'input' => $input,
-                        'value' => ($val == 'username') ? $data['username'] : $val,
-                        'field' => $field
+                        if (sizeof($matches)) {
+                            $removeExpression = isset($matches[0]) ? $matches[0] : ''; // Get returned expression
+                            $ruleValue = isset($matches[1]) ? $matches[1] : '';
+                            $rule = substr($rule, 0, strpos($rule, $removeExpression));
+                            unset($removeExpression); // Remove unnecessary var
+                        }
+
+                        $temporaryRulesArray[$rule] = isset($ruleValue) ? $ruleValue : $rule;
+                    }
+
+                    $fixedRules[$field] = array(
+                        'rules' => $temporaryRulesArray,
+                        'message' => $message
                     );
-
-                    $instance = new $class();
-                    $message = $instance->validateAttribute($validateThis);
-
-                    if ($message) {
-                        $this->errors[$field][$rule] = $message;
-                    }
-
                 }
+            } else {
+                return false;
+            }
+        }
+
+        // Finally ready to ..
+        foreach ($fixedRules as $field => $option) {
+
+            $input = $inputData[$field]; // Get matching input data
+            $rules = isset($option['rules']) ? $option['rules'] : array();
+
+            if (!sizeof($rules)) {
+                return false;
+            }
+
+            // Loop through rules by name and value
+            foreach ($rules as $rule => $value) {
+
+                if (!isset($this->validators[$rule])) {
+                    continue; // Skip
+                }
+
+                $class = $this->validators[$rule]['class']; // Defined class in validators array
+                $message = $fixedRules[$field]['message']; // Always set
+                $message = isset($message[$rule]) ? $message[$rule] : '';
+
+                $object = new $class(array(
+                    'input' => $input,
+                    'value' => ($rule == 'identical') ? $inputData[$value] : $value,
+                    'field' => $field,
+                    'message' => $message
+                ));
+
+                // Any error?
+                if ($object->hasError()) {
+                    $this->errors[$field][$rule] = $object->getMessage();
+                }
+
             }
 
         }
-    }
 
-    /**
-     * Checks if validator exists
-     *
-     * @param $key
-     * @return boolean
-     */
-    protected function isDefined($key)
-    {
-        return array_key_exists($key, $this->validators);
+        return true;
     }
 }
