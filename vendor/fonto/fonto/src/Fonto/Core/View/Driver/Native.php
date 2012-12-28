@@ -95,8 +95,7 @@ class Native extends ObjectHandler implements DriverInterface
 
         if ($this->findView($view, $this->path, $this->extension)) {
             require $this->path . $view . $this->extension;
-            $view = ob_get_contents();
-            ob_end_clean();
+            $view = ob_get_clean(); // Get buffer and clear it
             return $view;
         } else {
             ob_end_clean();
