@@ -19,6 +19,7 @@ return array(
             'PhpDriver' => '\Fonto\Core\Config\Driver\PhpDriver'
         )
     ),
+
     /**
      * Router class
      */
@@ -30,6 +31,7 @@ return array(
             'Request' => '\Fonto\Core\Http\Request'
         )
     ),
+
     /**
      * Response class
      */
@@ -42,6 +44,7 @@ return array(
             'Session' => '\Fonto\Core\Http\Session'
         )
     ),
+
     /**
      * View class
      */
@@ -50,6 +53,18 @@ return array(
         'id' => 'View',
         'args' => array(
             'Native' => '\Fonto\Core\View\Driver\Native'
+        )
+    ),
+
+    /**
+     * Auth class
+     */
+    'Auth' => array(
+        'class' => '\Fonto\Core\Authentication\Auth',
+        'id'    => 'Auth',
+        'args'  => array(
+            'Session' => '\Fonto\Core\Http\Session',
+            'Hash' => '\Fonto\Core\Security\Hash'
         )
     )
 );
