@@ -30,4 +30,19 @@ class Url
 
         return (string)$url;
     }
+
+    /**
+     * @param $url
+     * @return string
+     */
+    public function urlSlug($url)
+    {
+        $slug = str_replace(
+            array('å', 'ä', 'ö', 'Å', 'Ä', 'Ö'),
+            array('a', 'a', 'o', 'Å', 'Ä', 'Ö'),
+            $url
+        );
+        $slug = preg_replace('/[^A-Za-z0-9-]+/', '-', $slug);
+        return strtolower($slug);
+    }
 }
