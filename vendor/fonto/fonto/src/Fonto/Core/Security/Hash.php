@@ -10,37 +10,43 @@
 
 namespace Fonto\Core\Security;
 
+use Hautelook\Phpass\PasswordHash;
+
 class Hash
 {
-	private $algorithm;
+    /**
+     * @var \Hautelook\Phpass\PasswordHash
+     */
+    protected $phpass;
 
-	private $salt;
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->phpass = new PasswordHash(8, false);
+    }
 
-	public function __construct($algorithm = null)
-	{
-		if (null === $algorithm) {
-			$this->algorithm = 'sha256';
-		} else {
-			$this->algorithm = $algorithm;
-		}
-		$this->salt = hash('sha256', microtime());
-	}
+    /**
+     * Returnes a hashed password string
+     *
+     * @param $password
+     * @return string
+     */
+    public function hashPassword($password)
+    {
+        return $this->phpass->HashPassword($password);
+    }
 
-	public function makeHash($hashable)
-	{
-		$hash = hash($this->algorithm, $hashable . $this->salt);
-
-		return array('hash' => $hash, 'salt' => $this->salt);
-	}
-
-	public function checkHash($plain, $salt, $hash)
-	{
-		$plainHashed = hash($this->algorithm, $plain . $this->salt);
-
-		if ($plainHashed == $hash) {
-			return true;
-		}
-
-		return false;
-	}
+    /**
+     * Validates a password against a stored password
+     *
+     * @param $password
+     * @param $storedPassword
+     * @return bool
+     */
+    public function checkPassword($password, $storedPassword)
+    {
+        return (bool)$this->phpass->CheckPassword($password, $storedPassword);
+    }
 }
