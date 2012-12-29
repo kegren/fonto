@@ -90,11 +90,11 @@ class Request
     public function getParameter($key)
 	{
         if ($this->isPost()) {
-            return $_POST[$key];
+            return isset($_POST[$key]) ? $_POST[$key] : '';
         }
 
         if ($this->isGet()) {
-            return $_GET[$key];
+            return isset($_GET[$key]) ? $_GET[$key] : '';
         }
 
 
