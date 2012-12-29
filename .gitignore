@@ -1,7 +1,6 @@
 *.TODO
 /app/src/Demo/Storage/
 /vendor/composer/
-/vendor/php-activerecord/
 .DS_Store
 .idea
 /.idea
