@@ -167,25 +167,51 @@ class Router
                 break;
             }
 
-            // Registered only as a controller?  @TODO Fix
+            // Registered only as a controller?
             if ($route == '<:controller>') {
-                $controllers = (array)$options['mapsTo'];
-                $controller = $requestUriArr[1];
-                $requestUriArr = array_slice($requestUriArr, 1);
+                $tmpControllers = (array)$options['mapsTo']; // All controllers
+                $controllers = array();
+                $controller = $requestUriArr[1]; // Controller in uri
+                $requestUriArr = array_slice($requestUriArr, 1); // Requested uri
 
-                if (in_array($controller, $controllers)) {
+                foreach ($tmpControllers as $control => $option) {
+                    if (is_numeric($control)) {
+                        $controllers[$option] = $option;
+                    }
 
-                    unset($options['mapsTo']);
-                    $merged = array(
-                        'controller' => $controller,
-                        'action' => isset($requestUriArr[1]) ? $requestUriArr[1] : 'index',
-                        'params' => isset($requestUriArr[2]) ? array_splice($requestUriArr, 2) : array(),
+                    if (is_array($option)) {
+                        $controllers[$control] = $option;
+                    }
+                }
+
+                // Is the requested 'controller' registered?
+                if (array_key_exists($controller, $controllers)) {
+
+                    if (is_array($controllers[$controller])) {
+                        $restfulOption = $controllers[$controller];
+                        $restful = isset($restfulOption['restful']) ? : false;
+
+                        if ($restful) {
+                            $restfulTrueOrFalse = $restfulOption['restful'];
+
+                            if ($restfulTrueOrFalse) {
+                                $isRestful = true;
+                            }
+                        }
+                    }
+
+                    // Send to route class
+                    $this->getRoute()->createRoute(
+                        array(
+                            'controller' => $controller,
+                            'action' => isset($requestUriArr[1]) ? $requestUriArr[1] : 'index',
+                            'params' => isset($requestUriArr[2]) ? array_splice($requestUriArr, 2) : array(),
+                            'restful' => isset($isRestful) ? $isRestful : false,
+                        )
                     );
-                    $options = $options + $merged;
-                    $this->getRoute()->createRoute($options);
+
                     return true;
                     break;
-
                 }
 
                 return false;
