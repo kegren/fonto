@@ -14,7 +14,7 @@ use Fonto\Core\Application\App;
  * Configuration constants
  */
 define('START_TIME', microtime(true));
-define('DEBUG', true);
+define('DEBUG', false);
 define('CACHE', false);
 define('ACTIVE_APP', 'Demo');
 
