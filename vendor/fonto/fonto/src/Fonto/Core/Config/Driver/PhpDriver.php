@@ -55,7 +55,7 @@ class PhpDriver implements ConfigInterface
 
         if ($configArray) {
             if ($key) {
-                return $configArray[$key];
+                return isset($configArray[$key]) ? $configArray[$key] : false;
             } else {
                 return $configArray;
             }
