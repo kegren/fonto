@@ -17,10 +17,10 @@ class Session
 	 */
 	public function __construct($sessionName = null)
 	{
-        session_save_path(SESSPATH);
+        $this->setSessionSavePath(SESSPATH);
         if (!$this->isStarted()) {
-            session_name(isset($sessionName) ? $sessionName : 'FontoMVC');
-            session_start();
+            $this->setName($sessionName);
+            $this->start();
             $this->regenerateId();
         }
 	}
@@ -46,14 +46,14 @@ class Session
     }
 
 	/**
-	 * Sets a value
+	 * Saves a value
 	 *
 	 * @param string $id
 	 * @param string $value
      *
      * @return \Fonto\Core\Http\Session
      */
-	public function set($id, $value)
+	public function save($id, $value)
 	{
 		$_SESSION[$id] = $value;
 
@@ -124,7 +124,7 @@ class Session
      * @param string $id
      * @return \Fonto\Core\Http\Session
      */
-	public function remove($id)
+	public function forget($id)
 	{
 		if (isset($_SESSION[$id])) {
 			unset($_SESSION[$id]);
@@ -138,7 +138,7 @@ class Session
 	 *
 	 * @return void
 	 */
-	public function removeAll()
+	public function forgetAll()
 	{
 		session_destroy();
 	}
