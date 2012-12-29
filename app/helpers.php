@@ -44,3 +44,15 @@ if (!function_exists('_ed')) {
 		die;
 	}
 }
+
+/**
+ * htmlentities
+ *
+ * @access public
+ * @param  string
+ */
+if (!function_exists('_e')) {
+    function _e($str) {
+        return htmlentities($str, ENT_QUOTES, "UTF-8");
+    }
+}
