@@ -1,7 +1,6 @@
 {
 	"name": "kenren/fonto",
     "require": {
-        "php-activerecord/php-activerecord": "dev-master",
         "hautelook/phpass": "dev-master",
         "ezyang/htmlpurifier": "dev-master",
         "doctrine/orm": "*"
