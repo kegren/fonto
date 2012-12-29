@@ -44,6 +44,9 @@ class App extends ObjectHandler
         try {
             $loader->add(ACTIVE_APP, APPPATH . 'src');
 
+            $config = $this->config();
+            $this->setTimezone($config->read('app#timezone'));
+
             $router = $this->router();
             $matched = $router->match();
 
