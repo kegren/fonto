@@ -5,7 +5,7 @@
 
 namespace Demo\Controller;
 
-use Fonto\Core\Controller\Base;
+use Fonto\Controller\Base;
 
 class Home extends Base
 {

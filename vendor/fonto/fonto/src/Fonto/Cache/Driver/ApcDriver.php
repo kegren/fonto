@@ -8,9 +8,9 @@
  * @version     0.5
  */
 
-namespace Fonto\Core\Cache\Driver;
+namespace Fonto\Cache\Driver;
 
-use Fonto\Core\Cache\Driver\DriverInterface;
+use Fonto\Cache\Driver\DriverInterface;
 
 class ApcDriver implements DriverInterface
 {

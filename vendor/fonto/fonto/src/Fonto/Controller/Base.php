@@ -8,9 +8,9 @@
  * @version     0.5
  */
 
-namespace Fonto\Core\Controller;
+namespace Fonto\Controller;
 
-use Fonto\Core\Application\ObjectHandler;
+use Fonto\Application\ObjectHandler;
 
 
 class Base extends ObjectHandler

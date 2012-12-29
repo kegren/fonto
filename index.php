@@ -18,8 +18,8 @@ defined('EXT') or define('EXT', '.php');
 defined('ROOT') or define('ROOT', realpath(__DIR__). DS);
 defined('APPPATH') or define('APPPATH', ROOT . 'app' . DS);
 defined('VENDORPATH') or define('VENDORPATH', ROOT . 'vendor' . DS);
-defined('SYSCOREPATH') or define('SYSCOREPATH', VENDORPATH . 'fonto' . DS . 'fonto' . DS . 'src' . DS . 'Fonto' . DS . 'Core' . DS);
-defined('SYSCOREAPPPATH') or define('SYSCOREAPPPATH', VENDORPATH . 'fonto' . DS . 'fonto' . DS . 'src' . DS . 'Fonto' . DS . 'Core' . DS . 'Application' . DS);
+defined('SYSCOREPATH') or define('SYSCOREPATH', VENDORPATH . 'fonto' . DS . 'fonto' . DS . 'src' . DS . 'Fonto' . DS);
+defined('SYSCOREAPPPATH') or define('SYSCOREAPPPATH', VENDORPATH . 'fonto' . DS . 'fonto' . DS . 'src' . DS . 'Fonto' . DS . 'Application' . DS);
 defined('WEBPATH') or define('WEBPATH', ROOT . 'web' . DS);
 
 /**

@@ -8,9 +8,9 @@
  * @version     0.5
  */
 
-namespace Fonto\Core\Application;
+namespace Fonto\Application;
 
-use Fonto\Core\DependencyInjection as DI;
+use Fonto\DependencyInjection as DI;
 use Exception;
 use ReflectionClass;
 
@@ -20,25 +20,25 @@ class ObjectHandler
      * @var array
      */
     protected $objects = array(
-        'App' => '\Fonto\Core\Application\App',
-        'Auth' => '\Fonto\Core\Authenticate\Auth',
-        'Cache' => '\Fonto\Core\Cache\CacheManager',
-        'Config' => '\Fonto\Core\Config\ConfigManager',
-        'Form' => '\Fonto\Core\Form\Form',
-        'FormModel' => '\Fonto\Core\FormModel\Base',
-        'Arr' => '\Fonto\Core\Helper\Arr',
-        'Request' => '\Fonto\Core\Http\Request',
-        'Response' => '\Fonto\Core\Http\Response',
-        'Session' => '\Fonto\Core\Http\Session',
-        'Url' => '\Fonto\Core\Http\Url',
-        'Router' => '\Fonto\Core\Routing\Router',
-        'Hash' => '\Fonto\Core\Security\Hash',
-        'Validation' => '\Fonto\Core\Validation\Validator',
-        'View' => '\Fonto\Core\View\View'
+        'App' => '\Fonto\Application\App',
+        'Auth' => '\Fonto\Authenticate\Auth',
+        'Cache' => '\Fonto\Cache\CacheManager',
+        'Config' => '\Fonto\Config\ConfigManager',
+        'Form' => '\Fonto\Form\Form',
+        'FormModel' => '\Fonto\FormModel\Base',
+        'Arr' => '\Fonto\Helper\Arr',
+        'Request' => '\Fonto\Http\Request',
+        'Response' => '\Fonto\Http\Response',
+        'Session' => '\Fonto\Http\Session',
+        'Url' => '\Fonto\Http\Url',
+        'Router' => '\Fonto\Routing\Router',
+        'Hash' => '\Fonto\Security\Hash',
+        'Validation' => '\Fonto\Validation\Validator',
+        'View' => '\Fonto\View\View'
     );
 
     /**
-     * @var \Fonto\Core\DependencyInjection\Manager
+     * @var \Fonto\DependencyInjection\Manager
      */
     protected $di;
 

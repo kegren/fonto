@@ -8,9 +8,9 @@
  * @version     0.5
  */
 
-namespace Fonto\Core\DependencyInjection;
+namespace Fonto\DependencyInjection;
 
-use Fonto\Core\DependencyInjection;
+use Fonto\DependencyInjection;
 use Closure;
 use Exception;
 

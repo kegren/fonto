@@ -8,10 +8,10 @@
  * @version     0.5
  */
 
-namespace Fonto\Core\View\Driver;
+namespace Fonto\View\Driver;
 
-use Fonto\Core\View\Driver\DriverInterface;
-use Fonto\Core\Application\ObjectHandler;
+use Fonto\View\Driver\DriverInterface;
+use Fonto\Application\ObjectHandler;
 
 use Exception;
 

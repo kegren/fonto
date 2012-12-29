@@ -8,7 +8,7 @@
  * @version     0.5
  */
 
-namespace Fonto\Core\Cache\Driver;
+namespace Fonto\Cache\Driver;
 
 interface DriverInterface
 {

@@ -8,7 +8,7 @@
  * @version     0.5
  */
 
-namespace Fonto\Core\Form;
+namespace Fonto\Form;
 
 /**
  * Form class, an helper class for form elements.

@@ -8,7 +8,7 @@
  * @version     0.5
  */
 
-namespace Fonto\Core\FormModel;
+namespace Fonto\FormModel;
 
 abstract class Base
 {

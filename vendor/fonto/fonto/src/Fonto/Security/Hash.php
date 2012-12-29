@@ -8,7 +8,7 @@
  * @version     0.5
  */
 
-namespace Fonto\Core\Security;
+namespace Fonto\Security;
 
 use Hautelook\Phpass\PasswordHash;
 

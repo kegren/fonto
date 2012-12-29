@@ -8,11 +8,11 @@
  * @version     0.5
  */
 
-namespace Fonto\Core\Http;
+namespace Fonto\Http;
 
-use Fonto\Core\Http\Url;
-use Fonto\Core\View\View;
-use Fonto\Core\Http\Session;
+use Fonto\Http\Url;
+use Fonto\View\View;
+use Fonto\Http\Session;
 use Exception;
 
 class Response

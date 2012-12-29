@@ -8,9 +8,9 @@
  * @version     0.5
  */
 
-namespace Fonto\Core\Config;
+namespace Fonto\Config;
 
-use Fonto\Core\Config\Driver\ConfigInterface;
+use Fonto\Config\Driver\ConfigInterface;
 
 class ConfigManager
 {
@@ -25,8 +25,8 @@ class ConfigManager
      * @var array
      */
     private $supported = array(
-        'php' => 'Fonto\Core\Config\Driver\PhpDriver',
-        'ini' => 'Fonto\Core\Config\Driver\IniDriver'
+        'php' => 'Fonto\Config\Driver\PhpDriver',
+        'ini' => 'Fonto\Config\Driver\IniDriver'
     );
 
     /**

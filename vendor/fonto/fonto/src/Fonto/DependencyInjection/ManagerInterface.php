@@ -8,7 +8,7 @@
  * @version     0.5
  */
 
-namespace Fonto\Core\DependencyInjection;
+namespace Fonto\DependencyInjection;
 
 interface ManagerInterface
 {

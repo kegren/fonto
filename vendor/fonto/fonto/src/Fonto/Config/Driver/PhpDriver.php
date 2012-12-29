@@ -8,9 +8,9 @@
  * @version     0.5
  */
 
-namespace Fonto\Core\Config\Driver;
+namespace Fonto\Config\Driver;
 
-use Fonto\Core\Config\Driver\ConfigInterface;
+use Fonto\Config\Driver\ConfigInterface;
 use Exception;
 
 class PhpDriver implements ConfigInterface

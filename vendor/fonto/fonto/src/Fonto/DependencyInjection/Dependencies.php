@@ -13,10 +13,10 @@ return array(
      * Configuration class
      */
     'Config' => array(
-        'class' => '\Fonto\Core\Config\ConfigManager',
+        'class' => '\Fonto\Config\ConfigManager',
         'id' => 'Config',
         'args' => array(
-            'PhpDriver' => '\Fonto\Core\Config\Driver\PhpDriver'
+            'PhpDriver' => '\Fonto\Config\Driver\PhpDriver'
         )
     ),
 
@@ -24,11 +24,11 @@ return array(
      * Router class
      */
     'Router' => array(
-        'class' => '\Fonto\Core\Routing\Router',
+        'class' => '\Fonto\Routing\Router',
         'id' => 'Router',
         'args' => array(
-            'Route' => '\Fonto\Core\Routing\Route',
-            'Request' => '\Fonto\Core\Http\Request'
+            'Route' => '\Fonto\Routing\Route',
+            'Request' => '\Fonto\Http\Request'
         )
     ),
 
@@ -36,12 +36,12 @@ return array(
      * Response class
      */
     'Response' => array(
-        'class' => '\Fonto\Core\Http\Response',
+        'class' => '\Fonto\Http\Response',
         'id' => 'Response',
         'args' => array(
-            'Url' => '\Fonto\Core\Http\Url',
-            'View' => '\Fonto\Core\View\View',
-            'Session' => '\Fonto\Core\Http\Session'
+            'Url' => '\Fonto\Http\Url',
+            'View' => '\Fonto\View\View',
+            'Session' => '\Fonto\Http\Session'
         )
     ),
 
@@ -49,10 +49,10 @@ return array(
      * View class
      */
     'View' => array(
-        'class' => '\Fonto\Core\View\View',
+        'class' => '\Fonto\View\View',
         'id' => 'View',
         'args' => array(
-            'Native' => '\Fonto\Core\View\Driver\Native'
+            'Native' => '\Fonto\View\Driver\Native'
         )
     ),
 
@@ -60,11 +60,11 @@ return array(
      * Auth class
      */
     'Auth' => array(
-        'class' => '\Fonto\Core\Authentication\Auth',
+        'class' => '\Fonto\Authentication\Auth',
         'id'    => 'Auth',
         'args'  => array(
-            'Session' => '\Fonto\Core\Http\Session',
-            'Hash' => '\Fonto\Core\Security\Hash'
+            'Session' => '\Fonto\Http\Session',
+            'Hash' => '\Fonto\Security\Hash'
         )
     )
 );

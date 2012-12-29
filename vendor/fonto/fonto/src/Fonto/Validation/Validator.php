@@ -8,9 +8,9 @@
  * @version     0.5
  */
 
-namespace Fonto\Core\Validation;
+namespace Fonto\Validation;
 
-use Fonto\Core\Helper\Arr;
+use Fonto\Helper\Arr;
 
 class Validator
 {

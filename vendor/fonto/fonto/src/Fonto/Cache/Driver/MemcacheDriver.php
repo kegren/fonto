@@ -8,9 +8,9 @@
  * @version     0.5
  */
 
-namespace Fonto\Core\Cache\Driver;
+namespace Fonto\Cache\Driver;
 
-use Fonto\Core\Cache\DriverInterface;
+use Fonto\Cache\DriverInterface;
 
 use Memcache;
 use Exception;

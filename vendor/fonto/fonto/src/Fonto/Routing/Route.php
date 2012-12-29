@@ -8,9 +8,9 @@
  * @version     0.5
  */
 
-namespace Fonto\Core\Routing;
+namespace Fonto\Routing;
 
-use Fonto\Core\DI\DIManager;
+use Fonto\DependencyInjection\Manager;
 
 class Route
 {

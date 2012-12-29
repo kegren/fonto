@@ -8,9 +8,9 @@
  * @version     0.5
  */
 
-namespace Fonto\Core\Validation\Components;
+namespace Fonto\Validation\Components;
 
-use Fonto\Core\Validation\Validator;
+use Fonto\Validation\Validator;
 
 class ValidateEmail extends Validator
 {

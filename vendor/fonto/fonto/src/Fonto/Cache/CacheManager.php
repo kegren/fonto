@@ -8,9 +8,9 @@
  * @version     0.5
  */
 
-namespace Fonto\Core\Cache;
+namespace Fonto\Cache;
 
-use Fonto\Core\Cache\Driver\DriverInterface;
+use Fonto\Cache\Driver\DriverInterface;
 
 class CacheManager
 {

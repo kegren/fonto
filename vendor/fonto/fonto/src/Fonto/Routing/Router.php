@@ -8,10 +8,10 @@
  * @version     0.5
  */
 
-namespace Fonto\Core\Routing;
+namespace Fonto\Routing;
 
-use Fonto\Core\Http\Request;
-use Fonto\Core\Routing\Route;
+use Fonto\Http\Request;
+use Fonto\Routing\Route;
 use Exception;
 
 class Router
@@ -31,12 +31,12 @@ class Router
     protected $routes = array();
 
     /**
-     * @var \Fonto\Core\Routing\Route
+     * @var \Fonto\Routing\Route
      */
     protected $route;
 
     /**
-     * @var \Fonto\Core\Http\Request
+     * @var \Fonto\Http\Request
      */
     protected $request;
 

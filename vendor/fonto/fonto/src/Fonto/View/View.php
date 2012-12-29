@@ -8,9 +8,9 @@
  * @version     0.5
  */
 
-namespace Fonto\Core\View;
+namespace Fonto\View;
 
-use Fonto\Core\View\Driver\DriverInterface;
+use Fonto\View\Driver\DriverInterface;
 
 class View
 {

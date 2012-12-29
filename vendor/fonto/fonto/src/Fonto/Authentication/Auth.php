@@ -8,10 +8,10 @@
  * @version     0.5
  */
 
-namespace Fonto\Core\Authentication;
+namespace Fonto\Authentication;
 
-use Fonto\Core\Http\Session;
-use Fonto\Core\Security\Hash;
+use Fonto\Http\Session;
+use Fonto\Security\Hash;
 use Doctrine\ORM\EntityManager;
 
 
@@ -23,12 +23,12 @@ class Auth
     protected $user;
 
     /**
-     * @var \Fonto\Core\Http\Session
+     * @var \Fonto\Http\Session
      */
     protected $session;
 
     /**
-     * @var \Fonto\Core\Security\Hash
+     * @var \Fonto\Security\Hash
      */
     protected $hash;
 
@@ -45,8 +45,8 @@ class Auth
     /**
      * Constructor
      *
-     * @param \Fonto\Core\Http\Session $session
-     * @param \Fonto\Core\Security\Hash $hash
+     * @param \Fonto\Http\Session $session
+     * @param \Fonto\Security\Hash $hash
      */
     public function __construct(Session $session, Hash $hash)
     {

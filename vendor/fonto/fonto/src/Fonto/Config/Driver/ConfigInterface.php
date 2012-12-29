@@ -8,7 +8,7 @@
  * @version     0.5
  */
 
-namespace Fonto\Core\Config\Driver;
+namespace Fonto\Config\Driver;
 
 interface ConfigInterface
 {

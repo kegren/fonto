@@ -8,7 +8,7 @@
  * @version     0.5
  */
 
-namespace Fonto\Core\Helper;
+namespace Fonto\Helper;
 
 class Arr
 {

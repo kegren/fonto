@@ -12,8 +12,8 @@ use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\ORM\Configuration;
-use Fonto\Core\Config\ConfigManager;
-use Fonto\Core\Config\Driver\PhpDriver;
+use Fonto\Config\ConfigManager;
+use Fonto\Config\Driver\PhpDriver;
 use Doctrine\Common\Cache\ApcCache;
 
 /**

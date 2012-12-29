@@ -8,7 +8,7 @@
  * @version     0.5
  */
 
-use Fonto\Core\Application\App;
+use Fonto\Application\App;
 
 /**
  * Configuration constants

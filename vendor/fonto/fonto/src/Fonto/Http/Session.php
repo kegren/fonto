@@ -8,7 +8,7 @@
  * @version     0.5
  */
 
-namespace Fonto\Core\Http;
+namespace Fonto\Http;
 
 class Session
 {

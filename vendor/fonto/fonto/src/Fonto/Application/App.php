@@ -8,10 +8,10 @@
  * @version     0.5
  */
 
-namespace Fonto\Core\Application;
+namespace Fonto\Application;
 
-use Fonto\Core\DependencyInjection as DI;
-use Fonto\Core\Application\ObjectHandler;
+use Fonto\DependencyInjection as DI;
+use Fonto\Application\ObjectHandler;
 use Exception;
 
 class App extends ObjectHandler

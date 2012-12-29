@@ -8,21 +8,21 @@
  * @version     0.5
  */
 
-namespace Fonto\Core\View\Helper;
+namespace Fonto\View\Helper;
 
-use Fonto\Core\Http\Url;
+use Fonto\Http\Url;
 
 class Css
 {
     /**
-     * @var \Fonto\Core\Http\Url
+     * @var \Fonto\Http\Url
      */
     private $url;
 
     /**
      * Constructor
      *
-     * @param \Fonto\Core\Http\Url $url
+     * @param \Fonto\Http\Url $url
      */
     public function __construct(Url $url)
     {
