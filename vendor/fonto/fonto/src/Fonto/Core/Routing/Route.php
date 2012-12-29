@@ -159,7 +159,7 @@ class Route
      */
     protected function isRestful($route)
     {
-        return $route['restful'] == true;
+        return isset($route['restful']) ? $route['restful'] : false;
     }
 
     /**
