@@ -8,13 +8,13 @@
  * @version     0.5
  */
 
-use Hautelook\Phpass\PasswordHash;
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\ORM\Configuration;
 use Fonto\Core\Config\ConfigManager;
 use Fonto\Core\Config\Driver\PhpDriver;
+use Doctrine\Common\Cache\ApcCache;
 
 /**
  * Configuration object
@@ -24,8 +24,14 @@ $config = new ConfigManager(new PhpDriver());
 $di->setService(
     'EntityManager',
     function () use ($config) {
-        // TODO: APC
-        $cache = new ArrayCache();
+
+        if (CACHE) {
+            // set up caching with APC for production mode
+            $cache = new ApcCache;
+        } else {
+            $cache = new ArrayCache();
+        }
+
 
         $env = $config->read('app#environment');
         $database = $config->read('app#database');
@@ -37,7 +43,7 @@ $di->setService(
 
         $driverImpl = $configuration->newDefaultAnnotationDriver('model');
         $configuration->setMetadataDriverImpl($driverImpl);
-        $configuration->setProxyDir('proxies');
+        $configuration->setProxyDir(STORAGEPATH . 'Proxies');
         $configuration->setProxyNamespace('proxies');
 
         $configuration->setAutoGenerateProxyClasses(true);
@@ -56,13 +62,5 @@ $di->setService(
         $purifier = new \HTMLPurifier($cfg);
 
         return $purifier;
-    }
-);
-
-
-$di->setService(
-    'Phpass',
-    function () {
-        return new PasswordHash(8, false);
     }
 );
