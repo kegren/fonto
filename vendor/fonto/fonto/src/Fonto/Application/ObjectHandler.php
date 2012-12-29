@@ -2,10 +2,10 @@
 /**
  * Fonto - PHP framework
  *
- * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @package     Fonto.Core
- * @link        https://github.com/kenren/fonto
- * @version     0.5
+ * @author   Kenny Damgren <kenny.damgren@gmail.com>
+ * @package  Fonto_Application
+ * @link     https://github.com/kenren/fonto
+ * @version  0.5
  */
 
 namespace Fonto\Application;
@@ -14,9 +14,20 @@ use Fonto\DependencyInjection as DI;
 use Exception;
 use ReflectionClass;
 
+/**
+ * Provides a simple way to instantiate objects
+ * and services. Using magical methods and should
+ * be extended.
+ *
+ * @package Fonto_Application
+ * @link    https://github.com/kenren/fonto
+ * @author  Kenny Damgren <kenny.damgren@gmail.com>
+ */
 class ObjectHandler
 {
     /**
+     * Objects fully namespaced
+     *
      * @var array
      */
     protected $objects = array(
@@ -38,12 +49,16 @@ class ObjectHandler
     );
 
     /**
+     * Dependency Injection manager object
+     *
      * @var \Fonto\DependencyInjection\Manager
      */
     protected $di;
 
     /**
      * Constructor
+     *
+     * Creates a new instance of the dependency injection manager
      */
     public function __construct()
     {
@@ -51,31 +66,14 @@ class ObjectHandler
     }
 
     /**
-     * @param $id
-     * @param $value
-     * @throws \Exception
-     */
-    public function __set($id, $value)
-    {
-        throw new Exception("You cant set a value in the " . __CLASS__);
-    }
-
-    /**
-     * @param $id
-     * @throws \Exception
-     */
-    public function __get($id)
-    {
-        throw new Exception("You cant get a regular property in the " . __CLASS__);
-    }
-
-    /**
-     * Catches method calls
+     * Magical call method, catches method calls
+     * and checks if the called method is an regular object
+     * or an service.
      *
-     * @param $object
-     * @param array $args
-     * @return object
-     * @throws \Exception
+     * @param   string    $object
+     * @param   array     $args
+     * @return  object
+     * @throws  Exception
      */
     public function __call($object, $args = array())
     {
@@ -98,15 +96,5 @@ class ObjectHandler
         }
 
         throw new Exception("The ObjectHandler only supports registered services or core objects of Fonto, the requested object: $object wasn't found");
-    }
-
-    /**
-     * @param $object
-     * @param array $args
-     * @throws \Exception
-     */
-    public static function __callStatic($object, $args = array())
-    {
-        throw new Exception("No static call allowed");
     }
 }

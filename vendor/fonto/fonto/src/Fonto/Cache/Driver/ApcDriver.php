@@ -3,7 +3,8 @@
  * Fonto - PHP framework
  *
  * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @package     Fonto.Core
+ * @package     Fonto_Cache
+ * @subpackage  Driver
  * @link        https://github.com/kenren/fonto
  * @version     0.5
  */
@@ -12,13 +13,23 @@ namespace Fonto\Cache\Driver;
 
 use Fonto\Cache\Driver\DriverInterface;
 
+/**
+ * A wrapper for Apc caching.
+ *
+ * @package     Fonto_Cache
+ * @subpackage  Driver
+ * @link        https://github.com/kenren/fonto
+ * @author      Kenny Damgren <kenny.damgren@gmail.com>
+ */
 class ApcDriver implements DriverInterface
 {
     /**
-     * @param $key
-     * @param $value
-     * @param int $expire
-     * @return bool|mixed
+     * Stores a value by key and sets expires time
+     *
+     * @param  string  $key
+     * @param  string  $value
+     * @param  int     $expire
+     * @return mixed
      */
     public function set($key, $value, $expire = 0)
     {
@@ -26,7 +37,9 @@ class ApcDriver implements DriverInterface
     }
 
     /**
-     * @param $key
+     * Gets a value by key
+     *
+     * @param  $key
      * @return mixed
      */
     public function get($key)
@@ -35,8 +48,10 @@ class ApcDriver implements DriverInterface
     }
 
     /**
-     * @param $key
-     * @return bool|mixed|\string[]
+     * Deletes a value by key
+     *
+     * @param  $key
+     * @return mixed
      */
     public function delete($key)
     {
@@ -44,7 +59,9 @@ class ApcDriver implements DriverInterface
     }
 
     /**
-     * @return bool|mixed
+     * Deletes all values
+     *
+     * @return mixed
      */
     public function flush()
     {

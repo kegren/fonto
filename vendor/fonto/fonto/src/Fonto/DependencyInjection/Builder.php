@@ -2,10 +2,10 @@
 /**
  * Fonto - PHP framework
  *
- * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @package     Fonto.Core
- * @link        https://github.com/kenren/fonto
- * @version     0.5
+ * @author   Kenny Damgren <kenny.damgren@gmail.com>
+ * @package  Fonto_DependencyInjection
+ * @link     https://github.com/kenren/fonto
+ * @version  0.5
  */
 
 namespace Fonto\DependencyInjection;
@@ -13,33 +13,54 @@ namespace Fonto\DependencyInjection;
 use Exception;
 use ReflectionClass;
 
+/**
+ * Builds a service and its dependencies.
+ *
+ * @package Fonto_DependencyInjection
+ * @link    https://github.com/kenren/fonto
+ * @author  Kenny Damgren <kenny.damgren@gmail.com>
+ */
 class Builder
 {
     /**
+     * Current class
+     *
      * @var
      */
     protected $class;
 
     /**
+     * Dependency instances
+     *
      * @var array
      */
     protected $uses = array();
 
     /**
+     * Dependencies
+     *
      * @var array
      */
     protected $args = array();
 
     /**
+     * Internal dependencies for dependencies
+     *
      * @var array
      */
     protected $_args = array();
 
+    /**
+     * Constructor
+     */
     public function __construct()
     {}
 
     /**
-     * @param $service
+     * Builds a service and sets up dependencies. Returns an object
+     * with all necessary dependencies set.
+     *
+     * @param  $service
      * @return object
      */
     public function build($service)
@@ -84,8 +105,11 @@ class Builder
     }
 
     /**
-     * @param $class
-     * @param array $args
+     * Uses reflection to create a new instance either with or without
+     * arguments
+     *
+     * @param  $class
+     * @param  array $args
      * @return object
      * @throws Exception
      */

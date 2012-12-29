@@ -2,19 +2,28 @@
 /**
  * Fonto - PHP framework
  *
- * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @package     Fonto.Core
- * @link        https://github.com/kenren/fonto
- * @version     0.5
+ * @author   Kenny Damgren <kenny.damgren@gmail.com>
+ * @package  Fonto_Cache
+ * @link     https://github.com/kenren/fonto
+ * @version  0.5
  */
 
 namespace Fonto\Cache;
 
 use Fonto\Cache\Driver\DriverInterface;
 
+/**
+ * Responsible for managing cache driver.
+ *
+ * @package Fonto_Cache
+ * @link    https://github.com/kenren/fonto
+ * @author  Kenny Damgren <kenny.damgren@gmail.com>
+ */
 class CacheManager
 {
     /**
+     * Driver object
+     *
      * @var Driver\DriverInterface
      */
     protected $driver;
@@ -30,12 +39,12 @@ class CacheManager
     }
 
     /**
-     * Stores a value in the cache
+     * Stores a value by key and sets expires time
      *
-     * @param $key
-     * @param $value
-     * @param int $expire
-     * @return MemcacheDriver
+     * @param  string  $key
+     * @param  string  $value
+     * @param  int     $expire
+     * @return void
      */
     public function set($key, $value, $expire = 0)
     {
@@ -43,10 +52,10 @@ class CacheManager
     }
 
     /**
-     * Gets a value from the cache
+     * Gets a value by key
      *
-     * @param $key
-     * @return bool
+     * @param  $key
+     * @return mixed
      */
     public function get($key)
     {
@@ -54,9 +63,10 @@ class CacheManager
     }
 
     /**
-     * Deletes a value from the cache
+     * Deletes a value by key
      *
-     * @param $key
+     * @param  $key
+     * @return void
      */
     public function delete($key)
     {
@@ -64,7 +74,9 @@ class CacheManager
     }
 
     /**
-     * Removes all values from the cache
+     * Deletes all values
+     *
+     * @return void
      */
     public function flush()
     {

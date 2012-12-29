@@ -3,7 +3,8 @@
  * Fonto - PHP framework
  *
  * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @package     Fonto.Core
+ * @package     Fonto_View
+ * @subpackage  Driver
  * @link        https://github.com/kenren/fonto
  * @version     0.5
  */
@@ -15,19 +16,35 @@ use Fonto\Application\ObjectHandler;
 
 use Exception;
 
+/**
+ * PHP based view helper.
+ *
+ * Extends ObjectHandler and implements DriverInterface.
+ *
+ * @package    Fonto_View
+ * @subpackage Driver
+ * @link       https://github.com/kenren/fonto
+ * @author     Kenny Damgren <kenny.damgren@gmail.com>
+ */
 class Native extends ObjectHandler implements DriverInterface
 {
     /**
+     * Extension for this driver
+     *
      * @var string
      */
     protected $extension = '.php';
 
     /**
+     * Searchable path
+     *
      * @var string
      */
     protected $path;
 
     /**
+     * Data
+     *
      * @var array
      */
     protected $data = array();
@@ -44,7 +61,8 @@ class Native extends ObjectHandler implements DriverInterface
     /**
      * Loads a view
      *
-     * @param $view
+     * @param  string $view
+     * @return void
      */
     public function load($view)
     {
@@ -52,9 +70,9 @@ class Native extends ObjectHandler implements DriverInterface
     }
 
     /**
-     * Uses purifier
+     * Cleans user data with purifier. Returns cleaned data
      *
-     * @param $data
+     * @param  string $data
      * @return mixed
      */
     public function purify($data)
@@ -66,9 +84,9 @@ class Native extends ObjectHandler implements DriverInterface
     /**
      * Uses renderView
      *
-     * @param $view
-     * @param array $data
-     * @return mixed|string
+     * @param  string $view
+     * @param  array  $data
+     * @return mixed
      */
     public function render($view, $data = array())
     {
@@ -76,12 +94,12 @@ class Native extends ObjectHandler implements DriverInterface
     }
 
     /**
-     * Renders a view
+     * Renders a view and extract its data
      *
-     * @param $view
-     * @param array $data
-     * @return string
-     * @throws \Exception
+     * @param  string $view
+     * @param  array  $data
+     * @return mixed
+     * @throws Exception
      */
     public function renderView($view, $data = array())
     {
@@ -106,10 +124,10 @@ class Native extends ObjectHandler implements DriverInterface
     /**
      * Checks if a view file exists
      *
-     * @param $view
-     * @param $path
-     * @param $extension
-     * @return bool|mixed
+     * @param  string $view
+     * @param  string $path
+     * @param  string $extension
+     * @return mixed
      */
     public function findView($view, $path, $extension)
     {
@@ -121,7 +139,9 @@ class Native extends ObjectHandler implements DriverInterface
     }
 
     /**
-     * @param $file
+     * Returns formatted source of a file
+     *
+     * @param  string $file
      * @return string
      */
     protected function getContent($file)

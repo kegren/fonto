@@ -3,7 +3,8 @@
  * Fonto - PHP framework
  *
  * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @package     Fonto.Core
+ * @package     Fonto_Validation
+ * @subpackage  Components
  * @link        https://github.com/kenren/fonto
  * @version     0.5
  */
@@ -12,25 +13,39 @@ namespace Fonto\Validation\Components;
 
 use Fonto\Validation\Validator;
 
+/**
+ * Email validation class.
+ *
+ * @package    Fonto_Validation
+ * @subpackage Components
+ * @link       https://github.com/kenren/fonto
+ * @author     Kenny Damgren <kenny.damgren@gmail.com>
+ */
 class ValidateEmail extends Validator
 {
     /**
+     * Rule
+     *
      * @var array
      */
     protected $rule = array();
 
     /**
+     * Error message
+     *
      * @var
      */
     protected $message;
 
     /**
+     * Flag for error
+     *
      * @var bool
      */
     protected $error = false;
 
     /**
-     * Constructor.
+     * Constructor
      */
     public function __construct($options = array())
     {
@@ -56,6 +71,8 @@ class ValidateEmail extends Validator
     }
 
     /**
+     * Returns message
+     *
      * @return mixed
      */
     public function getMessage()
@@ -64,6 +81,8 @@ class ValidateEmail extends Validator
     }
 
     /**
+     * Returns true if there is an error false otherwise
+     *
      * @return bool
      */
     public function hasError()

@@ -2,10 +2,10 @@
 /**
  * Fonto - PHP framework
  *
- * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @package     Fonto.Core
- * @link        https://github.com/kenren/fonto
- * @version     0.5
+ * @author   Kenny Damgren <kenny.damgren@gmail.com>
+ * @package  Fonto_DependencyInjection
+ * @link     https://github.com/kenren/fonto
+ * @version  0.5
  */
 
 namespace Fonto\DependencyInjection;
@@ -14,14 +14,28 @@ use Fonto\DependencyInjection;
 use Closure;
 use Exception;
 
+/**
+ * Acts as a manager and is responsible for
+ * getting a service from the container and give it to
+ * the builder class then it will be returned as an object
+ * with all the correct dependencies set.
+ *
+ * @package Fonto_DependencyInjection
+ * @link    https://github.com/kenren/fonto
+ * @author  Kenny Damgren <kenny.damgren@gmail.com>
+ */
 class Manager implements ManagerInterface
 {
     /**
+     * Container object
+     *
      * @var Container
      */
     protected $container;
 
     /**
+     * Builder object
+     *
      * @var Builder
      */
     protected $builder;
@@ -33,8 +47,12 @@ class Manager implements ManagerInterface
     }
 
     /**
-     * @param $id
-     * @param $value
+     * Adds a service only if there isn't one already registered with that
+     * id
+     *
+     * @param  string $id
+     * @param  string $value
+     * @return mixed|void
      */
     public function add($id, $value)
     {
@@ -42,8 +60,11 @@ class Manager implements ManagerInterface
     }
 
     /**
-     * @param $id
-     * @param $value
+     * Sets a service
+     *
+     * @param string $id
+     * @param string $value
+     * @return mixed|void
      */
     public function set($id, $value)
     {
@@ -51,9 +72,11 @@ class Manager implements ManagerInterface
     }
 
     /**
-     * @param $id
-     * @param bool $throwException
-     * @throws \Exception
+     * Gets a service
+     *
+     * @param  string    $id
+     * @param  bool      $throwException
+     * @throws Exception
      * @return object
      */
     public function get($id, $throwException = true)
@@ -76,11 +99,21 @@ class Manager implements ManagerInterface
         return $this->getBuilder()->build($service);
     }
 
+    /**
+     * Returns container object
+     *
+     * @return Container
+     */
     protected function getContainer()
     {
         return $this->container;
     }
 
+    /**
+     * Returns builder object
+     *
+     * @return Builder
+     */
     protected function getBuilder()
     {
         return $this->builder;

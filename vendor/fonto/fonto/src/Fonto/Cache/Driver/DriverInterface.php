@@ -3,13 +3,22 @@
  * Fonto - PHP framework
  *
  * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @package     Fonto.Core
+ * @package     Fonto_Cache
+ * @subpackage  Driver
  * @link        https://github.com/kenren/fonto
  * @version     0.5
  */
 
 namespace Fonto\Cache\Driver;
 
+/**
+ * Driver Interface
+ *
+ * @package     Fonto_Cache
+ * @subpackage  Driver
+ * @link        https://github.com/kenren/fonto
+ * @author      Kenny Damgren <kenny.damgren@gmail.com>
+ */
 interface DriverInterface
 {
     /**

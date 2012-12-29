@@ -2,34 +2,49 @@
 /**
  * Fonto - PHP framework
  *
- * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @package     Fonto.Core
- * @link        https://github.com/kenren/fonto
- * @version     0.5
+ * @author   Kenny Damgren <kenny.damgren@gmail.com>
+ * @package  Fonto_Http
+ * @link     https://github.com/kenren/fonto
+ * @version  0.5
  */
 
 namespace Fonto\Http;
 
-use Exception;
-
+/**
+ * Request class handles different types of requests inside
+ * the framework.
+ *
+ * @package Fonto_Http
+ * @link    https://github.com/kenren/fonto
+ * @author  Kenny Damgren <kenny.damgren@gmail.com>
+ */
 class Request
 {
 	/**
-	 * @var string Request method
+     * Requested method
+     *
+	 * @var string
 	 */
 	private $method = 'GET';
 
 	/**
-	 * @var string Requested Uri
+     * Requested uri
+     *
+	 * @var string
 	 */
 	private $requestUri;
 
 	/**
-	 * @var string Path for the current script
+     * Script name
+     *
+	 * @var string
 	 */
 	private $scriptName;
 
-	public function __construct()
+    /**
+     * Constructor
+     */
+    public function __construct()
 	{
 		if (isset($_SERVER['REQUEST_METHOD'])) {
 			$this->method = $_SERVER['REQUEST_METHOD'];
@@ -62,13 +77,20 @@ class Request
 		return $this->method === 'POST';
 	}
 
+    /**
+     * Returns true if the current method is get
+     *
+     * @return boolean
+     */
     public function isGet()
     {
         return $this->method === 'GET';
     }
 
     /**
-     * @return string
+     * Returns all post or get parameters
+     *
+     * @return array
      */
     public function getParameters()
 	{
@@ -84,7 +106,9 @@ class Request
 	}
 
     /**
-     * @param $key
+     * Returns specific parameter if set else empty
+     *
+     * @param  string $key
      * @return string
      */
     public function getParameter($key)
@@ -113,7 +137,7 @@ class Request
 	}
 
 	/**
-	 * Returns current script path
+	 * Returns current script name
 	 *
 	 * @return string
 	 */
@@ -122,12 +146,13 @@ class Request
 		return $this->scriptName;
 	}
 
-	/**
-	 * Remove dirname from uri if needed
-	 *
-	 * @return array uri
-	 */
-	private function parseRequestUri()
+    /**
+     * Sets up requested uri and removes directory name
+     * if necessary
+     *
+     * @return string
+     */
+    private function parseRequestUri()
 	{
 		$uri = $this->requestUri;
 

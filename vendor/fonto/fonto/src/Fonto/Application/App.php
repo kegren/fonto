@@ -2,10 +2,10 @@
 /**
  * Fonto - PHP framework
  *
- * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @package     Fonto.Core
- * @link        https://github.com/kenren/fonto
- * @version     0.5
+ * @author   Kenny Damgren <kenny.damgren@gmail.com>
+ * @package  Fonto_Application
+ * @link     https://github.com/kenren/fonto
+ * @version  0.5
  */
 
 namespace Fonto\Application;
@@ -14,30 +14,38 @@ use Fonto\DependencyInjection as DI;
 use Fonto\Application\ObjectHandler;
 use Exception;
 
+/**
+ * Front Controller
+ *
+ * @package Fonto_Application
+ * @link    https://github.com/kenren/fonto
+ * @author  Kenny Damgren <kenny.damgren@gmail.com>
+ */
 class App extends ObjectHandler
 {
     /**
+     * Current Fonto version
+     *
      * @var string
      */
     protected $version = '0.5';
 
     /**
-     * @var App
-     */
-    protected $app;
-
-    /**
      * Constructor
+     *
+     * Sets up paths
      */
     public function __construct()
     {
-        $this->app = $this;
         $this->setPaths();
         parent::__construct();
     }
 
     /**
-     * Runs the application.
+     * Runs the application and dispatches the HTTP request
+     *
+     * @param $loader
+     * @return mixed
      */
     public function run($loader)
     {
@@ -65,6 +73,11 @@ class App extends ObjectHandler
         }
     }
 
+    /**
+     * Sets the timezone
+     *
+     * @param $timezone
+     */
     protected function setTimezone($timezone)
     {
         date_default_timezone_set($timezone);
@@ -72,6 +85,8 @@ class App extends ObjectHandler
 
     /**
      * Defines paths based on the application name
+     *
+     * @return void
      */
     private function setPaths()
     {

@@ -3,7 +3,8 @@
  * Fonto - PHP framework
  *
  * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @package     Fonto.Core
+ * @package     Fonto_View
+ * @subpackage  Helper
  * @link        https://github.com/kenren/fonto
  * @version     0.5
  */
@@ -12,9 +13,19 @@ namespace Fonto\View\Helper;
 
 use Fonto\Http\Url;
 
+/**
+ * A small helper class for css inside the view
+ *
+ * @package    Fonto_View
+ * @subpackage Helper
+ * @link       https://github.com/kenren/fonto
+ * @author     Kenny Damgren <kenny.damgren@gmail.com>
+ */
 class Css
 {
     /**
+     * Url object
+     *
      * @var \Fonto\Http\Url
      */
     private $url;
@@ -30,6 +41,8 @@ class Css
     }
 
     /**
+     * Returns a css link
+     *
      * @param $file
      * @return string
      */
@@ -39,7 +52,9 @@ class Css
     }
 
     /**
-     * @param $file
+     * Returns full path to a css file
+     *
+     * @param  string $file
      * @return string
      */
     public function getCssFile($file)

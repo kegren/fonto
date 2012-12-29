@@ -2,20 +2,29 @@
 /**
  * Fonto - PHP framework
  *
- * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @package     Fonto.Core
- * @link        https://github.com/kenren/fonto
- * @version     0.5
+ * @author   Kenny Damgren <kenny.damgren@gmail.com>
+ * @package  Fonto_Config
+ * @link     https://github.com/kenren/fonto
+ * @version  0.5
  */
 
 namespace Fonto\Config;
 
 use Fonto\Config\Driver\ConfigInterface;
 
+/**
+ * Responsible for managing config driver.
+ *
+ * @package Fonto_Cache
+ * @link    https://github.com/kenren/fonto
+ * @author  Kenny Damgren <kenny.damgren@gmail.com>
+ */
 class ConfigManager
 {
     /**
-     * @var
+     * Driver object
+     *
+     * @var ConfigInterface
      */
     protected $driver;
 
@@ -30,6 +39,8 @@ class ConfigManager
     );
 
     /**
+     * Constructor
+     *
      * @param Driver\ConfigInterface $driver
      */
     public function __construct(ConfigInterface $driver)
@@ -38,36 +49,14 @@ class ConfigManager
     }
 
     /**
-     * @param $config
+     * Reads a value by key: # delimiter ex: "app#timezone" returns
+     * timezone array value from app.php
+     *
+     * @param  string $config
      * @return mixed
      */
     public function read($config)
     {
         return $this->driver->read($config);
-    }
-
-    /**
-     * Checks if the config file is supported
-     * by the manager
-     *
-     * @param $key
-     * @return bool
-     */
-    protected function isSupported($key)
-    {
-        return isset($this->supported[$key]);
-    }
-
-    /**
-     * Checks if given key exists in the
-     * configuration array
-     *
-     * @param $key
-     * @param $options
-     * @return bool
-     */
-    protected function has($key, $options)
-    {
-        return array_key_exists($key, $options);
     }
 }

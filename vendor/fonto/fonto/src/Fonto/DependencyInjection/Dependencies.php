@@ -2,10 +2,10 @@
 /**
  * Fonto - PHP framework
  *
- * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @package     Fonto.Core
- * @link        https://github.com/kenren/fonto
- * @version     0.5
+ * @author   Kenny Damgren <kenny.damgren@gmail.com>
+ * @package  Fonto_DependencyInjection
+ * @link     https://github.com/kenren/fonto
+ * @version  0.5
  */
 
 return array(
@@ -19,7 +19,6 @@ return array(
             'PhpDriver' => '\Fonto\Config\Driver\PhpDriver'
         )
     ),
-
     /**
      * Router class
      */
@@ -31,7 +30,6 @@ return array(
             'Request' => '\Fonto\Http\Request'
         )
     ),
-
     /**
      * Response class
      */
@@ -44,7 +42,6 @@ return array(
             'Session' => '\Fonto\Http\Session'
         )
     ),
-
     /**
      * View class
      */
@@ -55,14 +52,13 @@ return array(
             'Native' => '\Fonto\View\Driver\Native'
         )
     ),
-
     /**
      * Auth class
      */
     'Auth' => array(
         'class' => '\Fonto\Authentication\Auth',
-        'id'    => 'Auth',
-        'args'  => array(
+        'id' => 'Auth',
+        'args' => array(
             'Session' => '\Fonto\Http\Session',
             'Hash' => '\Fonto\Security\Hash'
         )

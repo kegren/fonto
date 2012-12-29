@@ -2,10 +2,10 @@
 /**
  * Fonto - PHP framework
  *
- * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @package     Fonto.Core
- * @link        https://github.com/kenren/fonto
- * @version     0.5
+ * @author   Kenny Damgren <kenny.damgren@gmail.com>
+ * @package  Fonto_Http
+ * @link     https://github.com/kenren/fonto
+ * @version  0.5
  */
 
 namespace Fonto\Http;
@@ -15,24 +15,39 @@ use Fonto\View\View;
 use Fonto\Http\Session;
 use Exception;
 
+/**
+ * Handles responses based on different circumstances.
+ *
+ * @package Fonto_Http
+ * @link    https://github.com/kenren/fonto
+ * @author  Kenny Damgren <kenny.damgren@gmail.com>
+ */
 class Response
 {
     /**
+     * Url object
+     *
      * @var Url
      */
     protected $url;
 
     /**
+     * View object
+     *
      * @var View
      */
     protected $view;
 
     /**
+     * Session object
+     *
      * @var Session
      */
     protected $session;
 
     /**
+     * Error codes and responding messages
+     *
      * @var array
      */
     protected $codes = array(
@@ -48,6 +63,8 @@ class Response
     );
 
     /**
+     * Current error views
+     *
      * @var array
      */
     protected $views = array(
@@ -56,16 +73,22 @@ class Response
     );
 
     /**
+     * Http status
+     *
      * @var
      */
     protected $status;
 
     /**
+     * Http Content type
+     *
      * @var
      */
     protected $contentType;
 
     /**
+     * Http header
+     *
      * @var
      */
     protected $header;
@@ -73,9 +96,10 @@ class Response
     /**
      * Constructor
      *
-     * @param Url $url
-     * @param View $view
-     * @param Session $session
+     * @param  Url     $url
+     * @param  View    $view
+     * @param  Session $session
+     * @return void
      */
     public function __construct(Url $url, View $view, Session $session)
     {
@@ -87,8 +111,9 @@ class Response
     /**
      * Redirects a user to given uri with data if given
      *
-     * @param $url
-     * @param array $data
+     * @param  string $url
+     * @param  array  $data
+     * @return void
      */
     public function redirect($url, $data = array())
     {
@@ -114,11 +139,11 @@ class Response
     }
 
     /**
-     * Saves data to the session
+     * Saves data to session
      *
-     * @param array $data
+     * @param  array     $data
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
     public function data($data = array())
     {
@@ -137,8 +162,9 @@ class Response
      * Returns an error view based on provided code. Currently supported
      * views: 403, 404
      *
-     * @param $code
-     * @throws \Exception
+     * @param  int        $code
+     * @throws Exception
+     * @return mixed
      */
     public function error($code)
     {

@@ -2,10 +2,10 @@
 /**
  * Fonto - PHP framework
  *
- * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @package     Fonto.Core
- * @link        https://github.com/kenren/fonto
- * @version     0.5
+ * @author   Kenny Damgren <kenny.damgren@gmail.com>
+ * @package  Fonto_Authentication
+ * @link     https://github.com/kenren/fonto
+ * @version  0.5
  */
 
 namespace Fonto\Authentication;
@@ -14,30 +14,46 @@ use Fonto\Http\Session;
 use Fonto\Security\Hash;
 use Doctrine\ORM\EntityManager;
 
-
+/**
+ * Authentication class who uses doctrine as ORM.
+ *
+ * @package Fonto_Authentication
+ * @link    https://github.com/kenren/fonto
+ * @author  Kenny Damgren <kenny.damgren@gmail.com>
+ */
 class Auth
 {
     /**
+     * User data
+     *
      * @var
      */
     protected $user;
 
     /**
+     * Session object
+     *
      * @var \Fonto\Http\Session
      */
     protected $session;
 
     /**
+     * Hash object
+     *
      * @var \Fonto\Security\Hash
      */
     protected $hash;
 
     /**
+     * Doctrine Entity Manager object
+     *
      * @var \Doctrine\ORM\EntityManager
      */
     protected $em;
 
     /**
+     * User model
+     *
      * @var
      */
     protected $model;
@@ -45,8 +61,8 @@ class Auth
     /**
      * Constructor
      *
-     * @param \Fonto\Http\Session $session
-     * @param \Fonto\Security\Hash $hash
+     * @param  \Fonto\Http\Session   $session
+     * @param  \Fonto\Security\Hash  $hash
      */
     public function __construct(Session $session, Hash $hash)
     {
@@ -55,6 +71,8 @@ class Auth
     }
 
     /**
+     * Sets the entity manager object
+     *
      * @param \Doctrine\ORM\EntityManager $em
      */
     public function setEntityManager(EntityManager $em)
@@ -63,6 +81,8 @@ class Auth
     }
 
     /**
+     * Sets model
+     *
      * @param $model
      */
     public function setModel($model)
@@ -73,8 +93,8 @@ class Auth
     /**
      * Logs user in based on input credentials
      *
-     * @param array $credentials
-     * @return bool
+     * @param   array  $credentials
+     * @return  bool
      */
     public function login($credentials = array())
     {
@@ -130,17 +150,19 @@ class Auth
     }
 
     /**
-     * Destroys session
+     * Sets user data to null and destroys the session data
      *
      * @return void
      */
     public function logout()
     {
         $this->user = null;
-        $this->session->forgetAll();
+        $this->session->forget('user');
     }
 
     /**
+     * Returns the user id
+     *
      * @return mixed
      */
     public function getAuthedId()

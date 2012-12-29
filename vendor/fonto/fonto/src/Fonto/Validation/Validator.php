@@ -2,39 +2,55 @@
 /**
  * Fonto - PHP framework
  *
- * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @package     Fonto.Core
- * @link        https://github.com/kenren/fonto
- * @version     0.5
+ * @author   Kenny Damgren <kenny.damgren@gmail.com>
+ * @package  Fonto_Validation
+ * @link     https://github.com/kenren/fonto
+ * @version  0.5
  */
 
 namespace Fonto\Validation;
 
-use Fonto\Helper\Arr;
-
+/**
+ * Main validation class, handles and sets up all rules
+ * and compares those to the corresponding classes.
+ *
+ * @package Fonto_Validation
+ * @link    https://github.com/kenren/fonto
+ * @author  Kenny Damgren <kenny.damgren@gmail.com>
+ */
 class Validator
 {
     /**
+     * Validation errors
+     *
      * @var array
      */
     protected $errors = array();
 
     /**
+     * Validation prefix, used in the rules
+     *
      * @var string
      */
     protected $rulesPrefix = '{}';
 
     /**
+     * Validation field prefix
+     *
      * @var string
      */
     protected $fieldPrefix = '{field}';
 
     /**
+     * Validation value prefix
+     *
      * @var string
      */
     protected $valuePrefix = '{value}';
 
     /**
+     * Registered validation classes
+     *
      * @var array
      */
     protected $validators = array(
@@ -91,7 +107,7 @@ class Validator
     }
 
     /**
-     * Returns error for specified field
+     * Returns error for a specified field
      *
      * @param  string $field
      * @return mixed
@@ -118,10 +134,10 @@ class Validator
     /**
      * Validates form data against given rules
      *
-     * @param array $rules
-     * @param array $inputData
+     * @param    array $rules
+     * @param    array $inputData
      * @internal param array $data
-     * @return bool
+     * @return   bool
      */
     public function validate(array $rules = array(), array $inputData = array())
     {

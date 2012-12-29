@@ -3,7 +3,8 @@
  * Fonto - PHP framework
  *
  * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @package     Fonto.Core
+ * @package     Fonto_Cache
+ * @subpackage  Driver
  * @link        https://github.com/kenren/fonto
  * @version     0.5
  */
@@ -11,18 +12,29 @@
 namespace Fonto\Cache\Driver;
 
 use Fonto\Cache\DriverInterface;
-
 use Memcache;
 use Exception;
 
+/**
+ * A wrapper for Memcache caching.
+ *
+ * @package     Fonto_Cache
+ * @subpackage  Driver
+ * @link        https://github.com/kenren/fonto
+ * @author      Kenny Damgren <kenny.damgren@gmail.com>
+ */
 class MemcacheDriver implements DriverInterface
 {
     /**
-     * @var \Memcache
+     * Memcache object
+     *
+     * @var Memcache
      */
     protected $memcache;
 
     /**
+     * Servers used by memcache
+     *
      * @var array
      */
     protected $servers = array(
@@ -34,11 +46,13 @@ class MemcacheDriver implements DriverInterface
 
     /**
      * Constructor
+     *
+     * Connects to memcache and stores memcache object
      */
     public function __construct()
     {
         if (false === $this->checkIfMemcacheIsAvailable()) {
-            throw new Exception("{memcache} doesn't appears to be loaded, please check your settings");
+            throw new Exception("{memcache} doesn't seems to be supported, please check your settings");
         }
 
         $default = $this->servers['default'];
@@ -51,12 +65,12 @@ class MemcacheDriver implements DriverInterface
     }
 
     /**
-     * Stores a value in the cache
+     * Stores a value by key and sets expires time
      *
-     * @param $key
-     * @param $value
-     * @param int $expire
-     * @return MemcacheDriver
+     * @param  string  $key
+     * @param  string  $value
+     * @param  int     $expire
+     * @return mixed
      */
     public function set($key, $value, $expire = 0)
     {
@@ -64,10 +78,10 @@ class MemcacheDriver implements DriverInterface
     }
 
     /**
-     * Gets a value from the cache
+     * Gets a value by key
      *
-     * @param $key
-     * @return bool
+     * @param  $key
+     * @return mixed
      */
     public function get($key)
     {
@@ -75,9 +89,10 @@ class MemcacheDriver implements DriverInterface
     }
 
     /**
-     * Deletes a value from the cache
+     * Deletes a value
      *
      * @param $key
+     * @return mixed
      */
     public function delete($key)
     {
@@ -85,7 +100,9 @@ class MemcacheDriver implements DriverInterface
     }
 
     /**
-     * Removes all values from the cache
+     * Deletes all values
+     *
+     * @return mixed
      */
     public function flush()
     {

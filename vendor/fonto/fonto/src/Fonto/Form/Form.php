@@ -2,23 +2,22 @@
 /**
  * Fonto - PHP framework
  *
- * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @package     Fonto.Core
- * @link        https://github.com/kenren/fonto
- * @version     0.5
+ * @author   Kenny Damgren <kenny.damgren@gmail.com>
+ * @package  Fonto_Form
+ * @link     https://github.com/kenren/fonto
+ * @version  0.5
  */
 
 namespace Fonto\Form;
 
 /**
- * Form class, an helper class for form elements.
+ * A small helper class for building form elements through
+ * php.
  *
- * @package Fonto_Core
- * @subpackage Form
- * @link https://github.com/kenren/fonto
- * @author Kenny Damgren <kenny.damgren@gmail.com>
+ * @package Fonto_Form
+ * @link    https://github.com/kenren/fonto
+ * @author  Kenny Damgren <kenny.damgren@gmail.com>
  */
-
 class Form
 {
     /**
@@ -28,7 +27,7 @@ class Form
      * @param  string  $method
      * @param  array   $attributes
      * @param  boolean $enctype
-     * @return HTML
+     * @return mixed
      */
     public function open($url, $method, $attributes = array(), $enctype = false)
     {
@@ -54,7 +53,7 @@ class Form
      * @param  string $type
      * @param  string $name
      * @param  array  $attributes
-     * @return html
+     * @return mixed
      */
     public function input($type, $name, $attributes = array())
     {
@@ -70,11 +69,11 @@ class Form
     }
 
     /**
-     * Returns an hidden field
+     * Returns a hidden field
      *
-     * @param $name
-     * @param array $attributes
-     * @return html
+     * @param  string $name
+     * @param  array  $attributes
+     * @return mixed
      */
     public function hidden($name, $attributes = array())
     {
@@ -82,12 +81,12 @@ class Form
     }
 
     /**
-     * Returns an textarea field
+     * Returns a textarea field
      *
-     * @param $name
-     * @param string $value
-     * @param array $attributes
-     * @return string
+     * @param  string $name
+     * @param  string $value
+     * @param  array  $attributes
+     * @return mixed
      */
     public function textarea($name, $value = '', $attributes = array())
     {
@@ -107,7 +106,7 @@ class Form
      *
      * @param  string $value
      * @param  array  $attributes
-     * @return html
+     * @return mixed
      */
     public function submit($value, $attributes = array())
     {
@@ -127,7 +126,7 @@ class Form
      *
      * @param  string $for
      * @param  array  $text
-     * @return html
+     * @return mixed
      */
     public function label($for, $text)
     {
@@ -137,7 +136,7 @@ class Form
     /**
      * Returns a closing tag
      *
-     * @return HTML
+     * @return mixed
      */
     public function close()
     {

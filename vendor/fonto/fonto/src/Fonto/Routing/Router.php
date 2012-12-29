@@ -2,10 +2,10 @@
 /**
  * Fonto - PHP framework
  *
- * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @package     Fonto.Core
- * @link        https://github.com/kenren/fonto
- * @version     0.5
+ * @author   Kenny Damgren <kenny.damgren@gmail.com>
+ * @package  Fonto_Routing
+ * @link     https://github.com/kenren/fonto
+ * @version  0.5
  */
 
 namespace Fonto\Routing;
@@ -14,6 +14,14 @@ use Fonto\Http\Request;
 use Fonto\Routing\Route;
 use Exception;
 
+/**
+ * Router is responsible for mapping an incoming http request
+ * to a route.
+ *
+ * @package Fonto_Routing
+ * @link    https://github.com/kenren/fonto
+ * @author  Kenny Damgren <kenny.damgren@gmail.com>
+ */
 class Router
 {
     /**
@@ -31,16 +39,22 @@ class Router
     protected $routes = array();
 
     /**
-     * @var \Fonto\Routing\Route
+     * Route object
+     *
+     * @var Route
      */
     protected $route;
 
     /**
-     * @var \Fonto\Http\Request
+     * Request object
+     *
+     * @var Request
      */
     protected $request;
 
     /**
+     * Supported
+     *
      * @var array
      */
     protected $supported = array(
@@ -51,6 +65,8 @@ class Router
     );
 
     /**
+     * Supported restful methods
+     *
      * @var array
      */
     protected $supportedMethods = array(
@@ -74,8 +90,11 @@ class Router
     /**
      * Constructor
      *
-     * @param Route $route
-     * @param \Fonto\Core\Http\Request $request
+     * Sets both route and request objects and includes
+     * user defined routes.
+     *
+     * @param Route   $route
+     * @param Request $request
      */
     public function __construct(Route $route, Request $request)
     {
@@ -89,8 +108,8 @@ class Router
     /**
      * Adds routes
      *
-     * @param $rule
-     * @param $options
+     * @param string $rule
+     * @param array  $options
      */
     public function addRoute($rule, $options)
     {
@@ -108,9 +127,10 @@ class Router
     }
 
     /**
-     * Dispatches request
+     * Dispatches a http request to a controller and its method
      *
-     * @throws \Exception
+     * @return mixed
+     * @throws Exception
      */
     public function dispatch()
     {
@@ -149,7 +169,7 @@ class Router
     }
 
     /**
-     * Matches the current request with registered routes
+     * Matches the current request with the registered routes
      *
      * @return mixed
      */
@@ -250,8 +270,10 @@ class Router
     }
 
     /**
-     * @param $route
-     * @return bool|mixed
+     * Sets up regular expressions
+     *
+     * @param  string $route
+     * @return mixed
      */
     protected function regexRoute($route)
     {
@@ -268,7 +290,9 @@ class Router
     }
 
     /**
-     * @return \Fonto\Core\Http\Request
+     * Returns request object
+     *
+     * @return Request
      */
     public function getRequest()
     {
@@ -276,7 +300,9 @@ class Router
     }
 
     /**
-     * @return \Fonto\Core\Routing\Route
+     * Returns route object
+     *
+     * @return Route
      */
     public function getRoute()
     {

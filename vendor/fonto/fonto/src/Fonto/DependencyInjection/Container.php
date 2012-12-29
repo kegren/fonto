@@ -2,10 +2,10 @@
 /**
  * Fonto - PHP framework
  *
- * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @package     Fonto.Core
- * @link        https://github.com/kenren/fonto
- * @version     0.5
+ * @author   Kenny Damgren <kenny.damgren@gmail.com>
+ * @package  Fonto_DependencyInjection
+ * @link     https://github.com/kenren/fonto
+ * @version  0.5
  */
 
 namespace Fonto\DependencyInjection;
@@ -13,25 +13,41 @@ namespace Fonto\DependencyInjection;
 use Closure;
 use Exception;
 
+/**
+ * Service container, responsible for providing
+ * services.
+ *
+ * @package Fonto_DependencyInjection
+ * @link    https://github.com/kenren/fonto
+ * @author  Kenny Damgren <kenny.damgren@gmail.com>
+ */
 class Container
 {
     /**
+     * All services
+     *
      * @var array
      */
     protected $services = array();
 
     /**
+     * Dependencies file
+     *
      * @var string
      */
     private $coreDependenciesFile = 'Dependencies.php';
 
     /**
+     * User services
+     *
      * @var string
      */
     private $userProvided = 'services.php';
 
     /**
      * Constructor
+     *
+     * Sets all services, both core and user defined
      */
     public function __construct()
     {
@@ -48,8 +64,9 @@ class Container
      * Adds a service to the container if there already isn't one
      * registered with the same ID
      *
-     * @param $id
-     * @param $value
+     * @param  $id
+     * @param  $value
+     * @return void
      * @throws Exception
      */
     public function addService($id, $value)
@@ -64,8 +81,9 @@ class Container
     /**
      * Sets a service
      *
-     * @param $id
-     * @param $value
+     * @param  $id
+     * @param  $value
+     * @return void
      */
     public function setService($id, $value)
     {
@@ -73,6 +91,8 @@ class Container
     }
 
     /**
+     * Gets a service
+     *
      * @param $id
      * @return bool|Closure
      */
@@ -115,7 +135,9 @@ class Container
     }
 
     /**
-     * @param $id
+     * Is the service registered?
+     *
+     * @param  $id
      * @return bool
      */
     protected function isRegistered($id)

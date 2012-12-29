@@ -2,18 +2,27 @@
 /**
  * Fonto - PHP framework
  *
- * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @package     Fonto.Core
- * @link        https://github.com/kenren/fonto
- * @version     0.5
+ * @author   Kenny Damgren <kenny.damgren@gmail.com>
+ * @package  Fonto_Http
+ * @link     https://github.com/kenren/fonto
+ * @version  0.5
  */
 
 namespace Fonto\Http;
 
+/**
+ * A wrapper for PHP sessions.
+ *
+ * @package Fonto_Http
+ * @link    https://github.com/kenren/fonto
+ * @author  Kenny Damgren <kenny.damgren@gmail.com>
+ */
 class Session
 {
 	/**
-	 * Start session
+	 * Constructor
+     *
+     * Sets path and starts session with provided name
 	 */
 	public function __construct($sessionName = null)
 	{
@@ -25,21 +34,41 @@ class Session
         }
 	}
 
+    /**
+     * Starts session
+     *
+     * @return bool
+     */
     public function start()
     {
         return session_start();
     }
 
+    /**
+     * Returns session id if session is started
+     *
+     * @return string
+     */
     public function isStarted()
     {
         return session_id();
     }
 
+    /**
+     * Sets a session name
+     *
+     * @param null $name
+     */
     public function setName($name = null)
     {
         session_name(($name) ?: 'FontoMVC');
     }
 
+    /**
+     * Sets session save path
+     *
+     * @param null $path
+     */
     public function setSessionSavePath($path = null)
     {
         session_save_path(($path) ?: SESSPATH);
@@ -48,10 +77,9 @@ class Session
 	/**
 	 * Saves a value
 	 *
-	 * @param string $id
-	 * @param string $value
-     *
-     * @return \Fonto\Core\Http\Session
+	 * @param  string  $id
+	 * @param  string  $value
+     * @return Session
      */
 	public function save($id, $value)
 	{
@@ -76,7 +104,7 @@ class Session
 	}
 
 	/**
-	 * Checks if session is set returns boolean
+	 * Checks if a session variable is set
 	 *
 	 * @param  string $id
 	 * @return mixed
@@ -92,6 +120,8 @@ class Session
 
 
     /**
+     * Regenerates session id
+     *
      * @return Session
      */
     public function regenerateId()
@@ -102,9 +132,10 @@ class Session
 	}
 
     /**
-     * Returns session value and unsets it
+     * Unsets a session variable and then returns it from
+     * a local variable. Used to show flash messages.
      *
-     * @param $id
+     * @param  string $id
      * @return string
      */
     public function flashMessage($id)
@@ -121,8 +152,8 @@ class Session
     /**
      * Removes a single variable
      *
-     * @param string $id
-     * @return \Fonto\Core\Http\Session
+     * @param  string   $id
+     * @return Session
      */
 	public function forget($id)
 	{

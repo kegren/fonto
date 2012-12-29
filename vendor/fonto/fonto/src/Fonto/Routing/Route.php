@@ -2,16 +2,21 @@
 /**
  * Fonto - PHP framework
  *
- * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @package     Fonto.Core
- * @link        https://github.com/kenren/fonto
- * @version     0.5
+ * @author   Kenny Damgren <kenny.damgren@gmail.com>
+ * @package  Fonto_Routing
+ * @link     https://github.com/kenren/fonto
+ * @version  0.5
  */
 
 namespace Fonto\Routing;
 
-use Fonto\DependencyInjection\Manager;
-
+/**
+ * Responsible for creating a route
+ *
+ * @package Fonto_Routing
+ * @link    https://github.com/kenren/fonto
+ * @author  Kenny Damgren <kenny.damgren@gmail.com>
+ */
 class Route
 {
     /**
@@ -32,30 +37,45 @@ class Route
     const DEFAULT_ACTION = 'indexAction';
 
     /**
-     * @var
+     * Controller
+     *
+     * @var string
      */
     protected $controller;
 
     /**
-     * @var
+     * Class method
+     *
+     * @var string
      */
     protected $action;
 
     /**
+     * Parameters
+     *
      * @var array
      */
     protected $params = array();
 
     /**
+     * Restful
+     *
      * @var bool
      */
     protected $restful = false;
 
     /**
+     * Http method
+     *
      * @var string
      */
     protected $method = 'get';
 
+    /**
+     * Supported
+     *
+     * @var array
+     */
     protected $supported = array(
         'mapsTo' => 'string',
         'restful' => 'boolean',
@@ -71,9 +91,9 @@ class Route
     }
 
     /**
-     * Builds the route
+     * Builds a route
      *
-     * @param $route
+     * @param  array $route
      * @return bool
      */
     public function createRoute($route)
@@ -125,7 +145,7 @@ class Route
      * Removes route delimiter and returns the route as
      * an array
      *
-     * @param $mapsTo
+     * @param  string $mapsTo
      * @return array
      */
     protected function parseMapTo($mapsTo)
@@ -136,7 +156,9 @@ class Route
     }
 
     /**
-     * @param $route
+     * Checks if a route has mapsTo option
+     *
+     * @param  array $route
      * @return bool
      */
     protected function hasMapsTo($route)
@@ -145,7 +167,9 @@ class Route
     }
 
     /**
-     * @param $route
+     * Checks if a route has specified method
+     *
+     * @param  array $route
      * @return bool
      */
     protected function hasMethod($route)
@@ -154,7 +178,9 @@ class Route
     }
 
     /**
-     * @param $route
+     * Checks if a route is restful or not
+     *
+     * @param  array $route
      * @return bool
      */
     protected function isRestful($route)
@@ -163,7 +189,9 @@ class Route
     }
 
     /**
-     * @param $route
+     * Checks if a route has pattern params
+     *
+     * @param  array $route
      * @return bool
      */
     protected function hasPatternParams($route)
@@ -172,6 +200,8 @@ class Route
     }
 
     /**
+     * Sets the action
+     *
      * @param string $action
      */
     public function setAction($action = '')
@@ -184,6 +214,8 @@ class Route
     }
 
     /**
+     * Returns action
+     *
      * @return mixed
      */
     public function getAction()
@@ -192,7 +224,8 @@ class Route
     }
 
     /**
-     * @param $controller
+     * @param  string $controller
+     * @return void
      */
     public function setController($controller)
     {
@@ -200,6 +233,8 @@ class Route
     }
 
     /**
+     * Returns controller
+     *
      * @return mixed
      */
     public function getController()
@@ -208,7 +243,10 @@ class Route
     }
 
     /**
-     * @param $params
+     * Sets parameters
+     *
+     * @param  $params
+     * @return void
      */
     public function setParams($params)
     {
@@ -216,6 +254,8 @@ class Route
     }
 
     /**
+     * Returns parameters
+     *
      * @return array
      */
     public function getParams()
@@ -224,7 +264,10 @@ class Route
     }
 
     /**
-     * @param $method
+     * Sets method
+     *
+     * @param  $method
+     * @return void
      */
     public function setMethod($method)
     {
@@ -232,6 +275,8 @@ class Route
     }
 
     /**
+     * Returns method
+     *
      * @return string
      */
     public function getMethod()
@@ -240,7 +285,10 @@ class Route
     }
 
     /**
-     * @param $restful
+     * Sets restful
+     *
+     * @param  $restful
+     * @return void
      */
     public function setRestful($restful)
     {
@@ -248,6 +296,8 @@ class Route
     }
 
     /**
+     * Returns restful
+     *
      * @return bool
      */
     public function getRestful()

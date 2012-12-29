@@ -2,20 +2,27 @@
 /**
  * Fonto - PHP framework
  *
- * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @package     Fonto.Core
- * @link        https://github.com/kenren/fonto
- * @version     0.5
+ * @author   Kenny Damgren <kenny.damgren@gmail.com>
+ * @package  Fonto_Http
+ * @link     https://github.com/kenren/fonto
+ * @version  0.5
  */
 
 namespace Fonto\Http;
 
+/**
+ * Handles the url
+ *
+ * @package Fonto_Http
+ * @link    https://github.com/kenren/fonto
+ * @author  Kenny Damgren <kenny.damgren@gmail.com>
+ */
 class Url
 {
     /**
-     * Create base url for application.
+     * Creates base url for the application
      *
-     * @return string base url
+     * @return string
      */
     public function baseUrl()
     {
@@ -32,7 +39,9 @@ class Url
     }
 
     /**
-     * @param $url
+     * Creates an url slug
+     *
+     * @param  string $url
      * @return string
      */
     public function urlSlug($url)

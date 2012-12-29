@@ -3,7 +3,8 @@
  * Fonto - PHP framework
  *
  * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @package     Fonto.Core
+ * @package     Fonto_Config
+ * @subpackage  Driver
  * @link        https://github.com/kenren/fonto
  * @version     0.5
  */
@@ -13,16 +14,28 @@ namespace Fonto\Config\Driver;
 use Fonto\Config\Driver\ConfigInterface;
 use Exception;
 
+/**
+ * Handles php configuration files
+ *
+ * @package     Fonto_Config
+ * @subpackage  Driver
+ * @link        https://github.com/kenren/fonto
+ * @author      Kenny Damgren <kenny.damgren@gmail.com>
+ */
 class PhpDriver implements ConfigInterface
 {
     const DELIMITER = '#';
 
     /**
+     * Path to where the configuration files being stored
+     *
      * @var array
      */
     protected $path;
 
     /**
+     * Extension for this driver
+     *
      * @var string
      */
     protected $extension = '.php';
@@ -34,9 +47,12 @@ class PhpDriver implements ConfigInterface
     {}
 
     /**
-     * @param $config
-     * @return bool|mixed
-     * @throws \Exception
+     * Reads a value by key: # delimiter ex: "app#timezone" returns
+     * timezone array value from app.php
+     *
+     * @param  string $config
+     * @throws Exception
+     * @return mixed
      */
     public function read($config)
     {
@@ -65,6 +81,8 @@ class PhpDriver implements ConfigInterface
     }
 
     /**
+     * Returns file if exists false otherwise
+     *
      * @param $file
      * @return bool|mixed
      */

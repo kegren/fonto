@@ -2,20 +2,27 @@
 /**
  * Fonto - PHP framework
  *
- * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @package     Fonto.Core
- * @link        https://github.com/kenren/fonto
- * @version     0.5
+ * @author   Kenny Damgren <kenny.damgren@gmail.com>
+ * @package  Fonto_Helper
+ * @link     https://github.com/kenren/fonto
+ * @version  0.5
  */
 
 namespace Fonto\Helper;
 
+/**
+ * Base class for form models.
+ *
+ * @package Fonto_Helper
+ * @link    https://github.com/kenren/fonto
+ * @author  Kenny Damgren <kenny.damgren@gmail.com>
+ */
 class Arr
 {
     /**
      * Removes empty and null values in an array
      *
-     * @param array $array
+     * @param  array $array
      * @return array
      */
     public function cleanArray(array $array = array())
@@ -31,7 +38,7 @@ class Arr
     /**
      * Trims all values in an array
      *
-     * @param array $array
+     * @param  array $array
      * @return array
      */
     public function trimArray(array $array = array())
