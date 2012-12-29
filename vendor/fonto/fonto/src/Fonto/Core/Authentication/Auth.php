@@ -10,144 +10,144 @@
 
 namespace Fonto\Core\Authentication;
 
-/**
- * TODO: Update to doctrine
- */
+use Fonto\Core\Http\Session;
+use Fonto\Core\Security\Hash;
+use Doctrine\ORM\EntityManager;
+
 
 class Auth
 {
-	/**
-	 * User object
-	 *
-	 * @var object
-	 */
-	private $user;
+    /**
+     * @var
+     */
+    protected $user;
 
-	public function __construct()
-	{}
+    /**
+     * @var \Fonto\Core\Http\Session
+     */
+    protected $session;
 
-	/**
-	 * Authenticates a user by checking if username exists
-	 * and if the provided password is correct
-	 *
-	 * @param  string $username
-	 * @param  string $password
-	 * @return boolean
-	 */
-	public function authenticate($username, $password)
-	{
-		$modelNs = '\\' . $this->app->getAppName() . '\\Models\\User';
-		$user = new $modelNs;
-		$user = $modelNs::find_by_username($username);
+    /**
+     * @var \Fonto\Core\Security\Hash
+     */
+    protected $hash;
 
-		if ($user) {
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    protected $em;
 
-			$this->user = $user;
+    /**
+     * @var
+     */
+    protected $model;
 
-			if ($this->validatePassword($password)) {
+    /**
+     * Constructor
+     *
+     * @param \Fonto\Core\Http\Session $session
+     * @param \Fonto\Core\Security\Hash $hash
+     */
+    public function __construct(Session $session, Hash $hash)
+    {
+        $this->session = $session;
+        $this->hash = $hash;
+    }
 
-				$this->login($this->user);
+    /**
+     * @param \Doctrine\ORM\EntityManager $em
+     */
+    public function setEntityManager(EntityManager $em)
+    {
+        $this->em = $em;
+    }
 
-				return true;
-			}
+    /**
+     * @param $model
+     */
+    public function setModel($model)
+    {
+        $this->model = get_class($model); // Namespace rather
+    }
 
-		}
+    /**
+     * Logs user in based on input credentials
+     *
+     * @param array $credentials
+     * @return bool
+     */
+    public function login($credentials = array())
+    {
+        $this->user = $this->em->getRepository($this->model)->findOneBy(
+            array('username' => $credentials['username'])
+        );
 
-		return false;
-	}
+        if ($this->user) {
 
-	/**
-	 * Returns true if an session is set false otherwise
-	 *
-	 * @return boolean
-	 */
-	public function IsAuthenticated()
-	{
-		return $this->app->getSession()->has('user');
-	}
+            $matched = $this->hash->checkPassword($credentials['password'], $this->user->getPassword());
 
-	/**
-	 * Gets user id from current logged in user
-	 *
-	 * @return mixed
-	 */
-	public function getId()
-	{
-		$getId = $this->app->getSession()->get('user');
+            if ($matched) {
 
-		if ($getId) {
-			if (isset($getId['id'])) {
-				return $getId['id'];
-			}
-		}
+                $roles = $this->user->getRoles(); // Get user roles
 
-		return false;
-	}
+                if ($roles != null) {
+                    $rolesArray = array();
+                    foreach ($roles as $role) {
+                        $rolesArray[$role->getName()] = $role->getName();
+                    }
+                }
 
-	/**
-	 * Returns all session data
-	 *
-	 * @return array
-	 */
-	public function getUser()
-	{
-		return $this->app->getSession()->get('user');
-	}
+                // Save user credentials to session
+                $this->session->save(
+                    'user',
+                    array(
+                        'id' => $this->user->getId(),
+                        'username' => $this->user->getUsername(),
+                        'email' => $this->user->getEmail(),
+                        'name' => $this->user->getName(),
+                        'roles' => $rolesArray
+                    )
+                );
 
-	/**
-	 * Kills session
-	 *
-	 * @return array
-	 */
-	public function logout()
-	{
-		$this->user = null;
-		$this->app->getSession()->kill();
-	}
+                return true;
+            } else {
+                return false;
+            }
 
-	/**
-	 * Validates password
-	 *
-	 * @param  string $password
-	 * @return boolean
-	 */
-	private function validatePassword($password)
-	{
-		return $this->app->getPhpass()->CheckPassword($password, $this->user->password);
-	}
+        }
 
-	/**
-	 * Sets session credentials based on user object
-	 *
-	 * @param  User $user
-	 * @return void
-	 */
-	private function login($user)
-	{
-		$roles 	  = $this->setRoles($user);
-		$userData = $user->to_array(array(
-			'only' => array('id', 'username')
-		));
+        return false;
+    }
 
-		$sessionData = $userData + $roles;
+    /**
+     * Checks if an user is logged in
+     *
+     * @return mixed
+     */
+    public function isAuthenticated()
+    {
+        return $this->session->has('user');
+    }
 
-		$session = $this->app->getSession();
-		$session->set('user', $sessionData);
-	}
+    /**
+     * Destroys session
+     *
+     * @return void
+     */
+    public function logout()
+    {
+        $this->user = null;
+        $this->session->forgetAll();
+    }
 
-	/**
-	 * Returns user roles as an array
-	 *
-	 * @param User $user
-	 */
-	private function setRoles($user)
-	{
-		$arr = array();
-		foreach ($user->roles as $role) {
-			$arr['roles'][] = $role->name;
-		}
-
-		return $arr;
-	}
+    /**
+     * @return mixed
+     */
+    public function getAuthedId()
+    {
+        $user = $this->session->get('user');
+        $userId = $user['id'];
+        return $userId;
+    }
 
 }
