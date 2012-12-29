@@ -47,10 +47,10 @@ class Builder
         $this->class = $service['class'];
         $this->args = $service['args'];
         $this->_args = isset($service['_args']) ? $service['_args'] : array();
-        $_args = false;
+        $order = $this->args;
+        $sorted = '';
 
         if (sizeof($this->_args)) {
-            $_args = true;
             $argsOfArgs = array();
 
             foreach ($this->_args as $_arg) {
@@ -67,7 +67,7 @@ class Builder
                     $argsOfArgs[$arg] = $this->instance($arg);
                 }
 
-                $this->uses[$class] = $this->instance($class, $argsOfArgs);
+                $this->uses[$id] = $this->instance($class, $argsOfArgs);
             }
         }
 
@@ -75,14 +75,12 @@ class Builder
             $this->uses[$named] = $this->instance($class);
         }
 
-        if ($_args) {
-            $this->uses = array_reverse($this->uses);
+        // Sort by defined order
+        foreach ($order as $key => $value) {
+            $sorted[$key] = $this->uses[$key];
         }
 
-        $uses = $this->uses;
-        unset($this->uses); // Remove value
-
-        return $this->instance($this->class, $uses);
+        return $this->instance($this->class, $sorted);
     }
 
     /**
