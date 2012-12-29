@@ -62,6 +62,11 @@ class App extends ObjectHandler
         }
     }
 
+    protected function setTimezone($timezone)
+    {
+        date_default_timezone_set($timezone);
+    }
+
     /**
      * Defines paths based on the application name
      */
