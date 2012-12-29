@@ -17,30 +17,55 @@ class ValidateNum extends Validator
     /**
      * @var array
      */
-    private $rule = array();
+    protected $rule = array();
+
+    /**
+     * @var
+     */
+    protected $message;
+
+    /**
+     * @var bool
+     */
+    protected $error = false;
 
     /**
      * Constructor.
      */
-    public function __construct()
-	{
-		$this->rule = $this->validators['num'];
-	}
+    public function __construct($options = array())
+    {
+        $this->rule = $this->validators['num'];
+
+        $input = $options['input'];
+        $value = $options['value'];
+        $field = $options['field'];
+        $message = $options['message'];
+
+        if (!is_numeric($input)) {
+            $this->error = true;
+
+            if (!$message) {
+                $this->message = $this->rule['message'];
+                $this->message = str_replace(array('{field}', '{value}'), array($field, $value), $this->message);
+            } else {
+                $this->message = $message;
+            }
+        }
+    }
 
     /**
-     * Validates given data
-     *
-     * @param $data
-     * @return bool|mixed
+     * @return mixed
      */
-	protected function validateAttribute($data)
-	{
-		if (!is_numeric($data['input'])) {
-            $message = $this->rule['message'];
-            $message = str_replace(array('{field}', '{value}'), array($data['field'], $data['value']), $message);
+    public function getMessage()
+    {
+        return $this->message;
+    }
 
-            return $message;
-		}
-		return false;
-	}
+    /**
+     * @return bool
+     */
+    public function hasError()
+    {
+        return $this->error;
+    }
 }

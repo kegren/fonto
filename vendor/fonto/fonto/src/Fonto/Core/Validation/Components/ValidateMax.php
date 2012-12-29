@@ -17,30 +17,55 @@ class ValidateMax extends Validator
     /**
      * @var array
      */
-    private $rule = array();
+    protected $rule = array();
+
+    /**
+     * @var
+     */
+    protected $message;
+
+    /**
+     * @var bool
+     */
+    protected $error = false;
 
     /**
      * Constructor.
      */
-    public function __construct()
+    public function __construct($options = array())
     {
         $this->rule = $this->validators['max'];
+
+        $input = $options['input'];
+        $value = $options['value'];
+        $field = $options['field'];
+        $message = $options['message'];
+
+        if (strlen($input) > $value) {
+            $this->error = true;
+
+            if (!$message) {
+                $this->message = $this->rule['message'];
+                $this->message = str_replace(array('{field}', '{value}'), array($field, $value), $this->message);
+            } else {
+                $this->message = $message;
+            }
+        }
     }
 
     /**
-     * Validates given data
-     *
-     * @param $data
-     * @return bool|mixed
+     * @return mixed
      */
-    public function validateAttribute($data)
+    public function getMessage()
     {
-        if (strlen($data['input']) > $data['value']) {
-            $message = $this->rule['message'];
-            $message = str_replace(array('{field}', '{value}'), array($data['field'], $data['value']), $message);
+        return (string)$this->message;
+    }
 
-            return $message;
-        }
-        return false;
+    /**
+     * @return bool
+     */
+    public function hasError()
+    {
+        return (bool)$this->error;
     }
 }
