@@ -16,19 +16,7 @@ $router->addRoute(
     '/',
     array(
         'mapsTo' => 'home#index',
-        'restful' => true,
-        'method' => 'get',
-    )
-);
-
-/**
- * Registers a route
- */
-$router->addRoute(
-    '/demo/visa/:num',
-    array(
-        'mapsTo' => 'testController1#index',
-        'restful' => false,
+        'restful' => true
     )
 );
 
@@ -39,10 +27,9 @@ $router->addRoute(
     '<:controller>',
     array(
         'mapsTo' => array(
-            'home',
-            'testController2',
-            'testController3'
+            'home' => array(
+                'restful' => true
+            )
         ),
-        'restful' => true,
     )
 );
