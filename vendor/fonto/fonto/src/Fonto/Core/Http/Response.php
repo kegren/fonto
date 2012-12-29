@@ -12,18 +12,25 @@ namespace Fonto\Core\Http;
 
 use Fonto\Core\Http\Url;
 use Fonto\Core\View\View;
+use Fonto\Core\Http\Session;
+use Exception;
 
 class Response
 {
     /**
-     * @var \Fonto\Core\Http\Url
+     * @var Url
      */
     protected $url;
 
     /**
-     * @var \Fonto\Core\View\View
+     * @var View
      */
     protected $view;
+
+    /**
+     * @var Session
+     */
+    protected $session;
 
     /**
      * @var array
@@ -63,30 +70,93 @@ class Response
      */
     protected $header;
 
-
-    public function __construct(Url $url, View $view)
+    /**
+     * Constructor
+     *
+     * @param Url $url
+     * @param View $view
+     * @param Session $session
+     */
+    public function __construct(Url $url, View $view, Session $session)
     {
         $this->url = $url;
         $this->view = $view;
+        $this->session = $session;
     }
 
     /**
+     * Redirects a user to given uri with data if given
+     *
      * @param $url
-     * @param int $code
+     * @param array $data
      */
-    public function redirect($url, $code = 200)
+    public function redirect($url, $data = array())
     {
-        $to = $this->url->baseUrl() . $url;
-        header("Location: $to");
-        exit;
+        if (array_key_exists('posted', $data)) {
+
+            $postedData = $data['posted'];
+
+            foreach ($postedData as $input) {
+                $postedData[$input] = $input;
+            }
+
+            unset($data['posted']);
+            $data = $data + $postedData;
+        }
+
+        $this->session->save('redirectData', $data); // Temporary
+
+        session_write_close(); // Most call before header..
+
+        $url = $this->url->baseUrl() . $url;
+        header("Location: $url");
+        die();
     }
 
     /**
+     * Saves data to the session
+     *
+     * @param array $data
+     * @return bool
+     * @throws \Exception
+     */
+    public function data($data = array())
+    {
+        if (!is_array($data)) {
+            throw new Exception("You can only pass an array to the data method.");
+        }
+
+        foreach ($data as $id => $value) {
+            $this->session->save($id, $value);
+        }
+
+        return true;
+    }
+
+    /**
+     * Returns an error view based on provided code. Currently supported
+     * views: 403, 404
+     *
      * @param $code
-     * @return mixed
+     * @throws \Exception
      */
     public function error($code)
     {
-        return $this->view->render($this->views[$code], array('e' => 'Sidan kunde inte hittas!'));
+        $view = isset($this->views[$code]) ? $this->views[$code] : false;
+
+        if (false === $view) {
+            throw new Exception("Error code not supported");
+        }
+
+        $e = $this->codes[$code];
+
+        return $this->view->render(
+            $view,
+            array(
+                'e' => $e,
+                'baseUrl' => $this->url->baseUrl(),
+                'code' => $code
+            )
+        );
     }
 }
