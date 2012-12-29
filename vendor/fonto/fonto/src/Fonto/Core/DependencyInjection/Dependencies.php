@@ -24,7 +24,7 @@ return array(
      */
     'Router' => array(
         'class' => '\Fonto\Core\Routing\Router',
-        'id' => 'Config',
+        'id' => 'Router',
         'args' => array(
             'Route' => '\Fonto\Core\Routing\Route',
             'Request' => '\Fonto\Core\Http\Request'
@@ -38,7 +38,8 @@ return array(
         'id' => 'Response',
         'args' => array(
             'Url' => '\Fonto\Core\Http\Url',
-            'View' => '\Fonto\Core\View\View'
+            'View' => '\Fonto\Core\View\View',
+            'Session' => '\Fonto\Core\Http\Session'
         )
     ),
     /**
