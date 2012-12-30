@@ -111,6 +111,13 @@ class Native extends ObjectHandler implements DriverInterface
             unset($data); // Removes from local
         }
 
+        $session = $this->session();
+
+        if ($session->has('redirectData')) {
+            extract($session->get('redirectData')); // Extracts saved session data from redirect
+            $session->forget('redirectData');
+        }
+
         if ($this->findView($view, $this->path, $this->extension)) {
             require $this->path . $view . $this->extension;
             $view = ob_get_clean(); // Gets buffer and clear it
