@@ -13,7 +13,7 @@ namespace Fonto\Config;
 use Fonto\Config\Driver\ConfigInterface;
 
 /**
- * Responsible for managing config driver.
+ * Responsible for managing config drivers.
  *
  * @package Fonto_Cache
  * @link    https://github.com/kenren/fonto
