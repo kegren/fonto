@@ -15,7 +15,7 @@ use Fonto\Security\Hash;
 use Doctrine\ORM\EntityManager;
 
 /**
- * Authentication class who uses doctrine as ORM.
+ * Authentication class which uses doctrine as ORM.
  *
  * @package Fonto_Authentication
  * @link    https://github.com/kenren/fonto
@@ -91,7 +91,7 @@ class Auth
     }
 
     /**
-     * Logs user in based on input credentials
+     * Logs in an user based on input credentials
      *
      * @param   array  $credentials
      * @return  bool
@@ -108,7 +108,7 @@ class Auth
 
             if ($matched) {
 
-                $roles = $this->user->getRoles(); // Get user roles
+                $roles = $this->user->getRoles(); // Gets an users roles
 
                 if ($roles != null) {
                     $rolesArray = array();
@@ -117,7 +117,7 @@ class Auth
                     }
                 }
 
-                // Save user credentials to session
+                // Saves an user credentials to session
                 $this->session->save(
                     'user',
                     array(
@@ -150,7 +150,7 @@ class Auth
     }
 
     /**
-     * Sets user data to null and destroys the session data
+     * Sets an users data to null and destroys the session data
      *
      * @return void
      */
