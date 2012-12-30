@@ -80,7 +80,7 @@ class ValidateIdentical extends Validator
     }
 
     /**
-     * Returns true if there is an error false otherwise
+     * Returns true if there is an error, false otherwise
      *
      * @return bool
      */
