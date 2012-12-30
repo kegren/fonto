@@ -81,7 +81,7 @@ class PhpDriver implements ConfigInterface
     }
 
     /**
-     * Returns file if exists false otherwise
+     * Returns file if exists, false otherwise
      *
      * @param $file
      * @return bool|mixed

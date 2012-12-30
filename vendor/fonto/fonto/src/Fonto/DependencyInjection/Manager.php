@@ -17,7 +17,7 @@ use Exception;
 /**
  * Acts as a manager and is responsible for
  * getting a service from the container and give it to
- * the builder class then it will be returned as an object
+ * the builder class. Then it will be returned as an object
  * with all the correct dependencies set.
  *
  * @package Fonto_DependencyInjection

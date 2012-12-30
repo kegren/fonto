@@ -38,7 +38,7 @@ class Container
     protected $core = array();
 
     /**
-     * Dependencies file
+     * Dependency file
      *
      * @var string
      */
@@ -153,7 +153,7 @@ class Container
     }
 
     /**
-     * Is the service registered?
+     * If a service is registered return true, false otherwise
      *
      * @param  $id
      * @return bool

@@ -96,7 +96,7 @@ class Builder
             $this->uses[$named] = $this->instance($class);
         }
 
-        // Sort by defined order
+        // Sorts by defined order
         foreach ($order as $key => $value) {
             $sorted[$key] = $this->uses[$key];
         }
