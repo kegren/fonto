@@ -16,8 +16,7 @@ use ReflectionClass;
 
 /**
  * Provides a simple way to instantiate objects
- * and services. Using magical methods and should
- * be extended.
+ * and services using magical methods.
  *
  * @package Fonto_Application
  * @link    https://github.com/kenren/fonto
@@ -45,11 +44,12 @@ class ObjectHandler
         /*'Router' => '\Fonto\Routing\Router',*/
         'Hash' => '\Fonto\Security\Hash',
         'Validation' => '\Fonto\Validation\Validator',
+        'Html' => '\Fonto\View\Helper\Html',
         /*'View' => '\Fonto\View\View'*/
     );
 
     /**
-     * Dependency Injection manager object
+     * Dependency injection manager object
      *
      * @var \Fonto\DependencyInjection\Manager
      */
@@ -67,8 +67,8 @@ class ObjectHandler
 
     /**
      * Magical call method, catches method calls
-     * and checks if the called method is an regular object
-     * or an service.
+     * and checks if the called method is a regular object
+     * or a service.
      *
      * @param   string    $object
      * @param   array     $args
