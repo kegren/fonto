@@ -100,6 +100,17 @@ class Manager implements ManagerInterface
     }
 
     /**
+     * Returns registered services
+     *
+     * @return mixed
+     */
+    public function getCoreServices()
+    {
+        return $this->container->getCoreServices();
+    }
+
+
+    /**
      * Returns container object
      *
      * @return Container
