@@ -129,9 +129,9 @@ class Response
             $data = $data + $postedData;
         }
 
-        $this->session->save('redirectData', $data); // Temporary
+        $this->session->save('redirectData', $data);
 
-        session_write_close(); // Must call before header..
+        session_write_close(); // Must be called before header..
 
         $url = $this->url->baseUrl() . $url;
         header("Location: $url");
