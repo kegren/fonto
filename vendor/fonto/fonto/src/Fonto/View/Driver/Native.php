@@ -139,6 +139,19 @@ class Native extends ObjectHandler implements DriverInterface
     }
 
     /**
+     * Returns a html link
+     *
+     * @param    array        $args
+     * @param    string       $text
+     * @internal param string $baseUrl
+     * @return   string
+     */
+    protected function createLink($args = array(), $text)
+    {
+        return $this->html()->createLink($this->url()->baseUrl(), $args, $text);
+    }
+
+    /**
      * Returns formatted source of a file
      *
      * @param  string $file
