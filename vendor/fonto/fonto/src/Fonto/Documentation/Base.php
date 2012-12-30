@@ -13,7 +13,6 @@ namespace Fonto\Documentation;
 use Fonto\Application\ObjectHandler;
 use ReflectionClass;
 use ReflectionMethod;
-use Exception;
 
 /**
  * Base class for documentation. Responsible for serving documentation
@@ -25,6 +24,13 @@ use Exception;
  */
 class Base extends ObjectHandler
 {
+    /**
+     * Package
+     *
+     * @var string
+     */
+    private $package;
+
     /**
      * Constructor
      */
@@ -57,6 +63,8 @@ class Base extends ObjectHandler
             return false;
         }
 
+        $this->package = $package;
+
         $reflection = new ReflectionClass($package);
 
         return array(
@@ -72,17 +80,16 @@ class Base extends ObjectHandler
     /**
      * Returns documentation for a specific package and their methods.
      *
-     * @param  string $package
      * @return array
      */
-    public function getPackageMethodsDocumentation($package)
+    public function getPackageMethodsDocumentation()
     {
         $info = array();
-        $reflection = new ReflectionClass($package);
+        $reflection = new ReflectionClass($this->package);
 
         foreach ($reflection->getMethods() as $args) {
 
-            if ($args->class == $package) {
+            if ($args->class == $this->package) {
                 $name = $args->name;
                 $rf = $reflection->getMethod($name);
 

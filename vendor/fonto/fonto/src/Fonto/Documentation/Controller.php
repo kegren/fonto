@@ -87,7 +87,7 @@ class Controller extends ObjectHandler
     {
         $controllers = array();
 
-        // Loop through all controllers and their arguments
+        // Loops through all controllers and their arguments
         foreach ($this->controllers as $name => $option) {
             // If numeric than no arguments is defined for the controller
             if (is_numeric($name)) {

@@ -44,20 +44,18 @@ class Model extends ObjectHandler
         $riterator = new \RecursiveIteratorIterator($iterator, \RecursiveIteratorIterator::SELF_FIRST);
         $models = array();
 
-        // Loop through all files
+        // Loops through all files
         foreach ($riterator as $file) {
-            // Skip directories
+            // Skips directories
             if ($file->isDir()) {
                 continue;
             }
 
             $path = $file->getPathname(); // Path
-            $class = substr($path, strpos($path, ACTIVE_APP)); // Strip out everything before namespace
-
-            echo $file->getBasename();
+            $class = substr($path, strpos($path, ACTIVE_APP)); // Strips out everything before namespace
 
             if (strpos($class, '.php') !== false) {
-                $class = substr($class, 0, strpos($class, ".php")); // Remove extension
+                $class = substr($class, 0, strpos($class, ".php")); // Removes extension
             } else {
                 continue;
             }
@@ -67,11 +65,11 @@ class Model extends ObjectHandler
 
             foreach ($methods as $method) {
                 if ($method->class == $class) {
-                    $models[$class][] = $method->name; // Add all methods
+                    $models[$class][] = $method->name; // Adds all methods
                 }
             }
 
-            // Set correct type
+            // Sets correct type
             if (strpos($class, 'Entity') !== false) {
                 $models[$class]['type'] = 'Entity';
             }

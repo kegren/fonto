@@ -13,7 +13,7 @@ namespace Fonto\Documentation;
 use Fonto\Application\ObjectHandler;
 
 /**
- * Gets all core packages inside vendor/fonto dir.
+ * Gets all core packages inside the vendor/fonto dir.
  *
  * @package Fonto_Documentation
  * @link    https://github.com/kenren/fonto
