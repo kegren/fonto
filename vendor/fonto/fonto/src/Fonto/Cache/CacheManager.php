@@ -13,7 +13,7 @@ namespace Fonto\Cache;
 use Fonto\Cache\Driver\DriverInterface;
 
 /**
- * Responsible for managing cache driver.
+ * Responsible for managing cache drivers.
  *
  * @package Fonto_Cache
  * @link    https://github.com/kenren/fonto
@@ -39,7 +39,7 @@ class CacheManager
     }
 
     /**
-     * Stores a value by key and sets expires time
+     * Stores a value by key and sets expiration time
      *
      * @param  string  $key
      * @param  string  $value
