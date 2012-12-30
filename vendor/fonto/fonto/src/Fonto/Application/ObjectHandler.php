@@ -97,4 +97,14 @@ class ObjectHandler
 
         throw new Exception("The ObjectHandler only supports registered services or core objects of Fonto, the requested object: $object wasn't found");
     }
+
+    /**
+     * Returns manager object
+     *
+     * @return \Fonto\DependencyInjection\Manager
+     */
+    public function getDi()
+    {
+        return $this->di;
+    }
 }
