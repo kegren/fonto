@@ -45,7 +45,7 @@ class Html
     }
 
     /**
-     * Returns a image link
+     * Returns an image link
      *
      * @param  string $baseUrl
      * @param  string $link
