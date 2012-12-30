@@ -43,4 +43,17 @@ class Html
 
         return '<a href="'.$arguments.'">'.$text.'</a>'."\n";
     }
+
+    /**
+     * Returns a image link
+     *
+     * @param  string $baseUrl
+     * @param  string $link
+     * @param  string $alt
+     * @return string
+     */
+    public function createImgLink($baseUrl, $link, $alt)
+    {
+        return '<img src="'.$baseUrl.$link.'" alt="'.$alt.'">'."\n";
+    }
 }
