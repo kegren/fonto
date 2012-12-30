@@ -94,7 +94,7 @@ class Native extends ObjectHandler implements DriverInterface
     }
 
     /**
-     * Renders a view and extract its data
+     * Renders a view and extracts its data
      *
      * @param  string $view
      * @param  array  $data
@@ -104,16 +104,16 @@ class Native extends ObjectHandler implements DriverInterface
     public function renderView($view, $data = array())
     {
         $view = strtolower($view);
-        ob_start(); // Start output buffering
+        ob_start(); // Starts output buffering
 
         if (!empty($data)) {
             extract($data);
-            unset($data); // Remove from local
+            unset($data); // Removes from local
         }
 
         if ($this->findView($view, $this->path, $this->extension)) {
             require $this->path . $view . $this->extension;
-            $view = ob_get_clean(); // Get buffer and clear it
+            $view = ob_get_clean(); // Gets buffer and clear it
             return $view;
         } else {
             ob_end_clean();
@@ -141,10 +141,9 @@ class Native extends ObjectHandler implements DriverInterface
     /**
      * Returns a html link
      *
-     * @param    array        $args
-     * @param    string       $text
-     * @internal param string $baseUrl
-     * @return   string
+     * @param  array  $args
+     * @param  string $text
+     * @return string
      */
     protected function createLink($args = array(), $text)
     {
@@ -152,7 +151,19 @@ class Native extends ObjectHandler implements DriverInterface
     }
 
     /**
-     * Returns formatted source of a file
+     * Returns a image
+     *
+     * @param  string $link
+     * @param  string $alt
+     * @return string
+     */
+    protected function createImgLink($link, $alt)
+    {
+        return $this->html()->createImgLink($this->url()->baseUrl(), $link, $alt);
+    }
+
+    /**
+     * Returns a formatted source of a file
      *
      * @param  string $file
      * @return string
