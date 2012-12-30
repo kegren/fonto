@@ -31,6 +31,13 @@ class Container
     protected $services = array();
 
     /**
+     * Core services
+     *
+     * @var array
+     */
+    protected $core = array();
+
+    /**
      * Dependencies file
      *
      * @var string
@@ -53,6 +60,7 @@ class Container
     {
         $core = require __DIR__ . "/{$this->coreDependenciesFile}";
         $this->services = $this->services + $core;
+        $this->core = $core;
         unset($core);
 
         $di = $this;
@@ -132,6 +140,16 @@ class Container
             return $service;
         }
         return false;
+    }
+
+    /**
+     * Returns core services
+     *
+     * @return array|mixed
+     */
+    public function getCoreServices()
+    {
+        return $this->core;
     }
 
     /**
