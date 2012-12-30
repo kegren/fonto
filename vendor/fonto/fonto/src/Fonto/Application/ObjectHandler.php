@@ -26,26 +26,26 @@ use ReflectionClass;
 class ObjectHandler
 {
     /**
-     * Objects fully namespaced
+     * Objects currently supported by the handler
      *
      * @var array
      */
     protected $objects = array(
         'App' => '\Fonto\Application\App',
-        'Auth' => '\Fonto\Authenticate\Auth',
+        /*'Auth' => '\Fonto\Authenticate\Auth',*/
         'Cache' => '\Fonto\Cache\CacheManager',
-        'Config' => '\Fonto\Config\ConfigManager',
+        /*'Config' => '\Fonto\Config\ConfigManager',*/
         'Form' => '\Fonto\Form\Form',
         'FormModel' => '\Fonto\FormModel\Base',
         'Arr' => '\Fonto\Helper\Arr',
         'Request' => '\Fonto\Http\Request',
-        'Response' => '\Fonto\Http\Response',
+        /*'Response' => '\Fonto\Http\Response',*/
         'Session' => '\Fonto\Http\Session',
         'Url' => '\Fonto\Http\Url',
-        'Router' => '\Fonto\Routing\Router',
+        /*'Router' => '\Fonto\Routing\Router',*/
         'Hash' => '\Fonto\Security\Hash',
         'Validation' => '\Fonto\Validation\Validator',
-        'View' => '\Fonto\View\View'
+        /*'View' => '\Fonto\View\View'*/
     );
 
     /**
