@@ -133,7 +133,7 @@ class Session
 
     /**
      * Unsets a session variable and then returns it from
-     * a local variable. Used to show flash messages.
+     * a local variable. It's used to show flash messages.
      *
      * @param  string $id
      * @return string

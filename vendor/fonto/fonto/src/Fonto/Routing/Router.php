@@ -90,7 +90,7 @@ class Router
     /**
      * Constructor
      *
-     * Sets both route and request objects and includes
+     * Sets route and request objects and includes
      * user defined routes.
      *
      * @param Route   $route
@@ -180,14 +180,14 @@ class Router
 
         foreach ($this->routes as $route => $options) {
 
-            // Regular route without any patterns?
+            // Checks if regular route without any patterns
             if (preg_match("#^{$route}$#", $requestUri)) {
                 $this->getRoute()->createRoute($options);
                 return true;
                 break;
             }
 
-            // Registered only as a controller?
+            // Checks if registered only as a controller
             if ($route == '<:controller>') {
                 $tmpControllers = (array)$options['mapsTo']; // All controllers
                 $controllers = array();
@@ -204,7 +204,7 @@ class Router
                     }
                 }
 
-                // Is the requested 'controller' registered?
+                //Checks if the requested 'controller' is registered
                 if (array_key_exists($controller, $controllers)) {
 
                     if (is_array($controllers[$controller])) {
@@ -220,7 +220,7 @@ class Router
                         }
                     }
 
-                    // Send to route class
+                    // Sends to route class
                     $this->getRoute()->createRoute(
                         array(
                             'controller' => $controller,
@@ -238,7 +238,7 @@ class Router
                 break;
             }
 
-            // Check pattern
+            // Checks pattern
             $route = $this->regexRoute($route);
 
             // Pattern found and appended
@@ -252,7 +252,7 @@ class Router
                     }
                 );
 
-                // Any matches?
+                // Checks if any matches?
                 if (!empty($value)) {
                     unset($values[0]); // Remove url
                     $merged = array(

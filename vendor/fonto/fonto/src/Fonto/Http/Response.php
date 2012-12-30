@@ -98,8 +98,8 @@ class Response
      *
      * @param  Url     $url
      * @param  View    $view
-     * @param  Session $session
-     * @return void
+     * @param Session $session
+     * @return \Fonto\Http\Response
      */
     public function __construct(Url $url, View $view, Session $session)
     {
@@ -109,7 +109,7 @@ class Response
     }
 
     /**
-     * Redirects a user to given uri with data if given
+     * Redirects an user to given uri with data if given
      *
      * @param  string $url
      * @param  array  $data
@@ -131,7 +131,7 @@ class Response
 
         $this->session->save('redirectData', $data); // Temporary
 
-        session_write_close(); // Most call before header..
+        session_write_close(); // Must call before header..
 
         $url = $this->url->baseUrl() . $url;
         header("Location: $url");
