@@ -16,7 +16,7 @@ use Memcache;
 use Exception;
 
 /**
- * A wrapper for Memcache caching.
+ * A wrapper for memcache caching.
  *
  * @package     Fonto_Cache
  * @subpackage  Driver
@@ -52,7 +52,7 @@ class MemcacheDriver implements DriverInterface
     public function __construct()
     {
         if (false === $this->checkIfMemcacheIsAvailable()) {
-            throw new Exception("{memcache} doesn't seems to be supported, please check your settings");
+            throw new Exception("{memcache} doesn't seem to be supported, please check your settings");
         }
 
         $default = $this->servers['default'];
@@ -65,7 +65,7 @@ class MemcacheDriver implements DriverInterface
     }
 
     /**
-     * Stores a value by key and sets expires time
+     * Stores a value by key and sets expiration time
      *
      * @param  string  $key
      * @param  string  $value

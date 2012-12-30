@@ -24,7 +24,7 @@ use Fonto\Cache\Driver\DriverInterface;
 class ApcDriver implements DriverInterface
 {
     /**
-     * Stores a value by key and sets expires time
+     * Stores a value by key and sets expiration time
      *
      * @param  string  $key
      * @param  string  $value
