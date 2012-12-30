@@ -62,7 +62,7 @@ class App extends ObjectHandler
                 return $this->response()->error(404);
             }
 
-            $dispatcher = $router->dispatch(); // Dispatch request
+            $dispatcher = $router->dispatch(); // Dispatches request
 
             if (false === $dispatcher) {
                 return $this->response()->error(404);
