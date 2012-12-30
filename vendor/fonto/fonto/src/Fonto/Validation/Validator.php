@@ -107,7 +107,7 @@ class Validator
     }
 
     /**
-     * Returns error for a specified field
+     * Returns an error for a specified field
      *
      * @param  string $field
      * @return mixed
@@ -141,12 +141,12 @@ class Validator
      */
     public function validate(array $rules = array(), array $inputData = array())
     {
-        $matchedRules = array(); // Hold matched rules
+        $matchedRules = array(); // Holds matched rules
         $fixedRules = array();
         $arrayHelper = new \Fonto\Core\Helper\Arr(); // For triming and removal of empty values
         $inputData = $arrayHelper->trimArray($inputData);
 
-        // Begin by checking if there is a rule set for a field
+        // Begins by checking if there is a rule set for a field
         foreach ($rules as $field => $options) {
             if (isset($inputData[$field])) {
                 $matchedRules[$field] = $options;
@@ -158,7 +158,7 @@ class Validator
             return false;
         }
 
-        // Loop through defined rules
+        // Loops through defined rules
         foreach ($matchedRules as $field => $options) {
             if (!isset($options['rules']) and !isset($options['message'])) {
                 break;
@@ -166,10 +166,10 @@ class Validator
             $rules = isset($options['rules']) ? $options['rules'] : '';
             $message = isset($options['messages']) ? $options['messages'] : '';
 
-            // Make sure that rules is not an empty string
+            // Makes sure that rules is not an empty string
             if (!empty($rules)) {
                 $rules = explode('|', $rules);
-                $rules = $arrayHelper->cleanArray($rules); // Remove empty elements
+                $rules = $arrayHelper->cleanArray($rules); // Removes empty elements
 
                 if (sizeof($rules)) {
                     $temporaryRulesArray = array();
@@ -179,10 +179,10 @@ class Validator
                         preg_match('/{([^}]*)}/', $rule, $matches); // Grabs value between {}
 
                         if (sizeof($matches)) {
-                            $removeExpression = isset($matches[0]) ? $matches[0] : ''; // Get returned expression
+                            $removeExpression = isset($matches[0]) ? $matches[0] : ''; // Gets returned expression
                             $ruleValue = isset($matches[1]) ? $matches[1] : '';
                             $rule = substr($rule, 0, strpos($rule, $removeExpression));
-                            unset($removeExpression); // Remove unnecessary var
+                            unset($removeExpression); // Removes unnecessary var
                         }
 
                         $temporaryRulesArray[$rule] = isset($ruleValue) ? $ruleValue : $rule;
@@ -201,18 +201,18 @@ class Validator
         // Finally ready to ..
         foreach ($fixedRules as $field => $option) {
 
-            $input = $inputData[$field]; // Get matching input data
+            $input = $inputData[$field]; // Gets matching input data
             $rules = isset($option['rules']) ? $option['rules'] : array();
 
             if (!sizeof($rules)) {
                 return false;
             }
 
-            // Loop through rules by name and value
+            // Loops through rules by name and value
             foreach ($rules as $rule => $value) {
 
                 if (!isset($this->validators[$rule])) {
-                    continue; // Skip
+                    continue; // Skips
                 }
 
                 $class = $this->validators[$rule]['class']; // Defined class in validators array
