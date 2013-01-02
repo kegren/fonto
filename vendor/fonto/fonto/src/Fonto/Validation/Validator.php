@@ -55,41 +55,41 @@ class Validator
      */
     protected $validators = array(
         'max' => array(
-            'class' => 'Fonto\Core\Validation\Components\ValidateMax',
+            'class' => 'Fonto\Validation\Components\ValidateMax',
             'filters' => 'trim',
             'message' => '{field} cant be more than {value} characters.',
             'pattern' => '([a-zA-Z0-9]+)'
         ),
         'min' => array(
-            'class' => 'Fonto\Core\Validation\Components\ValidateMin',
+            'class' => 'Fonto\Validation\Components\ValidateMin',
             'filters' => 'trim',
             'message' => '{field} most be at least {value} characters',
             'pattern' => '([a-zA-Z0-9]+)'
         ),
         'required' => array(
-            'class' => 'Fonto\Core\Validation\Components\ValidateRequired',
+            'class' => 'Fonto\Validation\Components\ValidateRequired',
             'filters' => 'trim',
             'message' => '{field} is required.',
         ),
         'num' => array(
-            'class' => 'Fonto\Core\Validation\Components\ValidateNum',
+            'class' => 'Fonto\Validation\Components\ValidateNum',
             'filters' => 'trim',
             'message' => '{field} must be a number.',
             'pattern' => '([0-9]+)'
         ),
         'email' => array(
-            'class' => 'Fonto\Core\Validation\Components\ValidateEmail',
+            'class' => 'Fonto\Validation\Components\ValidateEmail',
             'filters' => 'trim',
             'message' => '{field} is not a valid email address.',
         ),
         'identical' => array(
-            'class' => 'Fonto\Core\Validation\Components\ValidateIdentical',
+            'class' => 'Fonto\Validation\Components\ValidateIdentical',
             'filters' => 'trim',
             'message' => '{field} doesn\'t match.',
             'pattern' => '([a-zA-Z0-9]+)'
         ),
         'match' => array(
-            'class' => 'Fonto\Core\Validation\Components\ValidateMatch',
+            'class' => 'Fonto\Validation\Components\ValidateMatch',
             'filters' => 'trim',
             'message' => '{field} doesn\'t match.',
             'pattern' => '([a-zA-Z0-9]+)'
