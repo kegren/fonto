@@ -60,6 +60,8 @@ class Model extends ObjectHandler
                 continue;
             }
 
+            $class = str_replace('/', '\\', $class); // Linux
+
             $reflection = new ReflectionClass($class);
             $methods = $reflection->getMethods(ReflectionMethod::IS_PUBLIC);
 
