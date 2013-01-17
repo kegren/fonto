@@ -191,7 +191,7 @@ class Router
             if ($route == '<:controller>') {
                 $tmpControllers = (array)$options['mapsTo']; // All controllers
                 $controllers = array();
-                $controller = $requestUriArr[1]; // Controller in uri
+                $controller = $requestUriArr[0]; // Controller in uri
                 $requestUriArr = array_slice($requestUriArr, 1); // Requested uri
 
                 foreach ($tmpControllers as $control => $option) {
