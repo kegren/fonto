@@ -1,41 +1,5 @@
 [
     {
-        "name": "php-activerecord/php-activerecord",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/kla/php-activerecord",
-            "reference": "6f72eb7958e7dd18a85b374ee28477de748acbd8"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://github.com/kla/php-activerecord/zipball/6f72eb7958e7dd18a85b374ee28477de748acbd8",
-            "reference": "6f72eb7958e7dd18a85b374ee28477de748acbd8",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.0"
-        },
-        "time": "2012-07-31 07:51:30",
-        "type": "library",
-        "installation-source": "source",
-        "autoload": {
-            "psr-0": {
-                "ActiveRecord": "lib/"
-            }
-        },
-        "license": [
-            "MIT"
-        ],
-        "description": "php-activerecord is an open source ORM library based on the ActiveRecord pattern.",
-        "homepage": "http://www.phpactiverecord.org/",
-        "keywords": [
-            "orm",
-            "activerecord"
-        ]
-    },
-    {
         "name": "hautelook/phpass",
         "version": "dev-master",
         "version_normalized": "9999999-dev",
@@ -61,6 +25,7 @@
                 "Hautelook": "src/"
             }
         },
+        "notification-url": "https://packagist.org/downloads/",
         "license": [
             "Public Domain"
         ],
@@ -87,25 +52,29 @@
         "source": {
             "type": "git",
             "url": "git://github.com/ezyang/htmlpurifier.git",
-            "reference": "8a8b123d3322d24d77114dfa767a5eafbe9ff24b"
+            "reference": "344e0640b6610883a0aa6766cc6750d26d091c76"
         },
         "dist": {
             "type": "zip",
-            "url": "https://github.com/ezyang/htmlpurifier/archive/8a8b123d3322d24d77114dfa767a5eafbe9ff24b.zip",
-            "reference": "8a8b123d3322d24d77114dfa767a5eafbe9ff24b",
+            "url": "https://github.com/ezyang/htmlpurifier/archive/344e0640b6610883a0aa6766cc6750d26d091c76.zip",
+            "reference": "344e0640b6610883a0aa6766cc6750d26d091c76",
             "shasum": ""
         },
         "require": {
             "php": ">=5.2"
         },
-        "time": "2012-09-16 09:11:46",
+        "time": "2012-12-21 08:16:16",
         "type": "library",
         "installation-source": "source",
         "autoload": {
-            "classmap": [
-                "library/"
+            "psr-0": {
+                "HTMLPurifier": "library/"
+            },
+            "files": [
+                "library/HTMLPurifier.composer.php"
             ]
         },
+        "notification-url": "https://packagist.org/downloads/",
         "license": [
             "LGPL"
         ],
@@ -153,6 +122,7 @@
                 "Doctrine\\Common": "lib/"
             }
         },
+        "notification-url": "https://packagist.org/downloads/",
         "license": [
             "MIT"
         ],
@@ -178,7 +148,7 @@
             {
                 "name": "Johannes Schmitt",
                 "email": "schmittjoh@gmail.com",
-                "homepage": "http://jmsyst.com",
+                "homepage": "https://github.com/schmittjoh",
                 "role": "Developer of wrapped JMSSerializerBundle"
             }
         ],
@@ -193,25 +163,69 @@
         ]
     },
     {
-        "name": "doctrine/dbal",
-        "version": "2.3.1",
-        "version_normalized": "2.3.1.0",
+        "name": "symfony/console",
+        "version": "v2.1.6",
+        "version_normalized": "2.1.6.0",
+        "target-dir": "Symfony/Component/Console",
         "source": {
             "type": "git",
-            "url": "https://github.com/doctrine/dbal",
-            "reference": "2.3.1"
+            "url": "https://github.com/symfony/Console",
+            "reference": "v2.1.6"
         },
         "dist": {
             "type": "zip",
-            "url": "https://github.com/doctrine/dbal/archive/2.3.1.zip",
-            "reference": "2.3.1",
+            "url": "https://github.com/symfony/Console/archive/v2.1.6.zip",
+            "reference": "v2.1.6",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "time": "2012-12-13 17:42:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Symfony\\Component\\Console": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "http://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony Console Component",
+        "homepage": "http://symfony.com"
+    },
+    {
+        "name": "doctrine/dbal",
+        "version": "2.3.2",
+        "version_normalized": "2.3.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/doctrine/dbal",
+            "reference": "2.3.2"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://github.com/doctrine/dbal/archive/2.3.2.zip",
+            "reference": "2.3.2",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.2",
             "doctrine/common": "2.3.*"
         },
-        "time": "2012-12-04 21:06:56",
+        "time": "2013-01-07 20:03:43",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -224,6 +238,7 @@
                 "Doctrine\\DBAL": "lib/"
             }
         },
+        "notification-url": "https://packagist.org/downloads/",
         "license": [
             "MIT"
         ],
@@ -258,17 +273,17 @@
     },
     {
         "name": "doctrine/orm",
-        "version": "2.3.1",
-        "version_normalized": "2.3.1.0",
+        "version": "2.3.2",
+        "version_normalized": "2.3.2.0",
         "source": {
             "type": "git",
             "url": "git://github.com/doctrine/doctrine2.git",
-            "reference": "2.3.1"
+            "reference": "2.3.2"
         },
         "dist": {
             "type": "zip",
-            "url": "https://github.com/doctrine/doctrine2/archive/2.3.1.zip",
-            "reference": "2.3.1",
+            "url": "https://github.com/doctrine/doctrine2/archive/2.3.2.zip",
+            "reference": "2.3.2",
             "shasum": ""
         },
         "require": {
@@ -280,7 +295,7 @@
         "suggest": {
             "symfony/yaml": "If you want to use YAML Metadata Mapping Driver"
         },
-        "time": "2012-12-04 22:04:25",
+        "time": "2013-01-07 20:05:04",
         "bin": [
             "bin/doctrine",
             "bin/doctrine.php"
@@ -297,6 +312,7 @@
                 "Doctrine\\ORM": "lib/"
             }
         },
+        "notification-url": "https://packagist.org/downloads/",
         "license": [
             "MIT"
         ],
@@ -326,53 +342,5 @@
             "database",
             "orm"
         ]
-    },
-    {
-        "name": "symfony/console",
-        "version": "v2.1.4",
-        "version_normalized": "2.1.4.0",
-        "target-dir": "Symfony/Component/Console",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/symfony/Console",
-            "reference": "v2.1.4"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://github.com/symfony/Console/archive/v2.1.4.zip",
-            "reference": "v2.1.4",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3"
-        },
-        "time": "2012-11-09 08:52:51",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.1-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Symfony\\Component\\Console": ""
-            }
-        },
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Fabien Potencier",
-                "email": "fabien@symfony.com"
-            },
-            {
-                "name": "Symfony Community",
-                "homepage": "http://symfony.com/contributors"
-            }
-        ],
-        "description": "Symfony Console Component",
-        "homepage": "http://symfony.com"
     }
 ]
