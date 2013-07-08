@@ -178,6 +178,10 @@ class Router
         $requestUri = $this->getRequest()->getRequestUri();
         $requestUriArr = explode('/', $requestUri);
 
+        if (empty($requestUri[0])) {
+            $requestUri = self::DEFAULT_ROUTE;
+        }
+
         foreach ($this->routes as $route => $options) {
 
             // Checks if regular route without any patterns
