@@ -16,7 +16,6 @@ use Fonto\Application\App;
 define('START_TIME', microtime(true));
 define('DEBUG', false);
 define('CACHE', false);
-define('ACTIVE_APP', 'Demo');
 
 /**
  * Include files
@@ -24,6 +23,7 @@ define('ACTIVE_APP', 'Demo');
 include APPPATH . 'helpers' . EXT;
 $loader = require VENDORPATH . 'autoload' . EXT;
 require SYSCOREAPPPATH . 'App' . EXT;
+include CONFIGPATH . "modules.php";
 
 /**
  * Sets error reporting

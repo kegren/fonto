@@ -64,7 +64,7 @@ class Container
         unset($core);
 
         $di = $this;
-        $user = require APPWEBPATH . "/{$this->userProvided}";
+        $user = require APPPATH . "{$this->userProvided}";
         unset($user);
     }
 

@@ -1,5 +1,9 @@
 *.TODO
+<<<<<<< HEAD
 app/modules/Demo/Storage/
+=======
+app/storage/
+>>>>>>> feature/modules
 vendor/*
 !vendor/fonto/
 .DS_Store

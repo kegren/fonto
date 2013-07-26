@@ -111,7 +111,7 @@ class Router
         $this->route = ($route) ? : new Route();
         $this->request = ($request) ? : new Request();
         $router = $this;
-        include APPWEBPATH . 'routes.php';
+        include ROOT . "app/modules/Demo/" . 'routes.php';
         unset($router);
     }
 
@@ -144,7 +144,7 @@ class Router
      */
     public function dispatch()
     {
-        $namespace = ACTIVE_APP . self::CONTROLLER_NAMESPACE;
+        $namespace = "Demo" . self::CONTROLLER_NAMESPACE;
         $class = $namespace . '\\' . ucfirst($this->route->getController());
 
         try {
