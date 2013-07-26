@@ -17,9 +17,6 @@
 <body>
 	<div class="fontoContainer">
 		<header>
-            <a href="<?php echo $baseUrl; ?>">
-                <?php echo $this->createImgLink('web/app/Demo/img/fontoLogov1.png', 'Fonto logo'); ?>
-            </a>
 			<h1><?php echo $title; ?></h1>
 		</header>
         <div class="main">
