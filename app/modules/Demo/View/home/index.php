@@ -6,8 +6,8 @@
 
     <link href='http://fonts.googleapis.com/css?family=Stoke' rel='stylesheet' type='text/css'>
 
-    <link rel="stylesheet" href="<?php echo $baseUrl ?>web/app/Demo/css/reset.css">
-    <link rel="stylesheet" href="<?php echo $baseUrl ?>web/app/Demo/css/style.css">
+    <link rel="stylesheet" href="<?php echo $baseUrl ?>public/Demo/css/reset.css">
+    <link rel="stylesheet" href="<?php echo $baseUrl ?>public/Demo/css/style.css">
 
 	<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
