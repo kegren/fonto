@@ -16,6 +16,7 @@ defined('EXT') or define('EXT', '.php');
  * Define paths
  */
 defined('ROOT') or define('ROOT', realpath(__DIR__). DS);
+defined('CONFIGPATH') or define('CONFIGPATH', ROOT . "config" . DS);
 defined('APPPATH') or define('APPPATH', ROOT . 'app' . DS);
 defined('VENDORPATH') or define('VENDORPATH', ROOT . 'vendor' . DS);
 defined('SYSCOREPATH') or define('SYSCOREPATH', VENDORPATH . 'fonto' . DS . 'fonto' . DS . 'src' . DS . 'Fonto' . DS);
