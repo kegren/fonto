@@ -162,6 +162,8 @@ class Router
                 if (!($this->resources[$action]) or $httpRequest !== $this->resources[$action]) {
                     return false;
                 }
+            } else {
+                $action = $action . "Action";
             }
 
             if (method_exists($object, $action)) {
