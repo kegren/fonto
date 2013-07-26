@@ -57,13 +57,13 @@ class Validator
         'max' => array(
             'class' => 'Fonto\Validation\Components\ValidateMax',
             'filters' => 'trim',
-            'message' => '{field} cant be more than {value} characters.',
+            'message' => '{field} can\'t be more than {value} characters.',
             'pattern' => '([a-zA-Z0-9]+)'
         ),
         'min' => array(
             'class' => 'Fonto\Validation\Components\ValidateMin',
             'filters' => 'trim',
-            'message' => '{field} most be at least {value} characters',
+            'message' => '{field} must be at least {value} characters',
             'pattern' => '([a-zA-Z0-9]+)'
         ),
         'required' => array(
