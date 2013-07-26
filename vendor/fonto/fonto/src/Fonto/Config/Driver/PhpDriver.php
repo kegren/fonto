@@ -88,7 +88,7 @@ class PhpDriver implements ConfigInterface
      */
     protected function getFile($file)
     {
-        $this->path = CONFIGPATH;
+        $this->path = ROOT . "config/";
         $file = $this->path . $file . $this->extension;
 
         if (file_exists($file)) {
