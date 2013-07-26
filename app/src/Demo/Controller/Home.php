@@ -13,6 +13,8 @@ use Fonto\Documentation\Base as DocBase;
 
 class Home extends Base
 {
+    public $restful = true;
+
     /**
      * Constructor
      */
