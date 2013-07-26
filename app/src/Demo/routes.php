@@ -16,7 +16,6 @@ $router->addRoute(
     '/',
     array(
         'mapsTo' => 'home#index',
-        'restful' => true
     )
 );
 
