@@ -23,6 +23,7 @@ define('CACHE', false);
 include APPPATH . 'helpers' . EXT;
 $loader = require VENDORPATH . 'autoload' . EXT;
 require SYSCOREAPPPATH . 'App' . EXT;
+include CONFIGPATH . "modules.php";
 
 /**
  * Sets error reporting
