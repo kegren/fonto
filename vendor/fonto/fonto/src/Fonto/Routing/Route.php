@@ -78,7 +78,6 @@ class Route
      */
     protected $supported = array(
         'mapsTo' => 'string',
-        'restful' => 'boolean',
         'name' => 'string',
         'method' => 'string'
     );
@@ -100,9 +99,6 @@ class Route
     {
         if (false === $this->hasMapsTo($route)) {
 
-            if ($this->isRestful($route)) {
-                $this->setRestful(true);
-            }
             if ($this->hasMethod($route)) {
                 $this->setMethod(strtolower($route['method']));
             }
@@ -114,9 +110,6 @@ class Route
             $parsedMapsTo = $this->parseMapTo($route['mapsTo']);
 
             if ($parsedMapsTo) {
-                if ($this->isRestful($route)) {
-                    $this->setRestful(true);
-                }
                 if ($this->hasMethod($route)) {
                     $this->setMethod(strtolower($route['method']));
                 }
@@ -175,17 +168,6 @@ class Route
     protected function hasMethod($route)
     {
         return isset($route['method']);
-    }
-
-    /**
-     * Checks if a route is restful or not
-     *
-     * @param  array $route
-     * @return bool
-     */
-    protected function isRestful($route)
-    {
-        return isset($route['restful']) ? $route['restful'] : false;
     }
 
     /**
