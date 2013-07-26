@@ -37,7 +37,6 @@ class App extends ObjectHandler
      */
     public function __construct()
     {
-        $this->setPaths();
         parent::__construct();
     }
 
@@ -50,7 +49,7 @@ class App extends ObjectHandler
     public function run($loader)
     {
         try {
-            $loader->add(ACTIVE_APP, APPPATH . 'src');
+            $loader->add("Demo", APPPATH . 'modules');
 
             $config = $this->config();
             $this->setTimezone($config->read('app#timezone'));
@@ -81,41 +80,5 @@ class App extends ObjectHandler
     protected function setTimezone($timezone)
     {
         date_default_timezone_set($timezone);
-    }
-
-    /**
-     * Defines paths based on the application name
-     *
-     * @return void
-     */
-    private function setPaths()
-    {
-        if (!defined('CONFIGPATH')) {
-            define('CONFIGPATH', APPPATH . 'src' . DS . ACTIVE_APP . DS . 'Config' . DS);
-        }
-
-
-        if (!defined('APPWEBPATH')) {
-            define('APPWEBPATH', APPPATH . 'src' . DS . ACTIVE_APP . DS);
-        }
-
-        if (!defined('CTLPATH')) {
-            define('CTLPATH', APPPATH . 'src' . DS . ACTIVE_APP . DS . 'Controller' . DS);
-        }
-
-
-        if (!defined('VIEWPATH')) {
-            define('VIEWPATH', APPPATH . 'src' . DS . ACTIVE_APP . DS . 'View' . DS);
-        }
-
-        if (!defined('SESSPATH')) {
-            define('SESSPATH', APPWEBPATH . 'Storage' . DS . 'Session' . DS);
-        }
-
-
-        if (!defined('MODELPATH')) {
-            define('MODELPATH', APPPATH . 'src' . DS . ACTIVE_APP . DS . 'Model' . DS);
-        }
-
     }
 }
