@@ -190,9 +190,10 @@ class Route
     {
         if (!$action) {
             $this->action = self::DEFAULT_ACTION;
-        } else {
-            $this->action = $action . self::ACTION_PREFIX;
+            return;
         }
+
+        $this->action = $action;
     }
 
     /**
