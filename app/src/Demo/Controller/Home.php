@@ -26,7 +26,7 @@ class Home extends Base
     /**
      * @return mixed
      */
-    public function getIndexAction()
+    public function index()
     {
         $controllers = new Controllers();
         $models = new Models();
