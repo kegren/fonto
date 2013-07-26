@@ -1,4 +1,7 @@
 <?php
+/**
+ * Part of Fonto framework
+ */
 
 function modules()
 {
