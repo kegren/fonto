@@ -73,8 +73,18 @@ class Router
         'GET',
         'POST',
         'PUT',
-        'DELETE',
-        'HEAD'
+        'PATCH',
+        'DELETE'
+    );
+
+    protected $resources = array(
+        'index'   => 'GET',
+        'new'     => 'GET',
+        'create'  => 'POST',
+        'show'    => 'GET',
+        'edit'    => 'GET',
+        'update'  => 'PUT',
+        'destroy' => 'DELETE'
     );
 
     /**
@@ -146,10 +156,12 @@ class Router
 
             $action = $this->getRoute()->getAction();
 
-            if ($this->getRoute()->getRestful()) {
-                $httpRequest = strtolower($this->request->getMethod());
+            if (isset($object->restful)) {
+                $httpRequest = $this->request->getMethod();
 
-                $action = $httpRequest . ucfirst($action);
+                if (!($this->resources[$action]) or $httpRequest !== $this->resources[$action]) {
+                    return false;
+                }
             }
 
             if (method_exists($object, $action)) {
