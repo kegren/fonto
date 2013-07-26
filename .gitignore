@@ -1,5 +1,5 @@
 *.TODO
-app/src/Demo/Storage/
+app/modules/Demo/Storage/
 vendor/*
 !vendor/fonto/
 .DS_Store
