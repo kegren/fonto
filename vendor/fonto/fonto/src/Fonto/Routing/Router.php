@@ -156,7 +156,7 @@ class Router
 
             $action = $this->getRoute()->getAction();
 
-            if (isset($object->restful)) {
+            if ($object->restful) {
                 $httpRequest = $this->request->getMethod();
 
                 if (!($this->resources[$action]) or $httpRequest !== $this->resources[$action]) {
