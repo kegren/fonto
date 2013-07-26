@@ -21,6 +21,7 @@ defined('VENDORPATH') or define('VENDORPATH', ROOT . 'vendor' . DS);
 defined('SYSCOREPATH') or define('SYSCOREPATH', VENDORPATH . 'fonto' . DS . 'fonto' . DS . 'src' . DS . 'Fonto' . DS);
 defined('SYSCOREAPPPATH') or define('SYSCOREAPPPATH', VENDORPATH . 'fonto' . DS . 'fonto' . DS . 'src' . DS . 'Fonto' . DS . 'Application' . DS);
 defined('WEBPATH') or define('WEBPATH', ROOT . 'web' . DS);
+defined('SESSPATH') or define('SESSPATH', APPPATH . 'storage' . DS . 'session');
 
 /**
  * Launch bootstrap
