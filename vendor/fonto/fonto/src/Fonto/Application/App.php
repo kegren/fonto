@@ -49,7 +49,19 @@ class App extends ObjectHandler
     public function run($loader)
     {
         try {
-            $loader->add("Demo", APPPATH . 'modules');
+
+            if (!$modules = modules() and count(modules()) == 0) {
+                return;
+                #return $this->response()->error(500);
+            }
+
+            if (count($modules) == 1) {
+                $loader->add($modules[0], APPPATH . 'modules');
+            } else {
+                foreach ($modules as $module) {
+                    $loader->add($module, APPPATH . 'modules');
+                }
+            }
 
             $config = $this->config();
             $this->setTimezone($config->read('app#timezone'));
