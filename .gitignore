@@ -1,14 +1,7 @@
 *.TODO
-/app/src/Demo/Storage/
-/vendor/composer/**/*
-/vendor/bin/
-/vendor/doctrine/
-/vendor/ezyang/
-/vendor/hautelook/
-/vendor/symfony/
-/vendor/autoload.php
+app/src/Demo/Storage/
+vendor/*
+!vendor/fonto/
 .DS_Store
-.idea
-/.idea
 composer.phar
 composer.lock
