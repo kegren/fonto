@@ -55,7 +55,7 @@ class Native extends ObjectHandler implements DriverInterface
     public function __construct()
     {
         parent::__construct();
-        $this->path = VIEWPATH;
+        $this->path = ROOT . "app/modules/Demo/View/";
     }
 
     /**
