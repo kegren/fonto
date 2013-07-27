@@ -49,6 +49,7 @@ class App extends ObjectHandler
     public function run($loader)
     {
         try {
+            $this->initModules();
 
             if (!$modules = modules() and count(modules()) == 0) {
                 return;
@@ -84,8 +85,13 @@ class App extends ObjectHandler
         }
     }
 
+    public function initModules()
+    {
+        return include CONFIGPATH . "modules.php";
+    }
+
     /**
-     * Sets the timezone
+     * Sets timezone
      *
      * @param $timezone
      */
