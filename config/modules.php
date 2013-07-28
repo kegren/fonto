@@ -3,7 +3,7 @@
  * Part of Fonto framework
  */
 
-function modules()
+function modulesConfig()
 {
     return array(
         'Demo'
