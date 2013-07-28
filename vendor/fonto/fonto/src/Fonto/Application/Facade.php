@@ -12,5 +12,8 @@ namespace Fonto\Application;
 
 class Facade
 {
-
+    public static function __callStatic($name, $args)
+    {
+        return call_user_func_array(array(self::getInstance(), $method), $args);
+    }
 }
