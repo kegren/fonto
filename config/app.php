@@ -5,36 +5,39 @@
  * Application settings
  */
 
-return array(
-    /**
-     * language
-     */
-    'language' => 'en',
-    /**
-     * Default timezone
-     */
-    'timezone' => 'Europe/Stockholm',
-    /**
-     * Database settings
-     */
-    'database' => array(
-        'local' => array(
-            'driver' => 'pdo_mysql',
-            'host' => 'localhost',
-            'dbname' => 'doctrine',
-            'user' => 'root',
-            'password' => '',
+function appConfig()
+{
+    return array(
+        /**
+         * language
+         */
+        'language' => 'en',
+        /**
+         * Default timezone
+         */
+        'timezone' => 'Europe/Stockholm',
+        /**
+         * Database settings
+         */
+        'database' => array(
+            'local' => array(
+                'driver' => 'pdo_mysql',
+                'host' => 'localhost',
+                'dbname' => 'doctrine',
+                'user' => 'root',
+                'password' => '',
+            ),
+            'server' => array(
+                'driver' => 'pdo_mysql',
+                'host' => 'localhost',
+                'dbname' => 'doctrine',
+                'user' => 'root',
+                'password' => '',
+            ),
         ),
-        'server' => array(
-            'driver' => 'pdo_mysql',
-            'host' => 'localhost',
-            'dbname' => 'doctrine',
-            'user' => 'root',
-            'password' => '',
-        ),
-    ),
-    /**
-     * Application environment
-     */
-    'environment' => 'local',
-);
+        /**
+         * Application environment
+         */
+        'environment' => 'local',
+    );
+}
