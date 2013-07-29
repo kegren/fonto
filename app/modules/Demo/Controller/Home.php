@@ -25,8 +25,7 @@ class Home extends Base
     public function index()
     {
         $data = array(
-            'title' => 'Fonto PHP Framework',
-            'text' => 'Under development',
+            'title' => 'Fonto',
             'baseUrl' => $this->url()->baseUrl(),
         );
 
