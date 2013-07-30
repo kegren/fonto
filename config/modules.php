@@ -2,10 +2,6 @@
 /**
  * Part of Fonto framework
  */
-
-function modulesConfig()
-{
-    return array(
-        'Demo'
-    );
-}
+return array(
+    'Demo'
+);
