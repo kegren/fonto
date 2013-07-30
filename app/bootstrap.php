@@ -8,7 +8,7 @@
  * @version     0.6
  */
 
-use Fonto\Application\App;
+use Fonto\Facade\App;
 use HTMLPurifier_Bootstrap as Purifier;
 
 /**
@@ -16,7 +16,6 @@ use HTMLPurifier_Bootstrap as Purifier;
  */
 define('START_TIME', microtime(true));
 define('DEBUG', false);
-define('CACHE', false);
 
 function paths()
 {
@@ -54,7 +53,6 @@ $definePaths = function() use ($paths) {
 
 require $paths['fontoApp'] . '/App' . $custom['ext'];
 
-
 /**
  * Sets error reporting
  */
@@ -68,10 +66,7 @@ Purifier::registerAutoload();
 /**
  * Runs application
  */
-$app = new App();
-$app->run(
-    $autoload
-);
+App::boot($autoload);
 
 /**
  * Prints out debug info
