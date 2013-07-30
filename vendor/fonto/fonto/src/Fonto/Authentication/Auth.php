@@ -4,8 +4,8 @@
  *
  * @author   Kenny Damgren <kenny.damgren@gmail.com>
  * @package  Fonto_Authentication
- * @link     https://github.com/kenren/fonto
- * @version  0.5
+ * @link     https://github.com/kegren/fonto
+ * @version  0.6
  */
 
 namespace Fonto\Authentication;
@@ -18,7 +18,7 @@ use Doctrine\ORM\EntityManager;
  * Authentication class which uses doctrine as ORM.
  *
  * @package Fonto_Authentication
- * @link    https://github.com/kenren/fonto
+ * @link    https://github.com/kegren/fonto
  * @author  Kenny Damgren <kenny.damgren@gmail.com>
  */
 class Auth
@@ -91,7 +91,7 @@ class Auth
     }
 
     /**
-     * Logs in an user based on input credentials
+     * Logging in an user based on input credentials
      *
      * @param   array  $credentials
      * @return  bool
