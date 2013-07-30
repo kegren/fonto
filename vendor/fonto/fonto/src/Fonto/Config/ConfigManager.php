@@ -4,8 +4,8 @@
  *
  * @author   Kenny Damgren <kenny.damgren@gmail.com>
  * @package  Fonto_Config
- * @link     https://github.com/kenren/fonto
- * @version  0.5
+ * @link     https://github.com/kegren/fonto
+ * @version  0.6
  */
 
 namespace Fonto\Config;
@@ -16,8 +16,9 @@ use Fonto\Config\Driver\ConfigInterface;
  * Responsible for managing config drivers.
  *
  * @package Fonto_Cache
- * @link    https://github.com/kenren/fonto
+ * @link    https://github.com/kegren/fonto
  * @author  Kenny Damgren <kenny.damgren@gmail.com>
+ * @deprecated since 0.6
  */
 class ConfigManager
 {
