@@ -3,9 +3,9 @@
  * Fonto - PHP framework
  *
  * @author   Kenny Damgren <kenny.damgren@gmail.com>
- * @package  Fonto_Application
- * @link     https://github.com/kenren/fonto
- * @version  0.5
+ * @package  Fonto_Facade
+ * @link     https://github.com/kegren/fonto
+ * @version  0.6
  */
 
 namespace Fonto\Facade;
