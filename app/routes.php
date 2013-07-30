@@ -6,10 +6,6 @@
  */
 
 /**
- * Routing system setup
- */
-
-/**
  * Registers a default route
  */
 $router->addRoute(
