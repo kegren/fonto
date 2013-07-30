@@ -28,3 +28,5 @@ Changelog
 ---------
 
 ### 0.6 - released 2013/07/30
+
+Coming soon.
