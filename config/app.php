@@ -1,43 +1,43 @@
 <?php
 /**
  * Part of Fonto Framework
- *
- * Application settings
  */
-
-function appConfig()
-{
-    return array(
-        /**
-         * language
-         */
-        'language' => 'en',
-        /**
-         * Default timezone
-         */
-        'timezone' => 'Europe/Stockholm',
-        /**
-         * Database settings
-         */
-        'database' => array(
-            'local' => array(
-                'driver' => 'pdo_mysql',
-                'host' => 'localhost',
-                'dbname' => 'doctrine',
-                'user' => 'root',
-                'password' => '',
-            ),
-            'server' => array(
-                'driver' => 'pdo_mysql',
-                'host' => 'localhost',
-                'dbname' => 'doctrine',
-                'user' => 'root',
-                'password' => '',
-            ),
+return array(
+    /**
+     * language
+     */
+    'lang' => 'en',
+    /**
+     * Default timezone
+     */
+    'timezone' => 'Europe/Stockholm',
+    /**
+     * Database settings
+     */
+    'db' => array(
+        'development' => array(
+            'driver' => 'pdo_mysql',
+            'host' => 'localhost',
+            'dbname' => 'fonto_development',
+            'user' => 'root',
+            'password' => 'qwerty'
         ),
-        /**
-         * Application environment
-         */
-        'environment' => 'local',
-    );
-}
+        'production' => array(
+            'driver' => 'pdo_mysql',
+            'host' => 'localhost',
+            'dbname' => 'fonto_production',
+            'user' => 'root',
+            'password' => ''
+        ),
+    ),
+    /**
+     * Application environment
+     */
+    'env' => 'development',
+    /**
+     * Cache
+     *
+     * Supported: apc, memcache
+     */
+    'cache' => ''
+);
