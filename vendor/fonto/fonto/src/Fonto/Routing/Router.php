@@ -4,8 +4,8 @@
  *
  * @author   Kenny Damgren <kenny.damgren@gmail.com>
  * @package  Fonto_Routing
- * @link     https://github.com/kenren/fonto
- * @version  0.5
+ * @link     https://github.com/kegren/fonto
+ * @version  0.6
  */
 
 namespace Fonto\Routing;
@@ -13,13 +13,14 @@ namespace Fonto\Routing;
 use Fonto\Http\Request;
 use Fonto\Routing\Route;
 use Exception;
+use Fonto\Facade\Fonto;
 
 /**
  * Router is responsible for mapping an incoming http request
  * to a route.
  *
  * @package Fonto_Routing
- * @link    https://github.com/kenren/fonto
+ * @link    https://github.com/kegren/fonto
  * @author  Kenny Damgren <kenny.damgren@gmail.com>
  */
 class Router
@@ -106,12 +107,12 @@ class Router
      * @param Route   $route
      * @param Request $request
      */
-    public function __construct(Route $route, Request $request)
+    public function __construct()
     {
-        $this->route = ($route) ? : new Route();
-        $this->request = ($request) ? : new Request();
+        $this->route = Fonto::grab('route');
+        $this->request = Fonto::grab('request');
         $router = $this;
-        include ROOT . "app/modules/Demo/" . 'routes.php';
+        include APPPATH . '/routes.php';
         unset($router);
     }
 
