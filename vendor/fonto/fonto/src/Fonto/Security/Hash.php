@@ -4,8 +4,8 @@
  *
  * @author   Kenny Damgren <kenny.damgren@gmail.com>
  * @package  Fonto_Security
- * @link     https://github.com/kenren/fonto
- * @version  0.5
+ * @link     https://github.com/kegren/fonto
+ * @version  0.6
  */
 
 namespace Fonto\Security;
@@ -17,7 +17,7 @@ use Hautelook\Phpass\PasswordHash;
  * passwords.
  *
  * @package Fonto_Security
- * @link    https://github.com/kenren/fonto
+ * @link    https://github.com/kegren/fonto
  * @author  Kenny Damgren <kenny.damgren@gmail.com>
  */
 class Hash

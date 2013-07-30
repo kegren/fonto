@@ -4,24 +4,29 @@
  *
  * @author   Kenny Damgren <kenny.damgren@gmail.com>
  * @package  Fonto_Application
- * @link     https://github.com/kenren/fonto
- * @version  0.5
+ * @link     https://github.com/kegren/fonto
+ * @version  0.6
  */
 
 namespace Fonto\Application;
 
 use Fonto\DependencyInjection as DI;
-use Fonto\Application\ObjectHandler;
 use Exception;
+use Fonto\DependencyInjection\ServiceLocator;
+use Fonto\Facade\Fonto;
+use Fonto\Facade\Config;
+use Fonto\Facade\Router;
+use Fonto\Facade\Response;
+
 
 /**
  * Front Controller
  *
  * @package Fonto_Application
- * @link    https://github.com/kenren/fonto
+ * @link    https://github.com/kegren/fonto
  * @author  Kenny Damgren <kenny.damgren@gmail.com>
  */
-class App extends ObjectHandler
+class App
 {
     /**
      * Current Fonto version
@@ -31,14 +36,17 @@ class App extends ObjectHandler
     protected $version = '0.5';
 
     /**
-     * Constructor
+     * Registered modules
      *
-     * Sets up paths
+     * @var array
+     */
+    protected $modules = array();
+
+    /**
+     * Constructor
      */
     public function __construct()
-    {
-        parent::__construct();
-    }
+    {}
 
     /**
      * Runs the application and dispatches the HTTP request
@@ -46,51 +54,43 @@ class App extends ObjectHandler
      * @param $loader
      * @return mixed
      */
-    public function run($loader)
+    public function boot($loader)
     {
-        try {
+        $this->initialize(); // Initial setup
 
-            if (!$modules = modules() and count(modules()) == 0) {
-                return;
-                #return $this->response()->error(500);
-            }
-
-            if (count($modules) == 1) {
-                $loader->add($modules[0], APPPATH . 'modules');
-            } else {
-                foreach ($modules as $module) {
-                    $loader->add($module, APPPATH . 'modules');
-                }
-            }
-
-            $config = $this->config();
-            $this->setTimezone($config->read('app#timezone'));
-
-            $router = $this->router();
-            $matched = $router->match();
-
-            if (false === $matched) {
-                return $this->response()->error(404);
-            }
-
-            $dispatcher = $router->dispatch(); // Dispatches request
-
-            if (false === $dispatcher) {
-                return $this->response()->error(404);
-            }
-
-        } catch (Exception $e) {
-            echo $e->getMessage() . " " . $e->getLine();
+        // No modules added, @TODO: Fix error
+        if (count($this->modules) < 1) {
+            return;
         }
+
+        // Only one module just add without loop
+        if (count($this->modules) == 1) {
+            $loader->add($this->modules[0], APPPATH . '/modules');
+        } else {
+            foreach ($this->modules as $module) {
+                $loader->add($module, APPPATH . '/modules');
+            }
+        }
+
+        // Grab a new router instance
+        $router = Fonto::grab('router');
+
+        if (!$router->match()) {
+            return Response::error(404);
+        }
+
+        $router->dispatch(); # Dispatch request
     }
 
     /**
-     * Sets the timezone
+     * Initial setup
      *
-     * @param $timezone
+     * @return void
      */
-    protected function setTimezone($timezone)
+    protected function initialize()
     {
-        date_default_timezone_set($timezone);
+        $this->modules = Config::grab('modules', true);
+
+        date_default_timezone_set(Config::grab('app')->get('timezone'));
     }
 }

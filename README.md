@@ -1,15 +1,30 @@
-#Fonto PHP Framework
+#Fonto a small PHP 5.3+ framework.
 
-Fonto is built as a PHP framework with flexibility in mind.
-You, as an user, can easily decide what kind of packages you need by making use of composer and just download
-them through the composer repository. Fonto is in no way meant to be competing with other
-frameworks, it's just a little project that I made. As you will notice, Fonto, is a work in progress
-and over time it will change dramatically. This is just a start and hopefully it can be 'fontozing'
-in the future.
+Fonto is a small framework that currently is in beta stage.
+It's not recommended for production just yet, but hopefully in the near
+future. Fonto uses composer as dependency mangement so it's easy
+to use any packages that you would like from packagist. Fonto uses
+the facade pattern and really encourage you to build your apps a modular
+way.
+
+Requirements
+------------
+
+* PHP 5.3+
+* Composer
 
 Installation
 ------------
 
-The easiest way to install Fonto is by cloning this repo into a folder on your local machine
-or on a server. Then you run composer to install the needed dependencies. You are now ready
-to go. Please bear in mind that this is a beta release.
+The easiest way to install Fonto is by cloning(or downloading zip) this repo into a folder on your local machine
+or on a server. Then you run composer to install the needed dependencies.
+
+Documentation
+-------------
+
+Coming soon.
+
+Changelog
+---------
+
+### 0.6 - released 2013/07/30

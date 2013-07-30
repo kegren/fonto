@@ -6,18 +6,12 @@
 namespace Demo\Controller;
 
 use Fonto\Controller\Base;
+use Fonto\Facade\Url;
+use Fonto\Facade\View;
 
 class Home extends Base
 {
     public $restful = true;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     /**
      * @return mixed
@@ -25,11 +19,10 @@ class Home extends Base
     public function index()
     {
         $data = array(
-            'title' => 'Fonto PHP Framework',
-            'text' => 'Under development',
-            'baseUrl' => $this->url()->baseUrl(),
+            'title' => 'Fonto',
+            'baseUrl' => Url::baseUrl(),
         );
 
-        return $this->view()->render('home/index', $data);
+        return View::render('home/index', $data, "demo");
     }
 }

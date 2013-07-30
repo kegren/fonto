@@ -4,26 +4,54 @@
  *
  * @author      Kenny Damgren <kenny.damgren@gmail.com>
  * @package     Fonto
- * @link        https://github.com/kenren/fonto
- * @version     0.5
+ * @link        https://github.com/kegren/fonto
+ * @version     0.6
  */
 
-use Fonto\Application\App;
+use Fonto\Facade\App;
+use HTMLPurifier_Bootstrap as Purifier;
 
 /**
  * Configuration constants
  */
 define('START_TIME', microtime(true));
 define('DEBUG', false);
-define('CACHE', false);
 
-/**
- * Include files
- */
-include APPPATH . 'helpers' . EXT;
-$loader = require VENDORPATH . 'autoload' . EXT;
-require SYSCOREAPPPATH . 'App' . EXT;
-include CONFIGPATH . "modules.php";
+function paths()
+{
+    return array(
+        'root' => __DIR__ . '/..',
+        'vendor' => __DIR__ . '/../vendor',
+        'fontoApp' => __DIR__ . '/../vendor/fonto/fonto/src/Fonto/Application',
+        'config' => __DIR__ . '/../config',
+        'app' => __DIR__,
+        'storage' => __DIR__ . '/storage'
+    );
+}
+
+function custom()
+{
+    return array(
+        'ds' => DIRECTORY_SEPARATOR,
+        'ext' => '.php'
+    );
+}
+
+($paths = paths() and $custom = custom());
+
+$composerAutoload = function () use ($paths, $custom) {
+    return require $paths['vendor'] . '/autoload' . $custom['ext'];
+};
+
+$definePaths = function() use ($paths) {
+    foreach ($paths as $name => $path) {
+        define(strtoupper($name) . 'PATH', $path);
+    }
+};
+
+($autoload = $composerAutoload() and $definePaths());
+
+require $paths['fontoApp'] . '/App' . $custom['ext'];
 
 /**
  * Sets error reporting
@@ -31,15 +59,14 @@ include CONFIGPATH . "modules.php";
 error_reporting(-1);
 
 /**
- * Registers autoloader for HTMLPurifier component
+ * Using HTMLPurifier's own autoloading module
  */
-\HTMLPurifier_Bootstrap::registerAutoload();
+Purifier::registerAutoload();
 
 /**
  * Runs application
  */
-$app = new App();
-$app->run($loader);
+App::boot($autoload);
 
 /**
  * Prints out debug info

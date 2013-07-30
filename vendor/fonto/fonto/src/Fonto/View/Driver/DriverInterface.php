@@ -5,8 +5,8 @@
  * @author      Kenny Damgren <kenny.damgren@gmail.com>
  * @package     Fonto_View
  * @subpackage  Driver
- * @link        https://github.com/kenren/fonto
- * @version     0.5
+ * @link        https://github.com/kegren/fonto
+ * @version     0.6
  */
 
 namespace Fonto\View\Driver;
@@ -16,7 +16,7 @@ namespace Fonto\View\Driver;
  *
  * @package    Fonto_View
  * @subpackage Driver
- * @link       https://github.com/kenren/fonto
+ * @link       https://github.com/kegren/fonto
  * @author     Kenny Damgren <kenny.damgren@gmail.com>
  */
 interface DriverInterface
@@ -28,7 +28,7 @@ interface DriverInterface
      * @param  array  $data
      * @return mixed
      */
-    public function render($view, $data = array());
+    public function render($view, $data = array(), $module = null);
 
     /**
      * Checks if a view file exists

@@ -1,15 +1,12 @@
 <?php
 /**
  * Part of Fonto Framework
- *
- * Application settings
  */
-
 return array(
     /**
      * language
      */
-    'language' => 'en',
+    'lang' => 'en',
     /**
      * Default timezone
      */
@@ -17,24 +14,30 @@ return array(
     /**
      * Database settings
      */
-    'database' => array(
-        'local' => array(
+    'db' => array(
+        'development' => array(
             'driver' => 'pdo_mysql',
             'host' => 'localhost',
-            'dbname' => 'doctrine',
+            'dbname' => 'fonto_development',
             'user' => 'root',
-            'password' => '',
+            'password' => ''
         ),
-        'server' => array(
+        'production' => array(
             'driver' => 'pdo_mysql',
             'host' => 'localhost',
-            'dbname' => 'doctrine',
+            'dbname' => 'fonto_production',
             'user' => 'root',
-            'password' => '',
+            'password' => ''
         ),
     ),
     /**
      * Application environment
      */
-    'environment' => 'local',
+    'env' => 'development',
+    /**
+     * Cache
+     *
+     * Supported: apc, memcache
+     */
+    'cache' => ''
 );

@@ -4,22 +4,22 @@
  *
  * @author   Kenny Damgren <kenny.damgren@gmail.com>
  * @package  Fonto_Http
- * @link     https://github.com/kenren/fonto
- * @version  0.5
+ * @link     https://github.com/kegren/fonto
+ * @version  0.6
  */
 
 namespace Fonto\Http;
 
-use Fonto\Http\Url;
-use Fonto\View\View;
+use Fonto\Facade\View;
 use Fonto\Http\Session;
+use Fonto\Facade\Fonto;
 use Exception;
 
 /**
  * Handles responses based on different circumstances.
  *
  * @package Fonto_Http
- * @link    https://github.com/kenren/fonto
+ * @link    https://github.com/kegren/fonto
  * @author  Kenny Damgren <kenny.damgren@gmail.com>
  */
 class Response
@@ -95,17 +95,10 @@ class Response
 
     /**
      * Constructor
-     *
-     * @param  Url     $url
-     * @param  View    $view
-     * @param Session $session
-     * @return \Fonto\Http\Response
      */
-    public function __construct(Url $url, View $view, Session $session)
+    public function __construct()
     {
-        $this->url = $url;
-        $this->view = $view;
-        $this->session = $session;
+        $this->url = Fonto::grab('url');
     }
 
     /**
@@ -170,13 +163,13 @@ class Response
     {
         $view = isset($this->views[$code]) ? $this->views[$code] : false;
 
-        if (false === $view) {
+        if (!$view) {
             throw new Exception("Error code not supported");
         }
 
         $e = $this->codes[$code];
 
-        return $this->view->render(
+        return View::render(
             $view,
             array(
                 'e' => $e,

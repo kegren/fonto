@@ -5,14 +5,14 @@
  * @author      Kenny Damgren <kenny.damgren@gmail.com>
  * @package     Fonto_View
  * @subpackage  Driver
- * @link        https://github.com/kenren/fonto
- * @version     0.5
+ * @link        https://github.com/kegren/fonto
+ * @version     0.6
  */
 
 namespace Fonto\View\Driver;
 
 use Fonto\View\Driver\DriverInterface;
-use Fonto\Application\ObjectHandler;
+use Fonto\Facade\Fonto;
 
 use Exception;
 
@@ -23,10 +23,10 @@ use Exception;
  *
  * @package    Fonto_View
  * @subpackage Driver
- * @link       https://github.com/kenren/fonto
+ * @link       https://github.com/kegren/fonto
  * @author     Kenny Damgren <kenny.damgren@gmail.com>
  */
-class Native extends ObjectHandler implements DriverInterface
+class Native implements DriverInterface
 {
     /**
      * Extension for this driver
@@ -53,10 +53,7 @@ class Native extends ObjectHandler implements DriverInterface
      * Constructor
      */
     public function __construct()
-    {
-        parent::__construct();
-        $this->path = ROOT . "app/modules/Demo/View/";
-    }
+    {}
 
     /**
      * Loads a view
@@ -88,8 +85,15 @@ class Native extends ObjectHandler implements DriverInterface
      * @param  array  $data
      * @return mixed
      */
-    public function render($view, $data = array())
+    public function render($view, $data = array(), $module = null)
     {
+        if ($module) {
+            $module = ucfirst($module);
+            $this->path = APPPATH . "/modules/{$module}/View/";
+        } else {
+            $this->path = APPPATH . "/modules/Demo/View/";
+        }
+
         return $this->renderView($view, $data);
     }
 
@@ -111,7 +115,7 @@ class Native extends ObjectHandler implements DriverInterface
             unset($data); // Removes from local
         }
 
-        $session = $this->session();
+        $session = Fonto::grab('session');
 
         if ($session->has('redirectData')) {
             extract($session->get('redirectData')); // Extracts saved session data from redirect

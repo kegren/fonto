@@ -5,8 +5,8 @@
  * @author      Kenny Damgren <kenny.damgren@gmail.com>
  * @package     Fonto_Config
  * @subpackage  Driver
- * @link        https://github.com/kenren/fonto
- * @version     0.5
+ * @link        https://github.com/kegren/fonto
+ * @version     0.6
  */
 
 namespace Fonto\Config\Driver;
@@ -18,8 +18,9 @@ use Fonto\Config\Driver\ConfigInterface;
  *
  * @package     Fonto_Config
  * @subpackage  Driver
- * @link        https://github.com/kenren/fonto
+ * @link        https://github.com/kegren/fonto
  * @author      Kenny Damgren <kenny.damgren@gmail.com>
+ * @deprecated  since 0.6
  */
 class IniDriver implements ConfigInterface
 {
