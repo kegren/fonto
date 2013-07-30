@@ -5,7 +5,7 @@
  * @author   Kenny Damgren <kenny.damgren@gmail.com>
  * @package  Fonto_Application
  * @link     https://github.com/kenren/fonto
- * @version  0.5
+ * @version  0.6
  */
 
 namespace Fonto\Application;
@@ -18,9 +18,10 @@ use ReflectionClass;
  * Provides a simple way to instantiate objects
  * and services using magical methods.
  *
- * @package Fonto_Application
- * @link    https://github.com/kenren/fonto
- * @author  Kenny Damgren <kenny.damgren@gmail.com>
+ * @package     Fonto_Application
+ * @link        https://github.com/kenren/fonto
+ * @author      Kenny Damgren <kenny.damgren@gmail.com>
+ * @deprecated  since 0.6
  */
 class ObjectHandler
 {
