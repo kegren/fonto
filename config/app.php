@@ -20,7 +20,7 @@ return array(
             'host' => 'localhost',
             'dbname' => 'fonto_development',
             'user' => 'root',
-            'password' => 'qwerty'
+            'password' => ''
         ),
         'production' => array(
             'driver' => 'pdo_mysql',
