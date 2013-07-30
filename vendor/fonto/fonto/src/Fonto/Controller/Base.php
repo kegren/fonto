@@ -4,22 +4,20 @@
  *
  * @author   Kenny Damgren <kenny.damgren@gmail.com>
  * @package  Fonto_Controller
- * @link     https://github.com/kenren/fonto
- * @version  0.5
+ * @link     https://github.com/kegren/fonto
+ * @version  0.6
  */
 
 namespace Fonto\Controller;
-
-use Fonto\Application\ObjectHandler;
 
 /**
  * Base controller class.
  *
  * @package Fonto_Controller
- * @link    https://github.com/kenren/fonto
+ * @link    https://github.com/kegren/fonto
  * @author  Kenny Damgren <kenny.damgren@gmail.com>
  */
-class Base extends ObjectHandler
+class Base
 {
     /**
      * Prefix for methods
@@ -36,28 +34,9 @@ class Base extends ObjectHandler
     protected $defaultAction = 'index';
 
     /**
-     * Current supported rest
-     *
-     * @var array
-     */
-    protected $supported = array(
-        'GET' => 'get',
-        'POST' => 'post',
-        'DELETE' => 'delete'
-    );
-
-    /**
      * Default rest method
      *
      * @var string
      */
-    protected $restfulAction = 'Index';
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
+    protected $restfulAction = 'index';
 }
