@@ -14,6 +14,7 @@ use Fonto\Http\Request;
 use Fonto\Routing\Route;
 use Exception;
 use Fonto\Facade\Fonto;
+use Fonto\Facade\Config;
 
 /**
  * Router is responsible for mapping an incoming http request
@@ -145,15 +146,11 @@ class Router
      */
     public function dispatch()
     {
-        $namespace = "Demo" . self::CONTROLLER_NAMESPACE;
-        $class = $namespace . '\\' . ucfirst($this->route->getController());
+        $class = $this->getClass();
 
         try {
 
-            if (!class_exists($class)) {
-                throw new Exception("The class $class wasn't found");
-            }
-            $object = new $class;
+            $object = new $class();
 
             $action = $this->getRoute()->getAction();
 
@@ -326,5 +323,37 @@ class Router
     public function getRoute()
     {
         return $this->route;
+    }
+
+    /**
+     * Returns classname if found else throws exception.
+     *
+     * @return mixed
+     */
+    private function getClass()
+    {
+        $modules = Config::grab('modules', true);
+
+        try {
+            if (count($modules) == 1) {
+                $class = $modules[0] . self::CONTROLLER_NAMESPACE . '\\' . ucfirst($this->route->getController());
+
+                if (class_exists($class)) {
+                    return $class;
+                }
+
+                throw new Exception("The class $class wasn't found");
+            } else {
+                foreach ($modules as $module) {
+                    $class = $module . self::CONTROLLER_NAMESPACE . '\\' . ucfirst($this->route->getController());
+                    if (class_exists($class)) {
+                        return $class;
+                    }
+                }
+                throw new Exception("The class $class wasn't found");
+            }
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
     }
 }
