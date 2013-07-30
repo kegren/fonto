@@ -4,19 +4,21 @@
  *
  * @author   Kenny Damgren <kenny.damgren@gmail.com>
  * @package  Fonto_View
- * @link     https://github.com/kenren/fonto
- * @version  0.5
+ * @link     https://github.com/kegren/fonto
+ * @version  0.6
  */
 
 namespace Fonto\View;
 
 use Fonto\View\Driver\DriverInterface;
+use Fonto\Facade\Config;
+use Fonto\Facade\Fonto;
 
 /**
  * Base view class, handles different view drivers.
  *
  * @package Fonto_View
- * @link    https://github.com/kenren/fonto
+ * @link    https://github.com/kegren/fonto
  * @author  Kenny Damgren <kenny.damgren@gmail.com>
  */
 class View
@@ -30,12 +32,10 @@ class View
 
     /**
      * Constructor
-     *
-     * @param Driver\DriverInterface $driver
      */
-    public function __construct(DriverInterface $driver)
+    public function __construct()
 	{
-        $this->driver = $driver;
+        $this->driver = Fonto::grab(Config::grab('drivers')->get('view'));
     }
 
     /**
@@ -45,8 +45,8 @@ class View
      * @param  array  $data
      * @return void
      */
-    public function render($view, $data)
+    public function render($view, $data, $module = null)
     {
-        echo $this->driver->render($view, $data);
+        echo $this->driver->render($view, $data, $module);
     }
 }
