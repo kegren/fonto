@@ -18,6 +18,7 @@ use Doctrine\Common\Cache\ApcCache;
 
 /**
  * Configuration object
+ * @deprecated
  */
 $config = new ConfigManager(new PhpDriver());
 
