@@ -4,7 +4,7 @@
  *
  * @author   Kenny Damgren <kenny.damgren@gmail.com>
  * @package  Fonto_DependencyInjection
- * @link     https://github.com/kenren/fonto
+ * @link     https://github.com/kegren/fonto
  * @version  0.6
  */
 

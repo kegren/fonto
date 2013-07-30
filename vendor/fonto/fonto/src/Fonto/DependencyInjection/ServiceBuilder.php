@@ -4,7 +4,7 @@
  *
  * @author   Kenny Damgren <kenny.damgren@gmail.com>
  * @package  Fonto_DependencyInjection
- * @link     https://github.com/kenren/fonto
+ * @link     https://github.com/kegren/fonto
  * @version  0.6
  */
 
@@ -15,10 +15,10 @@ class ServiceBuilder
     /**
      * Creates a new object
      *
-     * @param  [type] $object [description]
-     * @return [type]         [description]
+     * @param  array $object
+     * @return mixed
      */
-    public function resolveObject($object)
+    public function resolveObject(array $object)
     {
         return is_array($object) ? new $object['class']() : null;
     }

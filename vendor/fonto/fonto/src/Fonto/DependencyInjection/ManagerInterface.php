@@ -4,8 +4,8 @@
  *
  * @author   Kenny Damgren <kenny.damgren@gmail.com>
  * @package  Fonto_DependencyInjection
- * @link     https://github.com/kenren/fonto
- * @version  0.5
+ * @link     https://github.com/kegren/fonto
+ * @version  0.6
  */
 
 namespace Fonto\DependencyInjection;
@@ -13,9 +13,10 @@ namespace Fonto\DependencyInjection;
 /**
  * Manager Interface
  *
- * @package Fonto_DependencyInjection
- * @link    https://github.com/kenren/fonto
- * @author  Kenny Damgren <kenny.damgren@gmail.com>
+ * @package     Fonto_DependencyInjection
+ * @link        https://github.com/kegren/fonto
+ * @author      Kenny Damgren <kenny.damgren@gmail.com>
+ * @deprecated  since 0.6
  */
 interface ManagerInterface
 {

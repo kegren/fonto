@@ -4,7 +4,7 @@
  *
  * @author   Kenny Damgren <kenny.damgren@gmail.com>
  * @package  Fonto_DependencyInjection
- * @link     https://github.com/kenren/fonto
+ * @link     https://github.com/kegren/fonto
  * @version  0.6
  */
 return array(
@@ -49,7 +49,7 @@ return array(
     ),
 
     'config' => array(
-        'class' => 'Fonto\Config\ConfigManager',
+        'class' => 'Fonto\Config\Config',
         'alias' => 'config',
     ),
 
@@ -71,5 +71,25 @@ return array(
     'view' => array(
         'class' => 'Fonto\View\View',
         'alias' => 'view',
+    ),
+
+    'native' => array(
+        'class' => 'Fonto\View\Driver\Native',
+        'alias' => 'native'
+    ),
+
+    'url' => array(
+        'class' => 'Fonto\Http\Url',
+        'alias' => 'url',
+    ),
+
+    'session' => array(
+        'class' => 'Fonto\Http\Session',
+        'alias' => 'session'
+    ),
+
+    'doctrine' => array(
+        'class' => 'Fonto\Vendor\Doctrine',
+        'alias' => 'doctrine'
     )
 );

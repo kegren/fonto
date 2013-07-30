@@ -2,10 +2,11 @@
 /**
  * Fonto - PHP framework
  *
- * @author   Kenny Damgren <kenny.damgren@gmail.com>
- * @package  Fonto_DependencyInjection
- * @link     https://github.com/kenren/fonto
- * @version  0.5
+ * @author      Kenny Damgren <kenny.damgren@gmail.com>
+ * @package     Fonto_DependencyInjection
+ * @link        https://github.com/kegren/fonto
+ * @version     0.6
+ * @deprecated  since 0.6
  */
 
 return array(

@@ -4,8 +4,8 @@
  *
  * @author   Kenny Damgren <kenny.damgren@gmail.com>
  * @package  Fonto_DependencyInjection
- * @link     https://github.com/kenren/fonto
- * @version  0.5
+ * @link     https://github.com/kegren/fonto
+ * @version  0.6
  */
 
 namespace Fonto\DependencyInjection;
@@ -20,9 +20,10 @@ use Exception;
  * the builder class. Then it will be returned as an object
  * with all the correct dependencies set.
  *
- * @package Fonto_DependencyInjection
- * @link    https://github.com/kenren/fonto
- * @author  Kenny Damgren <kenny.damgren@gmail.com>
+ * @package     Fonto_DependencyInjection
+ * @link        https://github.com/kegren/fonto
+ * @author      Kenny Damgren <kenny.damgren@gmail.com>
+ * @deprecated  since 0.6
  */
 class Manager implements ManagerInterface
 {
