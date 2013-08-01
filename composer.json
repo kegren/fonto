@@ -1,5 +1,10 @@
 {
-	"name": "kenren/fonto",
+    "name": "kegren/fonto",
+    "description": "The Fonto PHP framework.",
+    "author": {
+        "name": "Kenny Damgren",
+        "email": "kennydamgren@gmail.com"
+    },
     "require": {
         "hautelook/phpass": "dev-master",
         "ezyang/htmlpurifier": "dev-master",
