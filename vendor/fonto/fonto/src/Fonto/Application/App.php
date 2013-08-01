@@ -33,7 +33,7 @@ class App
      *
      * @var string
      */
-    protected $version = '0.5';
+    protected $version = '0.6';
 
     /**
      * Registered modules
