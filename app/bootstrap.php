@@ -51,8 +51,6 @@ $definePaths = function() use ($paths) {
 
 ($autoload = $composerAutoload() and $definePaths());
 
-require $paths['fontoApp'] . '/App' . $custom['ext'];
-
 /**
  * Sets error reporting
  */
@@ -73,6 +71,5 @@ App::boot($autoload);
  */
 if (DEBUG) {
     $loadTime = round((microtime(true) - START_TIME), 5);
-
     printf("Page loading time: %s", $loadTime);
 }
