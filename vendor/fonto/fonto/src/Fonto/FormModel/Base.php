@@ -5,7 +5,7 @@
  * @author   Kenny Damgren <kenny.damgren@gmail.com>
  * @package  Fonto_FormModel
  * @link     https://github.com/kegren/fonto
- * @version  0.6
+ * @version  0.2
  */
 
 namespace Fonto\FormModel;
@@ -24,5 +24,5 @@ abstract class Base
      *
      * @return mixed
      */
-	public abstract function rules();
+    abstract public function rules();
 }

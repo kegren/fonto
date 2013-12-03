@@ -6,7 +6,7 @@
  * @package     Fonto_Config
  * @subpackage  Driver
  * @link        https://github.com/kegren/fonto
- * @version     0.6
+ * @version     0.2
  */
 
 namespace Fonto\Config\Driver;
@@ -18,7 +18,7 @@ namespace Fonto\Config\Driver;
  * @subpackage  Driver
  * @link        https://github.com/kegren/fonto
  * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @deprecated  since 0.6
+ * @deprecated  since 0.2
  */
 interface ConfigInterface
 {

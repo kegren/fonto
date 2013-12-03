@@ -5,7 +5,7 @@
  * @author   Kenny Damgren <kenny.damgren@gmail.com>
  * @package  Fonto_Http
  * @link     https://github.com/kegren/fonto
- * @version  0.6
+ * @version  0.2
  */
 
 namespace Fonto\Http;
@@ -19,20 +19,20 @@ namespace Fonto\Http;
  */
 class Session
 {
-	/**
-	 * Constructor
+    /**
+     * Constructor
      *
      * Sets path and starts session with provided name
-	 */
-	public function __construct($sessionName = null)
-	{
+     */
+    public function __construct($sessionName = null)
+    {
         $this->setSessionSavePath(STORAGEPATH . '/session');
         if (!$this->isStarted()) {
             $this->setName($sessionName);
             $this->start();
             $this->regenerateId();
         }
-	}
+    }
 
     /**
      * Starts session
@@ -74,19 +74,19 @@ class Session
         session_save_path(($path) ?: SESSPATH);
     }
 
-	/**
-	 * Saves a value
-	 *
-	 * @param  string  $id
-	 * @param  string  $value
+    /**
+     * Saves a value
+     *
+     * @param  string  $id
+     * @param  string  $value
      * @return Session
      */
-	public function save($id, $value)
-	{
-		$_SESSION[$id] = $value;
+    public function save($id, $value)
+    {
+        $_SESSION[$id] = $value;
 
-		return $this;
-	}
+        return $this;
+    }
 
 	/**
 	 * Returns a value from session

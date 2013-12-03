@@ -5,7 +5,7 @@
  * @author   Kenny Damgren <kenny.damgren@gmail.com>
  * @package  Fonto_DependencyInjection
  * @link     https://github.com/kegren/fonto
- * @version  0.6
+ * @version  0.2
  */
 
 namespace Fonto\DependencyInjection;
@@ -19,7 +19,7 @@ use ReflectionClass;
  * @package     Fonto_DependencyInjection
  * @link        https://github.com/kegren/fonto
  * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @deprecated  since 0.6
+ * @deprecated  since 0.2
  */
 class Builder
 {

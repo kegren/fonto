@@ -5,7 +5,7 @@
  * @author   Kenny Damgren <kenny.damgren@gmail.com>
  * @package  Fonto_Vendor
  * @link     https://github.com/kegren/fonto
- * @version  0.6
+ * @version  0.2
  */
 
 namespace Fonto\Vendor;

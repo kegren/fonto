@@ -5,8 +5,8 @@
  * @author      Kenny Damgren <kenny.damgren@gmail.com>
  * @package     Fonto_DependencyInjection
  * @link        https://github.com/kegren/fonto
- * @version     0.6
- * @deprecated  since 0.6
+ * @version     0.2
+ * @deprecated  since 0.2
  */
 
 return array(

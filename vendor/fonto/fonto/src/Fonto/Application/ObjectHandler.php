@@ -5,7 +5,7 @@
  * @author   Kenny Damgren <kenny.damgren@gmail.com>
  * @package  Fonto_Application
  * @link     https://github.com/kenren/fonto
- * @version  0.6
+ * @version  0.2
  */
 
 namespace Fonto\Application;
@@ -21,7 +21,7 @@ use ReflectionClass;
  * @package     Fonto_Application
  * @link        https://github.com/kenren/fonto
  * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @deprecated  since 0.6
+ * @deprecated  since 0.2
  */
 class ObjectHandler
 {

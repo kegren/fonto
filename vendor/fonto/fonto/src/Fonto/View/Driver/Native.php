@@ -6,7 +6,7 @@
  * @package     Fonto_View
  * @subpackage  Driver
  * @link        https://github.com/kegren/fonto
- * @version     0.6
+ * @version     0.2
  */
 
 namespace Fonto\View\Driver;

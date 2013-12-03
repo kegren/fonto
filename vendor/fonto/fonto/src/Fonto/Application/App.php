@@ -5,7 +5,7 @@
  * @author   Kenny Damgren <kenny.damgren@gmail.com>
  * @package  Fonto_Application
  * @link     https://github.com/kegren/fonto
- * @version  0.6
+ * @version  0.2
  */
 
 namespace Fonto\Application;
@@ -17,7 +17,6 @@ use Fonto\Facade\Fonto;
 use Fonto\Facade\Config;
 use Fonto\Facade\Router;
 use Fonto\Facade\Response;
-
 
 /**
  * Front Controller
@@ -33,7 +32,7 @@ class App
      *
      * @var string
      */
-    protected $version = '0.6';
+    protected $version = '0.2';
 
     /**
      * Registered modules
@@ -46,7 +45,9 @@ class App
      * Constructor
      */
     public function __construct()
-    {}
+    {
+
+    }
 
     /**
      * Runs the application and dispatches the HTTP request

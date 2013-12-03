@@ -6,7 +6,7 @@
  * @package     Fonto_Config
  * @subpackage  Driver
  * @link        https://github.com/kegren/fonto
- * @version     0.6
+ * @version     0.2
  */
 
 namespace Fonto\Config\Driver;
@@ -20,7 +20,7 @@ use Fonto\Config\Driver\ConfigInterface;
  * @subpackage  Driver
  * @link        https://github.com/kegren/fonto
  * @author      Kenny Damgren <kenny.damgren@gmail.com>
- * @deprecated  since 0.6
+ * @deprecated  since 0.2
  */
 class IniDriver implements ConfigInterface
 {
@@ -32,5 +32,8 @@ class IniDriver implements ConfigInterface
      * @throws Exception
      * @return mixed
      */
-    public function read($config){}
+    public function read($config)
+    {
+
+    }
 }
