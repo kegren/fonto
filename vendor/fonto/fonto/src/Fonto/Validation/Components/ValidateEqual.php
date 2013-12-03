@@ -14,14 +14,14 @@ namespace Fonto\Validation\Components;
 use Fonto\Validation\Validator;
 
 /**
- * Identical validation class.
+ * Equal validation class.
  *
  * @package    Fonto_Validation
  * @subpackage Components
  * @link       https://github.com/kegren/fonto
  * @author     Kenny Damgren <kenny.damgren@gmail.com>
  */
-class ValidateIdentical extends Validator
+class ValidateEqual extends Validator
 {
     /**
      * Rule
