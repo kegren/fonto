@@ -82,7 +82,7 @@ class Validator
             'filters' => 'trim',
             'message' => '{field} is not a valid email address.',
         ),
-        'identical' => array(
+        'equal' => array(
             'class' => 'Fonto\Validation\Components\ValidateIdentical',
             'filters' => 'trim',
             'message' => '{field} doesn\'t match.',
